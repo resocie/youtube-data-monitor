@@ -78,6 +78,8 @@ $ echo YOUTUBE_KEY
 
 Após estes comandos sua API não aparecerá no terminal.
 
+Para testar a API o Youtube também disponibiza uma interface para testar as requisições nos endpoints > [Try this API](https://developers.google.com/youtube/v3/docs/search/list?hl=pt-br&apix=true).
+
 ## Executar os testes
 
 Todos os testes foram desenvolvidos utilizando a biblioteca [unittest](https://docs.python.org/3/library/unittest.html) nativa do Python. Para executá-los, a partir da pasta raiz do projeto, execute:
