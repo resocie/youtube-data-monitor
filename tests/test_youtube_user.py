@@ -27,5 +27,11 @@ class TestYoutubeUser(unittest.TestCase):
 		title = self.user.get_channel_title(result)
 		self.assertEqual('ERROR: Canal não existe.', title)
 
+	def test_get_channel_total_subscribers_on_channel_valid(self):
+		username = 'Dayofanne'
+		result = self.user.get_channel_info(username)
+		subscribers = self.user.get_channel_subscribers(result)
+		self.assertEqual('2', subscribers)
+
 if __name__ == '__main__':
     unittest.main()
