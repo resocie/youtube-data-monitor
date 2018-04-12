@@ -33,5 +33,11 @@ class TestYoutubeUser(unittest.TestCase):
 		subscribers = self.user.get_channel_subscribers(result)
 		self.assertEqual('2', subscribers)
 
+	def test_get_channel_total_view_count(self):
+		username = 'patrickvrb'
+		result = self.user.get_channel_info(username)
+		view_count = self.user.get_channel_total_view_count(result)
+		self.assertEqual('168', view_count)
+
 if __name__ == '__main__':
     unittest.main()
