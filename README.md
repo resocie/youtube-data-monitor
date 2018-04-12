@@ -26,7 +26,7 @@ $ git clone git@github.com:unb-cic-esw/youtube-data-monitor.git
 
 ```
 $ virtualenv -p python3 venv
-$ . venv/bin/activate
+$ source venv/bin/activate
 ```
 
 ### Instalar dependências
@@ -35,19 +35,48 @@ Todas as bibliotecas de que o projeto depende estão listadas no arquivo [requir
 
 ```
 $ cd youtube-data-monitor
-$ pip install -r requirements.txt
+$ source venv/bin/activate
+$ (venv) pip install -r requirements.txt
 ```
 
 ## Acesso à API do youtube
 
-Neste projeto, utilizamos [a Youtube Data API v3](https://developers.google.com/youtube/v3/). Para que o script funcione corretamente, é necessário que você registre seu projeto e crie as credenciais necessárias para acesso à API. As instruções estão disponíveis no Step 1 (INSTALLED APP) do [Python Quickstart](https://developers.google.com/youtube/v3/quickstart/python).
+Neste projeto, utilizamos [a Youtube Data API v3](https://developers.google.com/youtube/v3/). Para que o script funcione corretamente, é necessário que você registre seu projeto e crie as credenciais necessárias para acesso à API. As instruções estão disponíveis no [Create API Keys](https://developers.google.com/youtube/registering_an_application#Create_API_Keys).
 
-Crie uma credencial do OAuth client ID e faça o download do arquivo JSON. Coloque o arquivo JSON na pasta root do projeto:
+Crie uma credencial do tipo API key e faça os seguintes procedimentos:
 
 ```
 $ cd youtube-data-monitor
-$ mv /downloads/client_secret.json .
+$ echo 'export YOUTUBE_KEY=SUA_API_KEY' >> venv/bin/activate
 ```
+
+Adicione a seguinte linha dentro da função ```deactivate()``` dentro do arquivo ```venv/bin/activate```:
+
+```
+deactivate () {
+    ...
+
+    # Unset youtube api key variable
+    unset YOUTUBE_KEY
+}
+```
+
+Com isso toda vez que ativar seu ambiente virtual você terá uma variável de ambiente com sua API Key do Youtube, e
+toda vez que desativar o ambiente virtual, esta variável será apagada. Para testar faça o seguinte:
+
+```
+$ source venv/bin/activate
+$ echo YOUTUBE_KEY
+```
+
+Após estes comandos sua API deverá mostrar no terminal.
+
+```
+$ deactivate
+$ echo YOUTUBE_KEY
+```
+
+Após estes comandos sua API não aparecerá no terminal.
 
 ## Executar os testes
 
@@ -57,24 +86,13 @@ Todos os testes foram desenvolvidos utilizando a biblioteca [unittest](https://d
 $ python -m unittest discover tests
 ```
 
-## ToDo
+## TODO
 
 Este é apenas um esqueleto de projeto para que o grupo comece a trabalhar. Resta ainda muito trabalho a ser feito. Algumas ideias:
 
-* Corrigir testes quebrados
-* Complementar testes e revisar o que faz e o que não faz sentido ser testado
-* Remover código hard-coded
-* Otimizar estratégia de autorização do script para que não a se requeira a cada nova execução.
-* Remover mensagens de DeprecationWarning
 * Expandir a variedade dos dados buscados
 * Explorar novas possibilidades de coleta
-* Avaliar outras opções para consumo da API
 * Criar interface CLI para execução do programa
 * Implementar mecanismo para automatização da coleta recorrente dos dados
 * Persistir dados coletados em base estruturada
 * Viabilizar interface de integração da base de dados criada com canal para geração de informações visuais
-
-
-## Troubleshooting
-
-Pode se que durante a execução dos testes ocorra o erro `ModuleNotFoundError: No module named 'oauth2client.locked_file'`. Nesse caso, será necessário realizar o downgrade da biblioteca oauth2client para a versão 3.0.0.
