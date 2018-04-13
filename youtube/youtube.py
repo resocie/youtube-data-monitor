@@ -22,3 +22,8 @@ class YoutubeUser:
 		return response['items'][0]['statistics']['subscriberCount'] \
 			if response['items'] and response['items'][0]['statistics'] \
 			else 'ERROR: Canal não existe ou não possui estatísticas sobre o canal.'
+
+	def get_channel_video_count(self, response):
+		return response['items'][0]['statistics']['videoCount'] \
+			if response['items'] and response['items'][0]['statistics'] \
+			else 'ERROR: Canal não existe ou não possui estatísticas sobre o canal.'
