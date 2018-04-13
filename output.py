@@ -1,5 +1,6 @@
 import csv
 import unittest
+from os import remove,path
 
 class Output:
 
@@ -13,9 +14,12 @@ class Output:
             writer.writeheader()
             for item in self.inputdata:
                 writer.writerow((item))
+            f.close()
         except (FileNotFoundError, UnboundLocalError):
-            return 'ERROR: Não passou o nome do arquivo'
+            return 'ERROR: Nome do arquivo ou caminho incorreto'
         except (AttributeError, IndexError):
+            f.close()
+            remove(filename)
             return 'ERROR: O tipo do dado está incorreto'
         else:
-            f.close()
+            return path.isfile(filename);
