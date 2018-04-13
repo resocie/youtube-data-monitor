@@ -3,12 +3,6 @@ import unittest
 from os import remove,path
 
 class TestOutput(unittest.TestCase):
-    def test_has_filename(self):
-        data = [{}]
-        self.out = Output(data)
-        result = self.out.exportCSV('')
-        self.assertEqual(result, 'ERROR: Nome do arquivo ou caminho incorreto')
-
     def test_valid_data(self):
         data = ''
         self.out = Output(data)

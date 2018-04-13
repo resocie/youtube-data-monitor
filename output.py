@@ -7,7 +7,7 @@ class Output:
     def __init__(self,input): # input is a list of dictionaries
         self.inputdata = input
 
-    def exportCSV(self,filename): #creates a csv file with the content of self.inputdata
+    def exportCSV(self,filename = 'output.csv'): #creates a csv file with the content of self.inputdata
         try:
             f = open(filename, 'w')
             writer = csv.DictWriter(f, self.inputdata[0].keys(), quotechar='"', quoting=csv.QUOTE_NONNUMERIC)
