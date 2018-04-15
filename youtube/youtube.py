@@ -49,7 +49,10 @@ class YoutubeUser:
 	def get_all_videos_ids(self, response):
 		videoIDs = []
 		for id in response['items']:
-			videoIDs.append(id['contentDetails']['upload']['videoId'])
+			try:
+				videoIDs.append(id['contentDetails']['upload']['videoId'])
+			except KeyError:
+				pass
 		return videoIDs
 
 	def get_all_Videoviews(self, response):

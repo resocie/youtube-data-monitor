@@ -59,14 +59,14 @@ class TestYoutubeUser(unittest.TestCase):
 		self.assertEqual(videos_id[0:3],assert_list)
 
 	def test_all_videos_count(self):
-		username = 'msilvaonline'
+		username = 'BlogdoEveraldo'
 		result = self.user.get_channel_info(username)
 		id = self.user.get_channel_id(result)
 		result_activities = self.user.get_activitie_info(id)
 		videos_id = self.user.get_all_videos_ids(result_activities)
 		VideoViews = self.user.get_all_Videoviews(videos_id)
-		assert_list = ['301', '287'] #Estão sujeitos a alterações
-		self.assertEqual(VideoViews[0:2], assert_list)
+		assert_list = ['58', '95'] #Estão sujeitos a alterações
+		self.assertEqual(VideoViews[-2:], assert_list)
 
 if __name__ == '__main__':
     unittest.main()
