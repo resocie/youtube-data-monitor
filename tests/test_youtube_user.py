@@ -33,5 +33,40 @@ class TestYoutubeUser(unittest.TestCase):
 		subscribers = self.user.get_channel_subscribers(result)
 		self.assertEqual('2', subscribers)
 
+	def test_has_activities(self):
+		channelId = 'UCj34AOIMl_k1fF7hcBkD_dw'
+		result = self.user.get_activitie_info(channelId)
+		self.assertTrue(result['items'])
+
+	def test_has_video(self):
+		id = 'V6OvM-0SGUU'
+		result = self.user.get_videos_info(id)
+		self.assertTrue(result['items'])
+
+	def test_channel_id(self):
+		username = 'patrickvrb'
+		result = self.user.get_channel_info(username)
+		id = self.user.get_channel_id(result)
+		self.assertEqual('UCsCI7wlAwbzTPK55yVaX2Ig',id)
+
+	def test_all_videos_id(self):
+		username = 'msilvaonline'
+		result = self.user.get_channel_info(username)
+		id = self.user.get_channel_id(result)
+		result_activities = self.user.get_activitie_info(id)
+		videos_id = self.user.get_all_videos_ids(result_activities)
+		assert_list = ['L14U9aasDek', 'WyggT8Q-MIM', 'EXLN3qXkNpY']
+		self.assertEqual(videos_id[0:3],assert_list)
+
+	def test_all_videos_count(self):
+		username = 'msilvaonline'
+		result = self.user.get_channel_info(username)
+		id = self.user.get_channel_id(result)
+		result_activities = self.user.get_activitie_info(id)
+		videos_id = self.user.get_all_videos_ids(result_activities)
+		VideoViews = self.user.get_all_Videoviews(videos_id)
+		assert_list = ['301', '287'] #Estão sujeitos a alterações
+		self.assertEqual(VideoViews[0:2], assert_list)
+
 if __name__ == '__main__':
     unittest.main()
