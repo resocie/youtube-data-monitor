@@ -1,9 +1,9 @@
-from youtube.youtube import YoutubeUser
+from youtube.youtube import YoutubeAPI
 import unittest
 
-class TestYoutubeUser(unittest.TestCase):
+class TestYoutubeAPI(unittest.TestCase):
 	def setUp(self):
-		self.user = YoutubeUser()
+		self.user = YoutubeAPI()
 
 	def test_has_channel(self):
 		username = 'msilvaonline'
