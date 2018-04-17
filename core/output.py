@@ -18,7 +18,7 @@ class FileOutput:
     #   input_data has to be a list of dictionaries, e.g. [{}]
     #   If no header is passed, than the keys of the first value of input_data
     #   list will become the headers
-    def export_CSV(self, input_data, headers=[]):
+    def export_CSV(self, input_data=[], headers=[]):
         try:
             if not self.filename:
                 self.result.error_msg = 'ERROR: Nome do arquivo não informado'

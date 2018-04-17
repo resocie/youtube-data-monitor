@@ -27,7 +27,6 @@ class TestOutput(unittest.TestCase):
         self.assertTrue(result)
         self.remove_file(filename, result)
 
-
     def test_save_file_with_valid_headers(self):
         headers = ['First', 'Second', 'Third']
         data = [
