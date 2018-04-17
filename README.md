@@ -69,14 +69,14 @@ toda vez que desativar o ambiente virtual, esta variável será apagada. Para te
 
 ```
 $ source venv/bin/activate
-$ echo YOUTUBE_KEY
+$ echo $YOUTUBE_KEY
 ```
 
 Após estes comandos sua API deverá mostrar no terminal.
 
 ```
 $ deactivate
-$ echo YOUTUBE_KEY
+$ echo $YOUTUBE_KEY
 ```
 
 Após estes comandos sua API não aparecerá no terminal.
