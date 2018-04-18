@@ -1,9 +1,9 @@
-from youtube.youtube import YoutubeUser
+from youtube.youtube import YoutubeAPI
 import unittest
 
-class TestYoutubeUser(unittest.TestCase):
+class TestYoutubeAPI(unittest.TestCase):
 	def setUp(self):
-		self.user = YoutubeUser()
+		self.user = YoutubeAPI()
 
 	def test_has_channel(self):
 		username = 'msilvaonline'
@@ -38,6 +38,12 @@ class TestYoutubeUser(unittest.TestCase):
 		result = self.user.get_channel_info(username)
 		video_count = self.user.get_channel_video_count(result)
 		self.assertEqual('9', video_count)
+		
+	def test_get_channel_total_view_count(self):
+		username = 'patrickvrb'
+		result = self.user.get_channel_info(username)
+		view_count = self.user.get_channel_total_view_count(result)
+		self.assertGreater(view_count,'120')
 
 if __name__ == '__main__':
     unittest.main()
