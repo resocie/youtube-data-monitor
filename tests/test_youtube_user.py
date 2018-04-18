@@ -58,10 +58,10 @@ class TestYoutubeUser(unittest.TestCase):
 
 	def test_all_videos_count_username(self):
 		username = 'msilvaonline'
-		maxResults = 2
+		maxResults = 24
 		VideoViews = self.user.get_all_Video_Views_Username(username,maxResults)
-		assert_list=[{"Temer, Aécio, Renan e cia também precisam ser punidos":'420'},{"Se a escola for boa pra todo mundo, a gente muda a realidade do Brasil":'342'}]
-		self.assertEqual(VideoViews,assert_list)
+		assert_list=[{"Fala Marina Silva | Estado laico":'223'}]
+		self.assertEqual(VideoViews[23],assert_list[0])
 
 	def test_all_videos_count_userID(self):
 		userID = 'UCgzZk2KxLQA8dRciMsI62kg'
