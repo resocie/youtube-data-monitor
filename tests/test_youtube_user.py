@@ -27,20 +27,17 @@ class TestYoutubeUser(unittest.TestCase):
 		title = self.user.get_channel_title(result)
 		self.assertEqual('ERROR: Canal não existe.', title)
 
-	def test_get_channel_total_subscribers_on_channel_valid(self):
-		username = 'Dayofanne'
-		result = self.user.get_channel_info(username)
-		subscribers = self.user.get_channel_subscribers(result)
-		self.assertEqual('2', subscribers)
 
 	def test_has_activities(self):
 		channelId = 'UCj34AOIMl_k1fF7hcBkD_dw'
-		result = self.user.get_activitie_info(channelId)
+		maxResults = '5'
+		result = self.user.get_activitie_info(channelId,maxResults)
 		self.assertTrue(result['items'])
 
 	def test_has_video(self):
 		id = 'V6OvM-0SGUU'
-		result = self.user.get_videos_info(id)
+		maxResults = '5'
+		result = self.user.get_videos_info(id,maxResults)
 		self.assertTrue(result['items'])
 
 	def test_channel_id(self):
@@ -51,22 +48,27 @@ class TestYoutubeUser(unittest.TestCase):
 
 	def test_all_videos_id(self):
 		username = 'msilvaonline'
+		maxResults = '5'
 		result = self.user.get_channel_info(username)
 		id = self.user.get_channel_id(result)
-		result_activities = self.user.get_activitie_info(id)
+		result_activities = self.user.get_activitie_info(id,maxResults)
 		videos_id = self.user.get_all_videos_ids(result_activities)
 		assert_list = ['L14U9aasDek', 'WyggT8Q-MIM', 'EXLN3qXkNpY']
 		self.assertEqual(videos_id[0:3],assert_list)
 
-	def test_all_videos_count(self):
-		username = 'BlogdoEveraldo'
-		result = self.user.get_channel_info(username)
-		id = self.user.get_channel_id(result)
-		result_activities = self.user.get_activitie_info(id)
-		videos_id = self.user.get_all_videos_ids(result_activities)
-		VideoViews = self.user.get_all_Videoviews(videos_id)
-		assert_list = ['58', '95'] #Estão sujeitos a alterações
-		self.assertEqual(VideoViews[-2:], assert_list)
+	def test_all_videos_count_username(self):
+		username = 'msilvaonline'
+		maxResults = 2
+		VideoViews = self.user.get_all_Video_Views_Username(username,maxResults)
+		assert_list=[{"Temer, Aécio, Renan e cia também precisam ser punidos":'420'},{"Se a escola for boa pra todo mundo, a gente muda a realidade do Brasil":'342'}]
+		self.assertEqual(VideoViews,assert_list)
+
+	def test_all_videos_count_userID(self):
+		userID = 'UCgzZk2KxLQA8dRciMsI62kg'
+		maxResults = 2
+		VideoViews = self.user.get_all_Video_Views_user_ID(userID,maxResults)
+		assert_list=[{"Montagem Completa Gloster Gladiator Airfix 1/72 parte 4":'348'},{"Montagem completa Gloster Gladiator Airfix 1/72 parte 3":'310'}]
+		self.assertEqual(VideoViews,assert_list)
 
 if __name__ == '__main__':
     unittest.main()
