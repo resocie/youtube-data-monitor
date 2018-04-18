@@ -1,7 +1,7 @@
 from youtube.youtube import YoutubeAPI
 import csv
 
-class getInfo:
+class get_actors_info:
 
     def __init__(self):
         self.user = YoutubeAPI()
@@ -30,20 +30,22 @@ class getInfo:
                     aux_dict['id'] = ''
                     aux_dict['username'] = ''
                     actors_dict.append(aux_dict)
-        return actors_dict
-yt = getInfo()
-check = yt.user.generate_csv()
-if check:
-    actors_dict = yt.read_actors_info()
-    for item in actors_dict:
-        if item['username']:
-            result = yt.user.get_channel_info(item['username'])
-            item['id'] = result['items'][0]['id']
-        yt.user.insert_data(param = 'channel_id',
-                    value = item['id'],
-                    field_name = 'ator',
-                    field_value = item['ator'].replace('\n', ' '))
-        yt.user.insert_data(param = 'username',
-                    value = item['username'],
-                    field_name = 'ator',
-                    field_value = item['ator'].replace('\n', ' '))
+        self._insert_actor_info(actors_dict)
+
+    def _insert_actor_info(self, actors_dict):
+        check = self.user.generate_csv()
+        if check:
+            for item in actors_dict:
+                if item['username']:
+                    result = self.user.get_channel_info(item['username'])
+                    item['id'] = result['items'][0]['id']
+                yt.user.insert_data(param = 'channel_id',
+                            value = item['id'],
+                            field_name = 'ator',
+                            field_value = item['ator'].replace('\n', ''))
+                yt.user.insert_data(param = 'username',
+                            value = item['username'],
+                            field_name = 'ator',
+                            field_value = item['ator'].replace('\n', ''))
+yt = get_actors_info()
+yt.read_actors_info()
