@@ -1,9 +1,9 @@
-from youtube.youtube import YoutubeUser
+from youtube.youtube import YoutubeAPI
 import unittest
 
-class TestYoutubeUser(unittest.TestCase):
+class TestYoutubeAPI(unittest.TestCase):
 	def setUp(self):
-		self.user = YoutubeUser()
+		self.user = YoutubeAPI()
 
 	def test_has_channel(self):
 		username = 'msilvaonline'
@@ -60,15 +60,21 @@ class TestYoutubeUser(unittest.TestCase):
 		username = 'msilvaonline'
 		maxResults = 24
 		VideoViews = self.user.get_all_Video_Views_Username(username,maxResults)
-		assert_list=[{"Fala Marina Silva | Estado laico":'223'}]
+		assert_list=[{"Fala Marina Silva | Estado laico":'226'}]
 		self.assertEqual(VideoViews[23],assert_list[0])
 
 	def test_all_videos_count_userID(self):
 		userID = 'UCgzZk2KxLQA8dRciMsI62kg'
 		maxResults = 2
 		VideoViews = self.user.get_all_Video_Views_user_ID(userID,maxResults)
-		assert_list=[{"Montagem Completa Gloster Gladiator Airfix 1/72 parte 4":'348'},{"Montagem completa Gloster Gladiator Airfix 1/72 parte 3":'310'}]
+		assert_list=[{"Montagem Completa Gloster Gladiator Airfix 1/72 parte 4":'348'},{"Montagem completa Gloster Gladiator Airfix 1/72 parte 3":'311'}]
 		self.assertEqual(VideoViews,assert_list)
+
+	def test_get_channel_total_view_count(self):
+		username = 'patrickvrb'
+		result = self.user.get_channel_info(username)
+		view_count = self.user.get_channel_total_view_count(result)
+		self.assertGreater(view_count,'120')
 
 if __name__ == '__main__':
     unittest.main()

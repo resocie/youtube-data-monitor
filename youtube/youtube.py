@@ -1,50 +1,80 @@
+from core.output import FileOutput
 import requests
+import json
 import os
 
-class YoutubeUser:
+class YoutubeAPI:
 	def __init__(self):
-		self.YOUTUBE_CHANNELS_URL = 'https://www.googleapis.com/youtube/v3/channels'
-		self.YOUTUBE_ACTIVITIES_URL = 'https://www.googleapis.com/youtube/v3/activities'
-		self.YOUTUBE_VIDEOS_URL = 'https://www.googleapis.com/youtube/v3/videos'
-		self.YOUTUBE_KEY = os.environ['YOUTUBE_KEY']
-		self.payload = {'part': 'snippet,contentDetails,statistics,id',
+		self._youtube_channels_url = 'https://www.googleapis.com/youtube/v3/channels'
+		# @TODO handle if youtube_key not found
+		self._youtube_activities_url = 'https://www.googleapis.com/youtube/v3/activities'
+		self._youtube_videos_url = 'https://www.googleapis.com/youtube/v3/videos'
+		self._youtube_key = os.environ['YOUTUBE_KEY']
+		self._payload = {'part': 'snippet,contentDetails,statistics,id',
 						'forUsername': '',
-						'key' : self.YOUTUBE_KEY}
-		self.activities = {'part': 'snippet,contentDetails',
+						'key' : self._youtube_key}
+
+		self._activities = {'part': 'snippet,contentDetails',
 							'channelId': '',
 							'maxResults': '',
-							'key' : self.YOUTUBE_KEY}
-		self.videos = {'part': 'snippet,statistics',
+							'key' : self._youtube_key}
+		self._videos = {'part': 'snippet,statistics',
 						'id' : '',
 						'maxResults': '',
-						'key' : self.YOUTUBE_KEY}
-		self.payload_ID = {'part': 'snippet,contentDetails,statistics,id',
+						'key' : self._youtube_key}
+
+		self._payload_ID = {'part': 'snippet,contentDetails,statistics,id',
 						'id': '',
-						'key' : self.YOUTUBE_KEY}
+						'key' : self._youtube_key}
 
+		self._filename = 'data/youtube.csv'
+		self._csv_headers = ['ator', 'username', 'channel_id']
 
+	def insert_data(self, param, value, field_name, field_value):
+		return FileOutput(self._filename).insert_data(param, value,
+													field_name, field_value)
+
+	def get_data(self, param, data):
+		return FileOutput(self._filename).get_data(param, data)
+
+	# returns True if csv is created with success
+	def generate_csv(self, clean=False):
+		if clean and os.path.isfile(self._filename):
+			os.remove(self._filename)
+		elif os.path.isfile(self._filename):
+			return True
+
+		with open('data/actors.json') as data_file:
+			actors = json.load(data_file)
+		actors = actors['atores']
+		input_data = [{'ator': name,
+					'username': '',
+					'channel_id':''} for name in actors]
+
+		return FileOutput(self._filename).export_CSV(input_data=input_data,
+											headers=self._csv_headers).status
 
 	def get_channel_info(self, username):
-		self.payload['forUsername'] = username
-		return requests.get(self.YOUTUBE_CHANNELS_URL,
-							params=self.payload).json()
+		self._payload['forUsername'] = username
+		return requests.get(self._youtube_channels_url,
+							params=self._payload).json()
 
 	def get_channel_info_ID(self, id):
-		self.payload_ID['id'] = id
-		return requests.get(self.YOUTUBE_CHANNELS_URL,
-								params=self.payload_ID).json()
+		self._payload_ID['id'] = id
+		return requests.get(self._youtube_channels_url,
+								params=self._payload_ID).json()
 
 	def get_activitie_info(self, channelId, maxResults):
-		self.activities['maxResults'] = maxResults
-		self.activities['channelId'] = channelId
-		return requests.get(self.YOUTUBE_ACTIVITIES_URL,
-							params=self.activities).json()
+		self._activities['maxResults'] = maxResults
+		self._activities['channelId'] = channelId
+		return requests.get(self._youtube_activities_url,
+							params=self._activities).json()
 
 	def get_videos_info(self, id, maxResults):
-		self.videos['maxResults'] = maxResults
-		self.videos['id'] = id
-		return requests.get(self.YOUTUBE_VIDEOS_URL,
-							params=self.videos).json()
+		self._videos['maxResults'] = maxResults
+		self._videos['id'] = id
+		return requests.get(self._youtube_videos_url,
+							params=self._videos).json()
 
 	def get_channel_title(self, response):
 		return response['items'][0]['snippet']['title'] if response['items'] \
@@ -88,3 +118,12 @@ class YoutubeUser:
 		videos_id = self.get_all_videos_ids(result_activities)
 		VideoViews = self.get_all_Video_Items(videos_id, maxResults)
 		return VideoViews
+	def get_channel_subscribers(self, response):
+		return response['items'][0]['statistics']['subscriberCount'] \
+			if response['items'] and response['items'][0]['statistics'] \
+			else 'ERROR: Canal não existe ou não possui estatísticas sobre o canal.'
+
+	def get_channel_total_view_count(self, response):
+		return response['items'][0]['statistics']['viewCount'] \
+			if response['items'] and response['items'][0]['statistics'] \
+			else 'ERROR: Canal não existe ou não possui estatísticas sobre o canal.'
