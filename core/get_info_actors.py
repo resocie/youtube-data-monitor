@@ -47,5 +47,3 @@ class get_actors_info:
                             value = item['username'],
                             field_name = 'ator',
                             field_value = item['ator'].replace('\n', ''))
-yt = get_actors_info()
-yt.read_actors_info()
