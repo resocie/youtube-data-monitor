@@ -16,7 +16,7 @@ class TestYoutubeCSV(unittest.TestCase):
         yt_api = YoutubeAPI()
         self.assertTrue(yt_api.generate_csv())
 
-        result = yt_api.get_data(param='ator', data='Frente Brasil Popular')
+        result = yt_api.get_data(param='ator', data='Bancada Ativista')
         self.assertEqual(result, {'username': '', 'channel_id': ''})
 
     def test_insert_data_of_an_actor(self):
