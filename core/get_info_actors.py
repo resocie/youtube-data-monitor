@@ -30,9 +30,12 @@ class get_actors_info:
                     aux_dict['id'] = ''
                     aux_dict['username'] = ''
                     actors_dict.append(aux_dict)
-        self._insert_actor_info(actors_dict)
 
-    def _insert_actor_info(self, actors_dict):
+        return actors_dict
+
+
+    def insert_actor_info(self):
+        actors_dict = self.read_actors_info()
         check = self.user.generate_csv()
         if check:
             for item in actors_dict:

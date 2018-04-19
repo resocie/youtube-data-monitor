@@ -1,4 +1,5 @@
 from youtube.youtube import YoutubeAPI
+from core.get_info_actors import get_actors_info
 import unittest
 import json
 import os
@@ -46,6 +47,11 @@ class TestYoutubeCSV(unittest.TestCase):
 
         result = yt_api.get_data(param='ator', data='Frente Brasil Popular')
         self.assertEqual(result, {'username': '', 'channel_id': ''})
+
+    def test_get_info_actors(self):
+        getinfo = get_actors_info()
+        self.assertNotEqual(getinfo.read_actors_info(), [])
+
 
     def insert_data(self, yt_api):
         yt_api.insert_data(param='channel_id',
