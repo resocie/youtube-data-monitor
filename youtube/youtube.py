@@ -28,9 +28,6 @@ class YoutubeAPI:
 						'maxResults': '',
 						'key' : self._youtube_key}
 
-		self._payload_ID = {'part': 'snippet,contentDetails,statistics,id',
-						'id': '',
-						'key' : self._youtube_key}
 
 		self._filename = 'data/youtube.csv'
 		self._csv_headers = ['ator', 'username', 'channel_id','video_count','view_count','subscribers']
@@ -67,10 +64,7 @@ class YoutubeAPI:
 		return requests.get(self._youtube_channels_url,
 							params=self._payload).json()
 
-	def get_channel_info_ID(self, id):
-		self._payload_ID['id'] = id
-		return requests.get(self._youtube_channels_url,
-								params=self._payload_ID).json()
+
 
 	def get_activitie_info(self, channelId, maxResults):
 		self._activities['maxResults'] = maxResults
@@ -112,7 +106,7 @@ class YoutubeAPI:
 			views = self.get_videos_info(item, maxResults)
 			videoViews=(views['items'][0]['statistics']['viewCount'])
 			videoTitles=(views['items'][0]['snippet']['title'])
-			videos_dic.append({videoTitles:videoViews})
+			videos_dic.append({'Titles':videoTitles,'Views':videoViews})
 		return videos_dic
 
 	def get_all_Video_Views_Username(self, username, maxResults):
@@ -124,7 +118,7 @@ class YoutubeAPI:
 		return VideoViews
 
 	def get_all_Video_Views_user_ID(self, userID, maxResults):
-		result = self.get_channel_info_ID(userID)
+		result = self.get_channel_info(userID)
 		id = self.get_channel_id(result)
 		result_activities = self.get_activitie_info(id, maxResults)
 		videos_id = self.get_all_videos_ids(result_activities)

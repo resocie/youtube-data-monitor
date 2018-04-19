@@ -60,8 +60,9 @@ class TestYoutubeAPI(unittest.TestCase):
 		userID = 'UC_77GCFm3isnRD5uGLkEi4A'
 		maxResults = 1
 		VideoViews = self.user.get_all_Video_Views_user_ID(userID,maxResults)
-		assert_list=[{"Paradox - Ariel Garcia":'200'}]
+		assert_list=[{'Titles':'Paradox - Ariel Garcia','Views':'200'}]
 		self.assertEqual(VideoViews[0],assert_list[0])
+
 	def test_get_channel_total_subscribers_on_channel_valid(self):
 		id = 'UCvv3PVl4BnOnozFLjXwYQJQ'
 		result = self.user.get_channel_info(id)
