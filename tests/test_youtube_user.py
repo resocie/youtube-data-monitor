@@ -41,15 +41,15 @@ class TestYoutubeAPI(unittest.TestCase):
 		self.assertTrue(result['items'])
 
 	def test_channel_id(self):
-		username = 'patrickvrb'
-		result = self.user.get_channel_info(username)
+		userID = 'UCsCI7wlAwbzTPK55yVaX2Ig'
+		result = self.user.get_channel_info(userID)
 		id = self.user.get_channel_id(result)
 		self.assertEqual('UCsCI7wlAwbzTPK55yVaX2Ig',id)
 
 	def test_all_videos_id(self):
-		username = 'msilvaonline'
+		userID = 'UC9uefWa6TXIPDRWGZYMcTuA'
 		maxResults = '5'
-		result = self.user.get_channel_info(username)
+		result = self.user.get_channel_info(userID)
 		id = self.user.get_channel_id(result)
 		result_activities = self.user.get_activitie_info(id,maxResults)
 		videos_id = self.user.get_all_videos_ids(result_activities)
