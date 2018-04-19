@@ -118,6 +118,7 @@ class YoutubeAPI:
 		videos_id = self.get_all_videos_ids(result_activities)
 		VideoViews = self.get_all_Video_Items(videos_id, maxResults)
 		return VideoViews
+		
 	def get_channel_subscribers(self, response):
 		return response['items'][0]['statistics']['subscriberCount'] \
 			if response['items'] and response['items'][0]['statistics'] \
