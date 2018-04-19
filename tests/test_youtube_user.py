@@ -56,19 +56,12 @@ class TestYoutubeAPI(unittest.TestCase):
 		assert_list = ['L14U9aasDek', 'WyggT8Q-MIM', 'EXLN3qXkNpY']
 		self.assertEqual(videos_id[0:3],assert_list)
 
-	def test_all_videos_count_username(self):
-		username = 'msilvaonline'
-		maxResults = 24
-		VideoViews = self.user.get_all_Video_Views_Username(username,maxResults)
-		assert_list=[{"Fala Marina Silva | Estado laico":'226'}]
-		self.assertEqual(VideoViews[23],assert_list[0])
-
 	def test_all_videos_count_userID(self):
-		userID = 'UCgzZk2KxLQA8dRciMsI62kg'
-		maxResults = 2
+		userID = 'UC_77GCFm3isnRD5uGLkEi4A'
+		maxResults = 1
 		VideoViews = self.user.get_all_Video_Views_user_ID(userID,maxResults)
-		assert_list=[{"Montagem Completa Gloster Gladiator Airfix 1/72 parte 4":'348'},{"Montagem completa Gloster Gladiator Airfix 1/72 parte 3":'311'}]
-		self.assertEqual(VideoViews,assert_list)
+		assert_list=[{"Paradox - Ariel Garcia":'200'}]
+		self.assertEqual(VideoViews[0],assert_list[0])
 
 	def test_get_channel_total_view_count(self):
 		username = 'patrickvrb'
