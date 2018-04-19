@@ -36,8 +36,8 @@ class get_actors_info:
         check = self.user.generate_csv()
         if check:
             for item in actors_dict:
-                if item['username']:
-                    result = self.user.get_channel_info(item['username'])
+                if item['id']:
+                    result = self.user.get_channel_info(item['id'])
                     item['id'] = result['items'][0]['id']
                 yt.user.insert_data(param = 'channel_id',
                             value = item['id'],

@@ -9,7 +9,7 @@ class YoutubeAPI:
 		# @TODO handle if youtube_key not found
 		self._youtube_key = os.environ['YOUTUBE_KEY']
 		self._payload = {'part': 'snippet,contentDetails,statistics,id',
-						'forUsername': '',
+						'id': '',
 						'key' : self._youtube_key}
 
 		self._filename = 'data/youtube.csv'
@@ -39,8 +39,8 @@ class YoutubeAPI:
 		return FileOutput(self._filename).export_CSV(input_data=input_data,
 											headers=self._csv_headers).status
 
-	def get_channel_info(self, username):
-		self._payload['forUsername'] = username
+	def get_channel_info(self, id):
+		self._payload['id'] = id
 		return requests.get(self._youtube_channels_url,
 							params=self._payload).json()
 
