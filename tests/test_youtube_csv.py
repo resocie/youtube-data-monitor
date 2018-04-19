@@ -21,7 +21,7 @@ class TestYoutubeCSV(unittest.TestCase):
 
     def test_insert_data_of_an_actor(self):
         yt_api = YoutubeAPI()
-        self.assertTrue(yt_api.generate_csv())
+        self.assertTrue(yt_api.generate_csv(clean=True))
 
         result = yt_api.insert_data(param='channel_id',
                                     value='UCX2Aanu4fGewmhP4rf5GQ3Q',
@@ -39,7 +39,7 @@ class TestYoutubeCSV(unittest.TestCase):
 
     def test_clean_csv(self):
         yt_api = YoutubeAPI()
-        self.assertTrue(yt_api.generate_csv())
+        self.assertTrue(yt_api.generate_csv(clean=True))
 
         self.insert_data(yt_api)
         result = yt_api.get_data(param='ator', data='Frente Brasil Popular')

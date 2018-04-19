@@ -36,16 +36,14 @@ class get_actors_info:
         check = self.user.generate_csv()
         if check:
             for item in actors_dict:
-                if item['id']:
-                    result = self.user.get_channel_info(item['id'])
+                if item['username']:
+                    result = self.user.get_channel_info_by_username(item['username'])
                     item['id'] = result['items'][0]['id']
-                yt.user.insert_data(param = 'channel_id',
+                self.user.insert_data(param = 'channel_id',
                             value = item['id'],
                             field_name = 'ator',
                             field_value = item['ator'].replace('\n', ''))
-                yt.user.insert_data(param = 'username',
+                self.user.insert_data(param = 'username',
                             value = item['username'],
                             field_name = 'ator',
                             field_value = item['ator'].replace('\n', ''))
-yt = get_actors_info()
-yt.read_actors_info()

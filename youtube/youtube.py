@@ -12,6 +12,10 @@ class YoutubeAPI:
 						'id': '',
 						'key' : self._youtube_key}
 
+		self._payload_username = {'part': 'snippet,contentDetails,statistics,id',
+						'forUsername':'',
+						'key' : self._youtube_key}
+
 		self._filename = 'data/youtube.csv'
 		self._csv_headers = ['ator', 'username', 'channel_id','video_count','view_count','subscribers']
 
@@ -46,6 +50,11 @@ class YoutubeAPI:
 		self._payload['id'] = id
 		return requests.get(self._youtube_channels_url,
 							params=self._payload).json()
+
+	def get_channel_info_by_username(self,username):
+		self._payload_username['forUsername'] = username
+		return requests.get(self._youtube_channels_url,
+							params=self._payload_username).json()
 
 	def get_channel_title(self, response):
 		return response['items'][0]['snippet']['title'] if response['items'] \
