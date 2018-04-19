@@ -13,7 +13,7 @@ class YoutubeAPI:
 						'key' : self._youtube_key}
 
 		self._filename = 'data/youtube.csv'
-		self._csv_headers = ['ator', 'username', 'channel_id']
+		self._csv_headers = ['ator', 'username', 'channel_id','video_count','view_count','subscribers']
 
 	def insert_data(self, param, value, field_name, field_value):
 		return FileOutput(self._filename).insert_data(param, value,
@@ -34,7 +34,10 @@ class YoutubeAPI:
 		actors = actors['atores']
 		input_data = [{'ator': name,
 					'username': '',
-					'channel_id':''} for name in actors]
+					'channel_id':'',
+					'video_count':'',
+					'view_count':'',
+					'subscribers':''} for name in actors]
 
 		return FileOutput(self._filename).export_CSV(input_data=input_data,
 											headers=self._csv_headers).status
