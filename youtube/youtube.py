@@ -108,9 +108,8 @@ class YoutubeAPI:
 			videos_dic.append({'Título':videoTitles,'Número de visualizações':videoViews})
 		return videos_dic
 
-	def get_all_Video_Views_user_ID(self, userID, maxResults):
-		result = self.get_channel_info(userID)
-		id = self.get_channel_id(result)
+	def get_all_Video_Views_user_ID(self, response, maxResults):
+		id = self.get_channel_id(response)
 		result_activities = self.get_activitie_info(id, maxResults)
 		videos_id = self.get_all_videos_ids(result_activities)
 		VideoViews = self.get_all_Video_Items(videos_id, maxResults)

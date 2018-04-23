@@ -58,8 +58,9 @@ class TestYoutubeAPI(unittest.TestCase):
 
 	def test_all_videos_count_userID(self):
 		userID = 'UC_77GCFm3isnRD5uGLkEi4A'
+		result = self.user.get_channel_info(userID)
 		maxResults = 1
-		VideoViews = self.user.get_all_Video_Views_user_ID(userID,maxResults)
+		VideoViews = self.user.get_all_Video_Views_user_ID(result,maxResults)
 		assert_list=[{'Título':'HIRA - The Roxy Live - 30.03.2018','Número de visualizações':'29'}]
 		self.assertEqual(VideoViews[0],assert_list[0])
 
