@@ -60,7 +60,7 @@ class TestYoutubeAPI(unittest.TestCase):
 		userID = 'UC_77GCFm3isnRD5uGLkEi4A'
 		maxResults = 1
 		VideoViews = self.user.get_all_Video_Views_user_ID(userID,maxResults)
-		assert_list=[{'Titles':'HIRA - The Roxy Live - 30.03.2018','Views':'29'}]
+		assert_list=[{'Título':'HIRA - The Roxy Live - 30.03.2018','Número de visualizações':'29'}]
 		self.assertEqual(VideoViews[0],assert_list[0])
 
 	def test_get_channel_total_subscribers_on_channel_valid(self):

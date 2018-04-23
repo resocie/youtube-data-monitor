@@ -44,4 +44,4 @@ with open('data/actors.json') as data_file:
             videosViews = youtubeUser.get_all_Video_Views_user_ID(id,5)
             if(videosViews!=[]):
                 file = FileOutput('channel_videos/' + title + '.csv')
-                file.export_CSV(videosViews,['Titles','Views'])
+                file.export_CSV(videosViews,['Título','Número de visualizações'])

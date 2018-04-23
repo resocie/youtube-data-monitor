@@ -75,7 +75,7 @@ class YoutubeAPI:
 		self._videos['id'] = id
 		return requests.get(self._youtube_videos_url,
 							params=self._videos).json()
-							
+
 	def get_channel_info_by_username(self,username):
 		self._payload_username['forUsername'] = username
 		return requests.get(self._youtube_channels_url,
@@ -105,7 +105,7 @@ class YoutubeAPI:
 			views = self.get_videos_info(item, maxResults)
 			videoViews=(views['items'][0]['statistics']['viewCount'])
 			videoTitles=(views['items'][0]['snippet']['title'])
-			videos_dic.append({'Titles':videoTitles,'Views':videoViews})
+			videos_dic.append({'Título':videoTitles,'Número de visualizações':videoViews})
 		return videos_dic
 
 	def get_all_Video_Views_user_ID(self, userID, maxResults):
