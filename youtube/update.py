@@ -1,13 +1,13 @@
 from youtube.youtube import YoutubeAPI
 from core.get_info_actors import get_actors_info
 from core.output import FileOutput
+from youtube.videos import Videos
 import json
 
 #get data from grupos_politicos and insert data into youtube.csv
 yt = get_actors_info()
 yt.read_actors_info()
-
-
+video = Videos()
 youtubeUser = YoutubeAPI()
 
 
@@ -41,7 +41,7 @@ with open('data/actors.json') as data_file:
                                         field_name='channel_id',
                                         field_value=id)
 
-            videosViews = youtubeUser.get_all_Video_Views_user_ID(id,5)
+            videosViews = video.get_all_Video_Views_user_ID(response,5)
             if(videosViews!=[]):
                 file = FileOutput('channel_videos/' + title + '.csv')
-                file.export_CSV(videosViews,['Titles','Views'])
+                file.export_CSV(videosViews,['Título','Número de visualizações'])
