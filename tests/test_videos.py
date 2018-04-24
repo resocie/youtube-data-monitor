@@ -34,9 +34,12 @@ class TestVideos(unittest.TestCase):
         userID = 'UC_77GCFm3isnRD5uGLkEi4A'
         result = self.user.get_channel_info(userID)
         maxResults = 1
-        VideoViews = self.video.get_all_Video_Views_user_ID(result,maxResults)
-        assert_list=[{'Título':'HIRA - The Roxy Live - 30.03.2018','Número de visualizações':'29'}]
-        self.assertEqual(VideoViews[0],assert_list[0])
+        VideoViews = self.video.get_all_Video_Views_user_ID(result, maxResults)
+
+        video_title = VideoViews[0]['Título']
+        self.assertEqual(video_title, 'HIRA - The Roxy Live - 30.03.2018')
+        video_view = int(VideoViews[0]['Número de visualizações'])
+        self.assertTrue(video_view > 10 and video_view < 50)
 
 
 
