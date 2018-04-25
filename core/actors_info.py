@@ -2,6 +2,12 @@ from youtube.youtube import YoutubeAPI
 import csv
 
 def insert_actors_info(actors_info):
+    """ Check if actor has username, if so saves id and username on youtube.csv
+    Args:
+        actors_info: list of dictionaries containing information.
+    Returns:
+        bool: True if successful.
+    """
     yt_api = YoutubeAPI()
     check = yt_api.generate_csv(clean=True)
 

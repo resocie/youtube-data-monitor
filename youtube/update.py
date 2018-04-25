@@ -4,8 +4,6 @@ from core.output import FileOutput
 from youtube.videos import Videos
 import json
 
-video = Videos()
-youtubeUser = YoutubeAPI()
 # get data from grupos_politicos and insert data into youtube.csv
 actors_info = scrap_basic_actors_info()
 insert_actors_info(actors_info)
@@ -46,5 +44,6 @@ with open('data/actors.json') as data_file:
             videos_views = video.get_all_video_views_user_id(response, 5)
 
             if videos_views:
+                # saves videos on channel_videos folder
                 output = FileOutput('data/channel_videos/' + title + '.csv')
                 output.export_to_CSV(videos_views, ['title', 'views'])

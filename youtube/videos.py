@@ -8,7 +8,9 @@ VIDEOS_URL = 'https://www.googleapis.com/youtube/v3/videos'
 
 
 class Videos:
-
+    """This class gets all video's informations
+        following certain date: Video's ID, Video's views, Video's Title
+    """
     def __init__ (self):
         self.user = YoutubeAPI()
         self._activities = {'part': 'snippet,contentDetails',
