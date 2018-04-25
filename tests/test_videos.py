@@ -21,16 +21,16 @@ class TestVideos(unittest.TestCase):
         result = self._video.get_videos_info(channel_id, max_results)
         self.assertTrue(result['items'])
 
-    def test_all_videos_id(self):
+    def test_all_video_ids(self):
         user_id = 'UC9uefWa6TXIPDRWGZYMcTuA'
         max_results = '5'
         result = self._user.get_channel_info(user_id)
         channel_id = self._user.get_channel_id(result)
         result_activities = self._video.get_activity_info(channel_id,
                                                            max_results)
-        videos_id = self._video.get_all_videos_ids(result_activities)
+        video_ids = self._video.get_all_video_ids(result_activities)
         assert_list = ['L14U9aasDek', 'WyggT8Q-MIM', 'EXLN3qXkNpY']
-        self.assertEqual(videos_id[0:3], assert_list)
+        self.assertEqual(video_ids[0:3], assert_list)
 
     def test_all_videos_count_user_id(self):
         user_id = 'UC_77GCFm3isnRD5uGLkEi4A'
