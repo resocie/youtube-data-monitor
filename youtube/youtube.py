@@ -6,6 +6,9 @@ import os
 CHANNELS_URL = 'https://www.googleapis.com/youtube/v3/channels'
 
 class YoutubeAPI:
+	"""This class generates initial structure for saving channel's data.
+		Also gets channel's information.
+	"""
 	def __init__(self):
 		self._youtube_key = os.environ['YOUTUBE_KEY']
 		if not self._youtube_key:

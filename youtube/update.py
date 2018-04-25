@@ -44,5 +44,6 @@ with open('data/actors.json') as data_file:
             videos_views = video.get_all_video_views_user_id(response, 5)
 
             if videos_views:
-                output = FileOutput('channel_videos/' + title + '.csv')
+                # saves videos on channel_videos folder
+                output = FileOutput('data/channel_videos/' + title + '.csv')
                 output.export_to_CSV(videos_views, ['title', 'views'])

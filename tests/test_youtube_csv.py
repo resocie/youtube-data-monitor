@@ -1,9 +1,9 @@
+from youtube.youtube import YoutubeAPI
 from core.actors_info import YoutubeAPI, scrap_basic_actors_info, \
                             insert_actors_info
 import unittest
 import json
 import os
-
 
 class TestYoutubeCSV(unittest.TestCase):
 
