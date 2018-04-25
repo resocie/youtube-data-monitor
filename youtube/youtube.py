@@ -21,8 +21,7 @@ class YoutubeAPI:
 		self._payload_username = {**payload, **{'forUsername':''}}
 
 		self._filename = 'data/youtube.csv'
-		self._csv_headers = ['actor', 'username', 'channel_id',
-							'video_count', 'view_count','subscribers']
+		self._csv_headers = ['actor', 'username', 'channel_id']
 
 	"""File manipulation methods"""
 	def insert_value(self, column, value, search_cell, search_value):
@@ -45,10 +44,7 @@ class YoutubeAPI:
 			actors = actors['actors']
 			input_data = [{'actor': name,
 							'username': '',
-							'channel_id':'',
-							'video_count':'',
-							'view_count':'',
-							'subscribers':''} for name in actors]
+							'channel_id':''} for name in actors]
 
 		return FileOutput(self._filename).export_to_CSV(input_data=input_data,
 											headers=self._csv_headers)
