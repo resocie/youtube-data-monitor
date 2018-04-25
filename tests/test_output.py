@@ -20,10 +20,10 @@ class TestOutput(unittest.TestCase):
 
     def test_save_file_without_headers(self):
         data = [
-            {'key1': 'value1.1', 'key2': 'value2.1'},
-            {'key1': 'value2.1', 'key2': 'value2.2'},
-            {'key1': 'value3.1', 'key2': 'value3.2'},
-            {'key1': 'value3.1', 'key2': 'value3.2'}
+            {'First': 'f1', 'Second': 's1'},
+            {'First': 'f2', 'Second': 's2'},
+            {'First': 'f3', 'Second': 's3'},
+            {'First': 'f4', 'Second': 's4'}
         ]
         filename = 'tests/test_file_output.csv'
         result = FileOutput(filename).export_to_CSV(data)
