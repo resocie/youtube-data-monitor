@@ -1,14 +1,9 @@
-<<<<<<< HEAD
 from youtube.youtube import YoutubeAPI
-from core.get_info_actors import get_actors_info
-=======
 from core.actors_info import YoutubeAPI, scrap_basic_actors_info, \
                             insert_actors_info
->>>>>>> master
 import unittest
 import json
 import os
-
 
 class TestYoutubeCSV(unittest.TestCase):
 
@@ -67,18 +62,8 @@ class TestYoutubeCSV(unittest.TestCase):
                                   'subscribers': ''
                                   })
 
-<<<<<<< HEAD
-    def test_get_info_actors(self):
-        getinfo = get_actors_info()
-        self.assertNotEqual(getinfo.read_actors_info(), [])
-
-
-    def insert_data(self, yt_api):
-        yt_api.insert_data(param='channel_id',
-=======
     def insert_value(self, yt_api):
         yt_api.insert_value(column='channel_id',
->>>>>>> master
                         value='UCX2Aanu4fGewmhP4rf5GQ3Q',
                         search_cell='actor',
                         search_value='Frente Brasil Popular')
