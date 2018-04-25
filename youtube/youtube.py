@@ -26,8 +26,8 @@ class YoutubeAPI:
 														search_cell,
 														search_value)
 
-	def get_row(self, column, data):
-		return FileOutput(self._filename).get_data(column, data)
+	def get_row(self, column, value):
+		return FileOutput(self._filename).get_row(column, value)
 
 	# returns True if csv is created with success
 	def generate_csv(self, clean=False):
@@ -38,16 +38,17 @@ class YoutubeAPI:
 
 		with open('data/actors.json') as data_file:
 			actors = json.load(data_file)
-		actors = actors['atores']
-		input_data = [{'ator': name,
-					'username': '',
-					'channel_id':'',
-					'video_count':'',
-					'view_count':'',
-					'subscribers':''} for name in actors]
+			actors = actors['actors']
+			input_data = [{'actor': name,
+							'username': '',
+							'channel_id':'',
+							'video_count':'',
+							'view_count':'',
+							'subscribers':''} for name in actors]
 
-		return FileOutput(self._filename).export_CSV(input_data=input_data,
-											headers=self._csv_headers).status
+		return FileOutput(self._filename).export_to_CSV(input_data=input_data,
+											headers=self._csv_headers)
+
 	def get_channel_info(self, channel_id):
 		self._payload_id['id'] = channel_id
 		return requests.get(CHANNELS_URL, params=self._payload_id).json()

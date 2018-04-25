@@ -21,6 +21,4 @@
 # logging.getLogger("google_auth_httplib2").setLevel(logging.WARNING)
 # logging.getLogger("googleapiclient").setLevel(logging.WARNING)
 
-__all__ = ['update', 'videos', 'youtube']
-
 from youtube.youtube import YoutubeAPI

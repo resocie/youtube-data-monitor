@@ -8,6 +8,7 @@ class dotdict(dict):
     __setattr__ = dict.__setitem__
     __delattr__ = dict.__delitem__
 
+
 class FileOutput:
     """A file output API.
 
@@ -49,8 +50,8 @@ class FileOutput:
         if data:
             found = False
             for row in data:
-                if row[field_name] == field_value:
-                    row[param] = value
+                if row[search_cell] == search_value:
+                    row[column] = value
                     found = True
 
             if not found:
@@ -66,7 +67,7 @@ class FileOutput:
             raise ValueError('Nenhum dado encontrado na planilha %s' %
                                                         self._filename)
 
-    def get_row(self, column=None, value=None):
+    def get_row(self, column, value):
         """Get a row in a specific csv file.
 
         If there're more than one match for the column and value,
@@ -85,8 +86,8 @@ class FileOutput:
             reader = csv.DictReader(csvfile)
 
             for row in reader:
-                if row[param] == data:
-                    row.pop(param)
+                if row[column] == value:
+                    row.pop(column)
 
                     return row
 

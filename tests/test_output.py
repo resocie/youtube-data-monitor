@@ -2,6 +2,7 @@ from core import FileOutput
 import unittest
 import os
 
+
 class TestOutput(unittest.TestCase):
     def test_raise_value_error_with_invalid_data(self):
         with self.assertRaises(ValueError) as context:

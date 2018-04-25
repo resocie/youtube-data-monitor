@@ -2,11 +2,12 @@ from youtube.youtube import YoutubeAPI
 from youtube.videos import Videos
 import unittest
 
+
 class TestVideos(unittest.TestCase):
 
     def setUp(self):
-        self.video = Videos()
-        self.user = YoutubeAPI()
+        self._video = Videos()
+        self._user = YoutubeAPI()
 
     def test_has_activities(self):
         channelId = 'UCj34AOIMl_k1fF7hcBkD_dw'
