@@ -12,7 +12,7 @@ class TestVideos(unittest.TestCase):
     def test_has_activities(self):
         channel_id = 'UCj34AOIMl_k1fF7hcBkD_dw'
         max_results = '5'
-        result = self._video.get_activitie_info(channel_id, max_results)
+        result = self._video.get_activity_info(channel_id, max_results)
         self.assertTrue(result['items'])
 
     def test_has_video(self):
@@ -26,7 +26,7 @@ class TestVideos(unittest.TestCase):
         max_results = '5'
         result = self._user.get_channel_info(user_id)
         channel_id = self._user.get_channel_id(result)
-        result_activities = self._video.get_activitie_info(channel_id,
+        result_activities = self._video.get_activity_info(channel_id,
                                                            max_results)
         videos_id = self._video.get_all_videos_ids(result_activities)
         assert_list = ['L14U9aasDek', 'WyggT8Q-MIM', 'EXLN3qXkNpY']
