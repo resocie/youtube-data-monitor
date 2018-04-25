@@ -15,10 +15,14 @@ class FileOutput:
 
     Args:
         filename (str): Filename to insert and/or get data.
+
+    Raises:
+        ValueError: If filename is not passed.
     """
 
-    def __init__(self, filename=None):
-        # @TODO handle no filename passed
+    def __init__(self, filename):
+        if not filename:
+            raise ValueError('Nome do arquivo não informado.')
         self._filename = filename
 
     def insert_value(self, column, value, search_cell, search_value):
@@ -35,7 +39,8 @@ class FileOutput:
             bool: True if successful, False otherwise.
 
         Raises:
-            ValueError: If there're no data inside of the csv file.
+            ValueError: If there're no data inside of the csv file or
+                        if a problem occurs in exporting the new CSV.
 
         """
 
@@ -53,13 +58,10 @@ class FileOutput:
 
             headers = data[0].keys()
 
-            with open(self._filename, 'w') as csvfile:
-                writer = csv.DictWriter(csvfile, fieldnames=headers,
-                                    quotechar='"', quoting=csv.QUOTE_NONNUMERIC)
-                writer.writeheader()
-                writer.writerows(data)
-
-            return True
+            try:
+                return self.export_to_CSV(data, headers)
+            except ValueError as err:
+                raise err
         else:
             raise ValueError('Nenhum dado encontrado na planilha %s' %
                                                         self._filename)
@@ -75,7 +77,7 @@ class FileOutput:
             value (str): Value that indicates which row is to get.
 
         Returns:
-            A ``list``: List with the row found, an empty row otherwise.
+            ``list`` of str: List with the row found, an empty row otherwise.
 
         """
 
@@ -102,34 +104,40 @@ class FileOutput:
         with open(self._filename, 'r') as csvfile:
             return list(csv.DictReader(csvfile))
 
-    # Creates a csv file with the content of input_data
-    #   input_data has to be a list of dictionaries, e.g. [{}]
-    #   If no header is passed, than the keys of the first value of input_data
-    #   list will become the headers
-    def export_CSV(self, input_data=[], headers=[]):
+    def export_to_CSV(self, input_data, headers=[]):
+        """Creates a csv file with the content of input_data.
+
+        Args:
+            input_data (``list`` of ``dict``): Data that will be insert.
+            headers (``list`` of str): Columns name of the csv file. If no
+                                        header is passed, than the keys of
+                                        the ``dict`` from the first value of
+                                        input_data will become the headers.
+
+        Returns:
+            bool: True if successful, False otherwise.
+
+        Raises:
+            ValueError: If filename/path of the filename/input_data
+                        is not correct.
+
+        """
         try:
-            if not self._filename:
-                self._result.error_msg = 'ERROR: Nome do arquivo não informado'
-                return self._result
+            with open(self._filename, 'w') as csvfile:
+                if not headers:
+                    headers = input_data[0].keys()
 
-            csv_file = open(self._filename, 'w')
-            if not headers:
-                headers = input_data[0].keys()
+                writer = csv.DictWriter(csv_file,
+                                        fieldnames=headers,
+                                        quotechar='"',
+                                        quoting=csv.QUOTE_NONNUMERIC)
 
-            writer = csv.DictWriter(csv_file, fieldnames=headers,
-                                quotechar='"', quoting=csv.QUOTE_NONNUMERIC)
-
-            writer.writeheader()
-            writer.writerows(input_data)
-            csv_file.close()
+                writer.writeheader()
+                writer.writerows(input_data)
         except (FileNotFoundError, UnboundLocalError):
-            self._result.error_msg = 'ERROR: Nome do arquivo ou caminho incorreto'
-            return self._result
+            raise ValueError('Nome do arquivo ou caminho incorreto.')
         except (AttributeError, IndexError, ValueError):
-            csv_file.close()
             os.remove(self._filename)
-            self._result.error_msg = 'ERROR: O tipo do dado está incorreto'
-            return self._result
+            raise ValueError('O tipo do dado está incorreto.')
         else:
-            self._result.status = os.path.isfile(self._filename);
-            return self._result
+            return os.path.isfile(self._filename)
