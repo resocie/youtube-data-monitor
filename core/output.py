@@ -123,7 +123,7 @@ class FileOutput:
 
         """
         try:
-            with open(self._filename, 'w') as csvfile:
+            with open(self._filename, 'w') as csv_file:
                 if not headers:
                     headers = input_data[0].keys()
 
