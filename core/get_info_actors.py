@@ -1,5 +1,6 @@
 from youtube.youtube import YoutubeAPI
 import csv
+import string
 
 class get_actors_info:
 
@@ -25,14 +26,17 @@ class get_actors_info:
                         aux_dict['id'] = url[index]
                         aux_dict['username'] = ''
                     actors_dict.append(aux_dict)
-                elif 'S/' in row['YOUTUBE']:
+                elif 'S/' in row['YOUTUBE'].upper():
                     aux_dict['ator'] = row['FRENTES / COLETIVOS']
-                    aux_dict['id'] = ''
+                    aux_dict['id'] = 'Não possui canal'
                     aux_dict['username'] = ''
                     actors_dict.append(aux_dict)
 
-        return actors_dict
+        for item in actors_dict:
+            if not item['username']:
+                print(item['ator'], item['id'])
 
+        return actors_dict
 
     def insert_actor_info(self):
         actors_dict = self.read_actors_info()
@@ -40,13 +44,13 @@ class get_actors_info:
         if check:
             for item in actors_dict:
                 if item['username']:
-                    result = self.user.get_channel_info(item['username'])
+                    result = self.user.get_channel_info_by_username(item['username'])
                     item['id'] = result['items'][0]['id']
-                yt.user.insert_data(param = 'channel_id',
+                self.user.insert_data(param = 'channel_id',
                             value = item['id'],
                             field_name = 'ator',
-                            field_value = item['ator'].replace('\n', ''))
-                yt.user.insert_data(param = 'username',
+                            field_value = item['ator'])
+                self.user.insert_data(param = 'username',
                             value = item['username'],
                             field_name = 'ator',
-                            field_value = item['ator'].replace('\n', ''))
+                            field_value = item['ator'])

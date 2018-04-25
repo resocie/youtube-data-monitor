@@ -6,36 +6,48 @@ class TestYoutubeAPI(unittest.TestCase):
 		self.user = YoutubeAPI()
 
 	def test_has_channel(self):
-		username = 'msilvaonline'
-		result = self.user.get_channel_info(username)
+		id = 'UC9uefWa6TXIPDRWGZYMcTuA'
+		result = self.user.get_channel_info(id)
 		self.assertTrue(result['items'])
 
 	def test_has_no_channel(self):
-		username = 'msilvaonlie'
-		result = self.user.get_channel_info(username)
+		id = 'BC9uefWa6TXIPDRWGZYMcTuA'
+		result = self.user.get_channel_info(id)
 		self.assertFalse(result['items'])
 
 	def test_get_channel_title_on_channel_valid(self):
-		username = 'msilvaonline'
-		result = self.user.get_channel_info(username)
+		id = 'UC9uefWa6TXIPDRWGZYMcTuA'
+		result = self.user.get_channel_info(id)
 		title = self.user.get_channel_title(result)
 		self.assertEqual('Marina Silva', title)
 
 	def test_get_channel_title_on_channel_invalid(self):
-		username = 'msilvaonlin'
-		result = self.user.get_channel_info(username)
+		id = 'BC9uefWa6TXIPDRWGZYMcTuA'
+		result = self.user.get_channel_info(id)
 		title = self.user.get_channel_title(result)
 		self.assertEqual('ERROR: Canal não existe.', title)
 
+	def test_channel_id(self):
+		userID = 'UCsCI7wlAwbzTPK55yVaX2Ig'
+		result = self.user.get_channel_info(userID)
+		id = self.user.get_channel_id(result)
+		self.assertEqual('UCsCI7wlAwbzTPK55yVaX2Ig',id)
+
 	def test_get_channel_total_subscribers_on_channel_valid(self):
-		username = 'Dayofanne'
-		result = self.user.get_channel_info(username)
+		id = 'UCvv3PVl4BnOnozFLjXwYQJQ'
+		result = self.user.get_channel_info(id)
 		subscribers = self.user.get_channel_subscribers(result)
 		self.assertEqual('2', subscribers)
 
+	def test_get_channel_total_video_count(self):
+		id = 'UC5ByVewtZ9ZTeft5m3GHtMg'
+		result = self.user.get_channel_info(id)
+		video_count = self.user.get_channel_video_count(result)
+		self.assertEqual('9', video_count)
+
 	def test_get_channel_total_view_count(self):
-		username = 'patrickvrb'
-		result = self.user.get_channel_info(username)
+		id = 'UCsCI7wlAwbzTPK55yVaX2Ig'
+		result = self.user.get_channel_info(id)
 		view_count = self.user.get_channel_total_view_count(result)
 		self.assertGreater(view_count,'120')
 
