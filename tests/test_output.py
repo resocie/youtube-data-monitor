@@ -43,14 +43,14 @@ class TestOutput(unittest.TestCase):
         self.assertTrue(result)
         self.remove_file(filename, result)
 
-    def test_raise_value_error_when_save_file_with_invalid_header_on_data(self):
+    def test_raise_value_error_saving_file_with_invalid_data_header(self):
         headers = ['First', 'Second']
         data = [
             {'First': 'f1', 'S': 's1'},
             {'First': 'f2', 'S': 's2'}
         ]
         filename = 'tests/test_file_output.csv'
-
+        # tests to see if the data header is invalid
         with self.assertRaises(ValueError) as context:
             FileOutput(filename).export_to_CSV(data, headers)
 
