@@ -1,29 +1,33 @@
-from core.output import FileOutput
+from core import FileOutput
 import requests
 import json
 import os
 
+CHANNELS_URL = 'https://www.googleapis.com/youtube/v3/channels'
+
 class YoutubeAPI:
 	def __init__(self):
-		self._youtube_channels_url = 'https://www.googleapis.com/youtube/v3/channels'
-		# @TODO handle if youtube_key not found
-
 		self._youtube_key = os.environ['YOUTUBE_KEY']
-		self._payload = {'part': 'snippet,contentDetails,statistics,id',
-						'id': '',
-						'key' : self._youtube_key}
-		self._payload_username = {'part': 'snippet,contentDetails,statistics,id',
-						'forUsername':'',
-						'key' : self._youtube_key}
+		if not self._youtube_key:
+			raise ValueError('YOUTUBE_KEY not provided.')
+
+		payload = {'part': 'snippet,contentDetails,statistics,id',
+					'key' : self._youtube_key}
+
+		self._payload_id = {**payload, **{'id':''}}
+		self._payload_username = {**payload, **{'forUsername':''}}
+
 		self._filename = 'data/youtube.csv'
-		self._csv_headers = ['ator', 'username', 'channel_id','video_count','view_count','subscribers']
+		self._csv_headers = ['actor', 'username', 'channel_id',
+							'video_count', 'view_count','subscribers']
 
-	def insert_data(self, param, value, field_name, field_value):
-		return FileOutput(self._filename).insert_data(param, value,
-													field_name, field_value)
+	def insert_value(self, column, value, search_cell, search_value):
+		return FileOutput(self._filename).insert_value(column, value,
+														search_cell,
+														search_value)
 
-	def get_data(self, param, data):
-		return FileOutput(self._filename).get_data(param, data)
+	def get_row(self, column, data):
+		return FileOutput(self._filename).get_data(column, data)
 
 	# returns True if csv is created with success
 	def generate_csv(self, clean=False):
@@ -44,36 +48,38 @@ class YoutubeAPI:
 
 		return FileOutput(self._filename).export_CSV(input_data=input_data,
 											headers=self._csv_headers).status
-	def get_channel_info(self, id):
-		self._payload['id'] = id
-		return requests.get(self._youtube_channels_url,
-							params=self._payload).json()
+	def get_channel_info(self, channel_id):
+		self._payload_id['id'] = channel_id
+		return requests.get(CHANNELS_URL, params=self._payload_id).json()
 
-	def get_channel_info_by_username(self,username):
+	def get_channel_info_by_username(self, username):
 		self._payload_username['forUsername'] = username
-		return requests.get(self._youtube_channels_url,
-							params=self._payload_username).json()
+		return requests.get(CHANNELS_URL, params=self._payload_username).json()
 
 	def get_channel_title(self, response):
-		return response['items'][0]['snippet']['title'] if response['items'] \
-											else 'ERROR: Canal não existe.'
+		if not response['items']:
+			raise ValueError('Canal não existe.')
+		return response['items'][0]['snippet']['title']
 
 	def get_channel_id(self, response):
-		return response['items'][0]['id'] \
-			if response['items'] and response['items'][0]['id'] \
-			else 'ERROR: Canal não existe.'
+		if not response['items'] or not response['items'][0]['id']:
+			raise ValueError('Canal não existe.')
+		return response['items'][0]['id']
 
 	def get_channel_subscribers(self, response):
-		return response['items'][0]['statistics']['subscriberCount'] \
-			if response['items'] and response['items'][0]['statistics'] \
-			else 'ERROR: Canal não existe ou não possui estatísticas sobre o canal.'
+		if not response['items'] or not response['items'][0]['statistics']:
+			raise ValueError(' Canal não existe ou não possui estatísticas' +
+							' sobre o canal.')
+		return response['items'][0]['statistics']['subscriberCount']
 
 	def get_channel_video_count(self, response):
-		return response['items'][0]['statistics']['videoCount'] \
-			if response['items'] and response['items'][0]['statistics'] \
-			else 'ERROR: Canal não existe ou não possui estatísticas sobre o canal.'
+		if not response['items'] or not response['items'][0]['statistics']:
+			raise ValueError(' Canal não existe ou não possui estatísticas' +
+									' sobre o canal.')
+		return response['items'][0]['statistics']['videoCount']
 
 	def get_channel_total_view_count(self, response):
-		return response['items'][0]['statistics']['viewCount'] \
-			if response['items'] and response['items'][0]['statistics'] \
-			else 'ERROR: Canal não existe ou não possui estatísticas sobre o canal.'
+		if not response['items'] or not response['items'][0]['statistics']:
+			raise ValueError(' Canal não existe ou não possui ' +
+									'estatísticas sobre o canal.')
+		return response['items'][0]['statistics']['viewCount']
