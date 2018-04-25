@@ -32,10 +32,6 @@ class get_actors_info:
                     aux_dict['username'] = ''
                     actors_dict.append(aux_dict)
 
-        for item in actors_dict:
-            if not item['username']:
-                print(item['ator'], item['id'])
-
         return actors_dict
 
     def insert_actor_info(self):
