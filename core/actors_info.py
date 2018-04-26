@@ -17,13 +17,17 @@ def insert_actors_info(actors_info):
 
     if check:
         for item in actors_info:
-            if item['username']:
-                result = yt_api.get_channel_info_by_username(item['username'])
-                item['id'] = result['items'][0]['id']
+            if 'username' in item:
+                if item['username']:
+                    result = yt_api.get_channel_info_by_username(
+                                                            item['username'])
+                    item['id'] = result['items'][0]['id']
+
             yt_api.insert_value(column='channel_id',
                                 value=item['id'],
                                 search_cell='actor',
                                 search_value=item['actor'].replace('\n', ''))
+
             yt_api.insert_value(column='username',
                                 value=item['username'],
                                 search_cell='actor',
