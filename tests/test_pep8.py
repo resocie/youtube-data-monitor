@@ -17,3 +17,10 @@ class TestCodeFormat(unittest.TestCase):
         result = style.check_files(['core/actors_info.py'])
         self.assertEqual(result.total_errors, 0,
                          "Found code style errors (and warnings).")
+
+    def test_conformance_core(self):
+        """Test that we conform to PEP-8."""
+        style = pycodestyle.StyleGuide(quiet=True)
+        result = style.check_files(['core'])
+        self.assertEqual(result.total_errors, 0,
+                         "Found code style errors (and warnings).")
