@@ -35,7 +35,7 @@ class TestOutput(unittest.TestCase):
         headers = ['First', 'Second', 'Third']
         data = [
             {'First': 'f1', 'Second': 's1', 'Third': ''},
-            {'First': 'f2', 'Second': 's2', 'Third' : 't1'}
+            {'First': 'f2', 'Second': 's2', 'Third': 't1'}
         ]
         filename = 'tests/test_file_output.csv'
         result = FileOutput(filename).export_to_CSV(data, headers)
@@ -61,6 +61,7 @@ class TestOutput(unittest.TestCase):
         if result:
             # remove file after test
             os.remove(filename)
+
 
 if __name__ == '__main__':
     unittest.main()

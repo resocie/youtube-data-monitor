@@ -2,6 +2,7 @@ import unittest
 import csv
 import os
 
+
 class dotdict(dict):
     """dot.notation access to dictionary attributes"""
     __getattr__ = dict.get
@@ -64,8 +65,8 @@ class FileOutput:
             except ValueError as err:
                 raise err
         else:
-            raise ValueError('Nenhum dado encontrado na planilha %s' %
-                                                        self._filename)
+            raise ValueError('Nenhum dado encontrado na planilha %s'
+                             % self._filename)
 
     def get_row(self, column, value):
         """Get a row in a specific csv file.

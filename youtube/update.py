@@ -29,17 +29,17 @@ with open('data/actors.json') as data_file:
             view_count = youtube_user.get_channel_total_view_count(response)
 
             youtube_user.insert_value(column='subscribers',
-                                        value=subscribers,
-                                        search_cell='channel_id',
-                                        search_value=channel_id)
+                                      value=subscribers,
+                                      search_cell='channel_id',
+                                      search_value=channel_id)
             youtube_user.insert_value(column='video_count',
-                                        value=video_count,
-                                        search_cell='channel_id',
-                                        search_value=channel_id)
+                                      value=video_count,
+                                      search_cell='channel_id',
+                                      search_value=channel_id)
             youtube_user.insert_value(column='view_count',
-                                        value=view_count,
-                                        search_cell='channel_id',
-                                        search_value=channel_id)
+                                      value=view_count,
+                                      search_cell='channel_id',
+                                      search_value=channel_id)
 
             videos_views = video.get_all_video_views_user_id(response, 50)
 

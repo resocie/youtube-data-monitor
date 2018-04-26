@@ -5,6 +5,7 @@ import unittest
 import json
 import os
 
+
 class TestYoutubeCSV(unittest.TestCase):
 
     def setUp(self):
@@ -25,9 +26,9 @@ class TestYoutubeCSV(unittest.TestCase):
         actors_info = scrap_basic_actors_info()
         insert_actors_info(actors_info)
         result = yt_api.insert_value(column='channel_id',
-                                    value='UCX2Aanu4fGewmhP4rf5GQ3Q',
-                                    search_cell='actor',
-                                    search_value='Frente Brasil Popular')
+                                     value='UCX2Aanu4fGewmhP4rf5GQ3Q',
+                                     search_cell='actor',
+                                     search_value='Frente Brasil Popular')
         result = yt_api.get_row(column='actor', value='Frente Brasil Popular')
         self.assertEqual(result, {'username': '',
                                   'channel_id': 'UCX2Aanu4fGewmhP4rf5GQ3Q'
@@ -53,9 +54,9 @@ class TestYoutubeCSV(unittest.TestCase):
 
     def insert_value(self, yt_api):
         yt_api.insert_value(column='channel_id',
-                        value='UCX2Aanu4fGewmhP4rf5GQ3Q',
-                        search_cell='actor',
-                        search_value='Frente Brasil Popular')
+                            value='UCX2Aanu4fGewmhP4rf5GQ3Q',
+                            search_cell='actor',
+                            search_value='Frente Brasil Popular')
 
     def clean_csv(self, yt_api):
         yt_api.generate_csv(clean=True)
