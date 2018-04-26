@@ -23,7 +23,7 @@ class Videos:
 						'maxResults': '',
 						'key' : self.user._youtube_key}
 
-    def get_activitie_info(self, channelId, maxResults):
+    def get_activity_info(self, channelId, maxResults):
         self._activities['maxResults'] = maxResults
         self._activities['channelId'] = channelId
         return requests.get(ACTIVITIES_URL, params=self._activities).json()
@@ -33,7 +33,7 @@ class Videos:
         self._videos['id'] = video_id
         return requests.get(VIDEOS_URL, params=self._videos).json()
 
-    def get_all_videos_ids(self, response):
+    def get_all_video_ids(self, response):
         video_ids = []
         for video in response['items']:
             try:
@@ -53,7 +53,7 @@ class Videos:
 
     def get_all_video_views_user_id(self, response, maxResults):
         channel_id = self.user.get_channel_id(response)
-        result_activities = self.get_activitie_info(channel_id, maxResults)
-        videos_id = self.get_all_videos_ids(result_activities)
+        result_activities = self.get_activity_info(channel_id, maxResults)
+        videos_id = self.get_all_video_ids(result_activities)
         video_views = self.get_all_video_items(videos_id, maxResults)
         return video_views

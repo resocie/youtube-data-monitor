@@ -21,9 +21,9 @@ class YoutubeAPI:
 		self._payload_username = {**payload, **{'forUsername':''}}
 
 		self._filename = 'data/youtube.csv'
-		self._csv_headers = ['actor', 'username', 'channel_id',
-							'video_count', 'view_count','subscribers']
+		self._csv_headers = ['actor', 'username', 'channel_id']
 
+	"""File manipulation methods"""
 	def insert_value(self, column, value, search_cell, search_value):
 		return FileOutput(self._filename).insert_value(column, value,
 														search_cell,
@@ -44,14 +44,12 @@ class YoutubeAPI:
 			actors = actors['actors']
 			input_data = [{'actor': name,
 							'username': '',
-							'channel_id':'',
-							'video_count':'',
-							'view_count':'',
-							'subscribers':''} for name in actors]
+							'channel_id':''} for name in actors]
 
 		return FileOutput(self._filename).export_to_CSV(input_data=input_data,
 											headers=self._csv_headers)
 
+	"""Get requests methods"""
 	def get_channel_info(self, channel_id):
 		self._payload_id['id'] = channel_id
 		return requests.get(CHANNELS_URL, params=self._payload_id).json()
@@ -60,6 +58,7 @@ class YoutubeAPI:
 		self._payload_username['forUsername'] = username
 		return requests.get(CHANNELS_URL, params=self._payload_username).json()
 
+	"""Returns channel info"""
 	def get_channel_title(self, response):
 		if not response['items']:
 			raise ValueError('Canal não existe.')

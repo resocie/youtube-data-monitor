@@ -18,9 +18,7 @@ class TestYoutubeCSV(unittest.TestCase):
         actors_info = scrap_basic_actors_info()
         insert_actors_info(actors_info)
         result = YoutubeAPI().get_row(column='actor', value='Bancada Ativista')
-        self.assertEqual(result, {'username': '', 'channel_id': '',
-                                  'video_count': '','view_count':'',
-                                  'subscribers': ''})
+        self.assertEqual(result, {'username': '', 'channel_id': ''})
 
     def test_insert_value_of_an_actor(self):
         yt_api = YoutubeAPI()
@@ -32,10 +30,7 @@ class TestYoutubeCSV(unittest.TestCase):
                                     search_value='Frente Brasil Popular')
         result = yt_api.get_row(column='actor', value='Frente Brasil Popular')
         self.assertEqual(result, {'username': '',
-                                  'channel_id': 'UCX2Aanu4fGewmhP4rf5GQ3Q',
-                                  'video_count': '',
-                                  'view_count':'',
-                                  'subscribers': ''
+                                  'channel_id': 'UCX2Aanu4fGewmhP4rf5GQ3Q'
                                   })
         self.clean_csv(yt_api)
 
@@ -46,20 +41,14 @@ class TestYoutubeCSV(unittest.TestCase):
         self.insert_value(yt_api)
         result = yt_api.get_row(column='actor', value='Frente Brasil Popular')
         self.assertEqual(result, {'username': '',
-                                  'channel_id': 'UCX2Aanu4fGewmhP4rf5GQ3Q',
-                                  'video_count': '',
-                                  'view_count':'',
-                                  'subscribers': ''
+                                  'channel_id': 'UCX2Aanu4fGewmhP4rf5GQ3Q'
                                   })
 
         self.assertTrue(yt_api.generate_csv(clean=True))
 
         result = yt_api.get_row(column='actor', value='Frente Brasil Popular')
         self.assertEqual(result, {'username': '',
-                                  'channel_id': '',
-                                  'video_count': '',
-                                  'view_count':'',
-                                  'subscribers': ''
+                                  'channel_id': ''
                                   })
 
     def insert_value(self, yt_api):

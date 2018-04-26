@@ -20,10 +20,10 @@ class TestOutput(unittest.TestCase):
 
     def test_save_file_without_headers(self):
         data = [
-            {'key1': 'value1.1', 'key2': 'value2.1'},
-            {'key1': 'value2.1', 'key2': 'value2.2'},
-            {'key1': 'value3.1', 'key2': 'value3.2'},
-            {'key1': 'value3.1', 'key2': 'value3.2'}
+            {'First': 'f1', 'Second': 's1'},
+            {'First': 'f2', 'Second': 's2'},
+            {'First': 'f3', 'Second': 's3'},
+            {'First': 'f4', 'Second': 's4'}
         ]
         filename = 'tests/test_file_output.csv'
         result = FileOutput(filename).export_to_CSV(data)
@@ -43,14 +43,14 @@ class TestOutput(unittest.TestCase):
         self.assertTrue(result)
         self.remove_file(filename, result)
 
-    def test_raise_value_error_when_save_file_with_invalid_header_on_data(self):
+    def test_raise_value_error_saving_file_with_invalid_data_header(self):
         headers = ['First', 'Second']
         data = [
             {'First': 'f1', 'S': 's1'},
             {'First': 'f2', 'S': 's2'}
         ]
         filename = 'tests/test_file_output.csv'
-
+        # tests to see if the data header is invalid
         with self.assertRaises(ValueError) as context:
             FileOutput(filename).export_to_CSV(data, headers)
 
