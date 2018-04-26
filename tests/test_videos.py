@@ -27,7 +27,7 @@ class TestVideos(unittest.TestCase):
         result = self._user.get_channel_info(user_id)
         channel_id = self._user.get_channel_id(result)
         result_activities = self._video.get_activity_info(channel_id,
-                                                           max_results)
+                                                          max_results)
         video_ids = self._video.get_all_video_ids(result_activities)
         assert_list = ['L14U9aasDek', 'WyggT8Q-MIM', 'EXLN3qXkNpY']
         self.assertEqual(video_ids[0:3], assert_list)
@@ -42,6 +42,7 @@ class TestVideos(unittest.TestCase):
         self.assertEqual(video_title, 'HIRA - The Roxy Live - 30.03.2018')
         video_view = int(video_views[0]['views'])
         self.assertTrue(video_view > 10 and video_view < 50)
+
 
 if __name__ == '__main__':
     unittest.main()
