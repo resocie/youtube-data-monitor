@@ -1,19 +1,27 @@
-from youtube.youtube import YoutubeAPI
+import youtube.youtube as yt
 from core.actors_info import YoutubeAPI, scrap_basic_actors_info, \
                             insert_actors_info
 import unittest
 import json
 import os
+import time
 
 
 class TestYoutubeCSV(unittest.TestCase):
 
     def setUp(self):
-        self._filename = 'data/youtube.csv'
+        self._filename = time.strftime('data/' + '%d-%m-%Y_%H:%M:%S' + '/you' +
+                                       'tube.csv', time.localtime(yt.start))
+        self._foldername = time.strftime('data/' + '%d-%m-%Y_%H:%M:%S',
+                                         time.localtime(yt.start))
 
     def test_generate_youtube_csv(self):
         csv = YoutubeAPI().generate_csv()
         self.assertTrue(os.path.isfile(self._filename))
+
+    def test_generate_youtube_folder(self):
+        csv = YoutubeAPI().generate_folder()
+        self.assertTrue(os.path.exists(self._foldername))
 
     def test_check_data_of_an_actor(self):
         actors_info = scrap_basic_actors_info()

@@ -2,7 +2,9 @@ from core import FileOutput
 import requests
 import json
 import os
+import time
 
+start = time.time()
 CHANNELS_URL = 'https://www.googleapis.com/youtube/v3/channels'
 
 
@@ -18,11 +20,12 @@ class YoutubeAPI:
 
         payload = {'part': 'snippet,contentDetails,statistics,id',
                    'key': self._youtube_key}
-
         self._payload_id = {**payload, **{'id': ''}}
         self._payload_username = {**payload, **{'forUsername': ''}}
-
-        self._filename = 'data/youtube.csv'
+        self._foldername = time.strftime('data/' + '%d-%m-%Y_%H:%M:%S',
+                                         time.localtime(start))
+        self._filename = time.strftime('data/' + '%d-%m-%Y_%H:%M:%S' +
+                                       '/youtube.csv', time.localtime(start))
         self._csv_headers = ['actor', 'username', 'channel_id']
 
     def insert_value(self, column, value, search_cell, search_value):
@@ -32,6 +35,10 @@ class YoutubeAPI:
 
     def get_row(self, column, value):
         return FileOutput(self._filename).get_row(column, value)
+
+    def generate_folder(self):
+        if not os.path.exists(self._foldername):
+            os.makedirs(self._foldername)
 
     # returns True if csv is created with success
     def generate_csv(self, clean=False):

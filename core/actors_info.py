@@ -13,6 +13,7 @@ def insert_actors_info(actors_info):
         bool: True if successful, False otherwise.
     """
     yt_api = YoutubeAPI()
+    yt_api.generate_folder()
     check = yt_api.generate_csv(clean=True)
 
     if check:
@@ -32,7 +33,7 @@ def insert_actors_info(actors_info):
                                 value=item['username'],
                                 search_cell='actor',
                                 search_value=item['actor'].replace('\n', ''))
-        return True
+        return yt_api
 
     return False
 
