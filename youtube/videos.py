@@ -5,6 +5,7 @@ import os
 
 ACTIVITIES_URL = 'https://www.googleapis.com/youtube/v3/activities'
 VIDEOS_URL = 'https://www.googleapis.com/youtube/v3/videos'
+VIDEOS_BASE_URL = 'https://www.youtube.com/watch?v='
 
 
 class Videos:
@@ -50,9 +51,36 @@ class Videos:
 
         for item in response:
             views = self.get_videos_info(item, max_results)
-            video_views = (views['items'][0]['statistics']['viewCount'])
-            video_titles = (views['items'][0]['snippet']['title'])
-            videos_dic.append({'title': video_titles, 'views': video_views})
+            video_views = views['items'][0]['statistics']['viewCount']
+            if 'likeCount' in views['items'][0]['statistics']:
+                video_likes = views['items'][0]['statistics']['likeCount']
+            else:
+                video_likes = 'disabled'
+            if 'dislikeCount' in views['items'][0]['statistics']:
+                video_dislikes = \
+                 views['items'][0]['statistics']['dislikeCount']
+            else:
+                video_dislikes = 'disabled'
+            if 'commentCount' in views['items'][0]['statistics']:
+                video_comments = \
+                 views['items'][0]['statistics']['commentCount']
+            else:
+                video_comments = 'disabled'
+            if 'favoriteCount' in views['items'][0]['statistics']:
+                video_favorites = \
+                 views['items'][0]['statistics']['favoriteCount']
+            else:
+                video_favorites = 'disabled'
+            video_titles = views['items'][0]['snippet']['title']
+            video_url = VIDEOS_BASE_URL + views['items'][0]['id']
+            videos_dic.append({'title': video_titles,
+                               'views': video_views,
+                               'likes': video_likes,
+                               'dislikes': video_dislikes,
+                               'comments': video_comments,
+                               'favorites': video_favorites,
+                               'url': video_url
+                               })
 
         return videos_dic
 

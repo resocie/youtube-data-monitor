@@ -27,7 +27,7 @@ with open('data/actors.json') as data_file:
             subscribers = youtube_user.get_channel_subscribers(response)
             video_count = youtube_user.get_channel_video_count(response)
             view_count = youtube_user.get_channel_total_view_count(response)
-
+            print(title)
             youtube_user.insert_value(column='subscribers',
                                       value=subscribers,
                                       search_cell='channel_id',
@@ -46,4 +46,10 @@ with open('data/actors.json') as data_file:
             if videos_views:
                 # saves videos on channel_videos folder
                 output = FileOutput('data/channel_videos/' + title + '.csv')
-                output.export_to_CSV(videos_views, ['title', 'views'])
+                output.export_to_CSV(videos_views, ['title',
+                                                    'views',
+                                                    'likes',
+                                                    'dislikes',
+                                                    'comments',
+                                                    'favorites',
+                                                    'url'])

@@ -41,7 +41,10 @@ class TestVideos(unittest.TestCase):
         video_title = video_views[0]['title']
         self.assertEqual(video_title, 'HIRA - The Roxy Live - 30.03.2018')
         video_view = int(video_views[0]['views'])
-        self.assertTrue(video_view > 10 and video_view < 50)
+        video_url = str(video_views[0]['url'])
+        self.assertTrue(video_view > 10 and video_view < 50 and
+                        video_url
+                        == 'https://www.youtube.com/watch?v=Cj5S78OmuIQ')
 
 
 if __name__ == '__main__':
