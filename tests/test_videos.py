@@ -33,18 +33,20 @@ class TestVideos(unittest.TestCase):
         self.assertEqual(video_ids[0:3], assert_list)
 
     def test_all_videos_count_user_id(self):
-        user_id = 'UC_77GCFm3isnRD5uGLkEi4A'
+        user_id = 'UCs6avCwreiI6QoFR83Ul2UQ'
         result = self._user.get_channel_info(user_id)
-        max_results = 1
+        max_results = 50
         video_views = self._video.get_all_video_views_user_id(result,
                                                               max_results)
-        video_title = video_views[0]['title']
-        self.assertEqual(video_title, 'HIRA - The Roxy Live - 30.03.2018')
-        video_view = int(video_views[0]['views'])
-        video_url = str(video_views[0]['url'])
-        self.assertTrue(video_view > 10 and video_view < 50 and
-                        video_url
-                        == 'https://www.youtube.com/watch?v=Cj5S78OmuIQ')
+        video_title = video_views[-1]['title']
+        self.assertEqual(video_title, 'Dilma e Amorim \
+denunciam milícias à mídia internacional')
+        video_view = int(video_views[-1]['views'])
+        video_url = str(video_views[-1]['url'])
+        self.assertGreater(video_view, 524)
+        self.assertLess(video_view, 700)
+        self.assertEqual(video_url,
+                         'https://www.youtube.com/watch?v=zr6J20IR9J0')
 
 
 if __name__ == '__main__':
