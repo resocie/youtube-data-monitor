@@ -7,19 +7,25 @@ import os
 import json
 
 # get data from grupos_politicos and insert data into youtube.csv
-actors_info = scrap_basic_actors_info()
-youtube_user = insert_actors_info(actors_info)
+
+
+# x=datetime.today()
+# y=x.replace(day=x.day, hour=9, minute=52, second=0, microsecond=0)
+# delta_t=y-x
+#
+# secs=delta_t.seconds+1
+
+scrap_basic_actors_info()
+youtube_user = insert_actors_info()
 video = Videos()
 
 with open('data/actors.json') as data_file:
     actors = json.load(data_file)
     actors = actors['actors']
 
-    for actor in actors:
-        # get ID from youtube.csv
+    for actor in actors:            # get ID from youtube.csv
         channel = youtube_user.get_row(column='actor', value=actor)
         channel_id = channel['channel_id']
-
         if channel_id:
             # get all info from channel
             response = youtube_user.get_channel_info(channel_id)
@@ -45,11 +51,14 @@ with open('data/actors.json') as data_file:
 
             if videos_views:
                 # saves videos on channel_videos folder
-                directory = time.strftime('data/' + '%d-%m-%Y_%H:%M:%S',
-                                          time.localtime(yt.start))
+                directory = 'data/' + yt.start_time
                 channel_videos_folder = directory + '/channel_videos'
                 if not os.path.exists(channel_videos_folder):
                     os.makedirs(channel_videos_folder)
                 output = FileOutput(channel_videos_folder + '/' + title +
                                     '.csv')
                 output.export_to_CSV(videos_views, ['title', 'views'])
+
+                
+# t = Timer(secs, test)
+# t.start()

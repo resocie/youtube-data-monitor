@@ -42,7 +42,7 @@ class TestYoutubeAPI(unittest.TestCase):
         channel_id = 'UCvv3PVl4BnOnozFLjXwYQJQ'
         result = self._user.get_channel_info(channel_id)
         subscribers = self._user.get_channel_subscribers(result)
-        self.assertEqual('2', subscribers)
+        self.assertGreater(subscribers, '2')
 
     def test_get_channel_total_video_count(self):
         channel_id = 'UC5ByVewtZ9ZTeft5m3GHtMg'
