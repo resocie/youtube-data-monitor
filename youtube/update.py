@@ -47,5 +47,9 @@ with open('data/actors.json') as data_file:
                 # saves videos on channel_videos folder
                 directory = time.strftime('data/' + '%d-%m-%Y_%H:%M:%S',
                                           time.localtime(yt.start))
-                output = FileOutput(directory + '/' + title + '.csv')
+                channel_videos_folder = directory + '/channel_videos'
+                if not os.path.exists(channel_videos_folder):
+                    os.makedirs(channel_videos_folder)
+                output = FileOutput(channel_videos_folder + '/' + title +
+                                    '.csv')
                 output.export_to_CSV(videos_views, ['title', 'views'])
