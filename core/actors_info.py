@@ -2,6 +2,7 @@ from youtube.youtube import YoutubeAPI
 import csv
 import json
 
+
 def insert_actors_info():
     """ Check if actor has username.
 
@@ -27,19 +28,23 @@ def insert_actors_info():
                             item['id'] = result['items'][0]['id']
 
                 yt_api.insert_value(column='channel_id',
-                                        value=item['id'],
-                                        search_cell='actor',
-                                        search_value=item['actor'].replace('\n', ''))
+                                    value=item['id'],
+                                    search_cell='actor',
+                                    search_value=item['actor'].
+                                    replace('\n', ''))
 
                 yt_api.insert_value(column='username',
-                                        value=item['username'],
-                                        search_cell='actor',
-                                        search_value=item['actor'].replace('\n', ''))
+                                    value=item['username'],
+                                    search_cell='actor',
+                                    search_value=item['actor'].
+                                    replace('\n', ''))
             return yt_api
 
     return False
 
 # @TODO scrap and put in a json instead of scrap everytime
+
+
 def scrap_basic_actors_info():
     """ Scrap basic information about actors from grupos_politicos.csv.
         Puts it in a json file called 'actors_basic_info.json'
