@@ -5,22 +5,18 @@ import json
 
 def insert_actors_info():
     """ Check if actor has username.
-
-    If so saves id and username on youtube.csv.
-
-    Args:
-        actors_info (``list`` of ``dict``): Basic actors information.
+        If so saves id and username on youtube.csv.
     Returns:
-        bool: True if successful, False otherwise.
+        bool: the youtube object if successful, False otherwise.
     """
     yt_api = YoutubeAPI()
     yt_api.generate_folder()
     check = yt_api.generate_csv(clean=True)
 
     if check:
-        with open('data/actors_basic_info.json') as json_file:
+        with open('data/channels_basic_info.json') as json_file:
             data = json.load(json_file)
-            for item in data['actors']:
+            for item in data['channels']:
                 if 'username' in item:
                         if item['username']:
                             result = yt_api.get_channel_info_by_username(
@@ -42,16 +38,11 @@ def insert_actors_info():
 
     return False
 
-# @TODO scrap and put in a json instead of scrap everytime
-
 
 def scrap_basic_actors_info():
     """ Scrap basic information about actors from grupos_politicos.csv.
-        Puts it in a json file called 'actors_basic_info.json'
-    Actor title, channel_id and username.
-
-    Returns:
-        ``list`` of ``dict``: Basic actors information.
+        Puts it in a file called 'channels_basic_info.json'
+        Basic info: Actor title, channel_id and username.
     """
     with open('data/grupos_politicos.csv', 'r') as csv_file:
         read_CSV = csv.DictReader(csv_file)
@@ -82,6 +73,6 @@ def scrap_basic_actors_info():
                 sample_actors_info['username'] = ''
                 actors.append(sample_actors_info)
 
-    with open('data/actors_basic_info.json', 'w') as outfile:
-        actors_info['actors'] = actors
+    with open('data/channels_basic_info.json', 'w') as outfile:
+        actors_info['channels'] = actors
         outfile.write(json.dumps(actors_info, sort_keys=True, indent=4))

@@ -128,6 +128,30 @@ $ pip install pycodestyle
 $ pycodestyle youtube/youtube.py
 ```
 
+### Periodicidade e automatização da coleta dos dados
+
+Para automatizar a execução do programa, utilizamos a ferramenta **crontab**.
+Para isso, faça o seguinte comando no terminal:
+
+```
+$ crontab -e
+```
+
+Em sistemas Linux, adicione a seguinte linha ao final do arquivo aberto no terminal pelo comando anterior:
+
+```
+$ 0 0 * * * cd /home/myuser/myproject && . venv/bin/activate && python -m youtube.update
+```
+
+O primeiro '0' diz respeito ao minuto, já o segundo '0' às horas.
+Para exemplificar:
+
+```
+$ 0 0 * * * cd /home/jvpoletti/youtube/youtube-data-monitor && . venv/bin/activate && python -m youtube.update
+```
+
+Com o comando acima, o programa será executado todos os dias à meia-noite.
+
 ## TODO
 
 Este é apenas um esqueleto de projeto para que o grupo comece a trabalhar.

@@ -6,16 +6,7 @@ import time
 import os
 import json
 
-# get data from grupos_politicos and insert data into youtube.csv
-
-
-# x=datetime.today()
-# y=x.replace(day=x.day, hour=9, minute=52, second=0, microsecond=0)
-# delta_t=y-x
-#
-# secs=delta_t.seconds+1
-
-scrap_basic_actors_info()
+# scrap_basic_actors_info()
 youtube_user = insert_actors_info()
 video = Videos()
 
@@ -58,7 +49,3 @@ with open('data/actors.json') as data_file:
                 output = FileOutput(channel_videos_folder + '/' + title +
                                     '.csv')
                 output.export_to_CSV(videos_views, ['title', 'views'])
-
-#
-# t = Timer(secs, test)
-# t.start()
