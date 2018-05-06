@@ -39,7 +39,8 @@ class TestVideos(unittest.TestCase):
         video_views = self._video.get_all_video_views_user_id(result,
                                                               max_results)
         video_title = video_views[0]['title']
-        self.assertEqual(video_title, 'HIRA - The Roxy Live - 30.03.2018')
+        self.assertEqual(video_title,
+                         'HIRA - José C Paz, Buenos Aires - 07.04.2018')
         video_view = int(video_views[0]['views'])
         self.assertTrue(video_view > 10 and video_view < 50)
 
