@@ -35,8 +35,8 @@ def list_actor_channel_info(date, actor):
             raise_date_error = False
 
     if raise_date_error:
-        raise InvalidUsage("Date was mistyped or our database didn't colleted"
-                           "data in this date. Try a date in this format "
+        raise InvalidUsage("Date was mistyped or our database didn't collected"
+                           " data in this date. Try a date in this format "
                            "day-month-year, e.g. 07-05-2018.", status_code=450)
 
     try:
@@ -49,7 +49,7 @@ def list_actor_channel_info(date, actor):
         raise_actor_error = True
 
     if raise_actor_error:
-        raise InvalidUsage("Actor name mistyped or this actor name don't "
+        raise InvalidUsage("Actor name was mistyped or this actor name don't "
                            "exist in our database. Try list all the actors in "
                            "youtube-data-monitor.herokuapp.com/actors.",
                            status_code=460)
