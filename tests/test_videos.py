@@ -38,13 +38,6 @@ class TestVideos(unittest.TestCase):
         max_results = 50
         video_views = self._video.get_all_video_views_user_id(result,
                                                               max_results)
-<<<<<<< HEAD
-        video_title = video_views[0]['title']
-        self.assertEqual(video_title, 'HIRA - José C Paz, Buenos Aires - ' +
-                         '07.04.2018')
-        video_view = int(video_views[0]['views'])
-        self.assertTrue(video_view > 10 and video_view < 50)
-=======
         video_title = video_views[-1]['title']
         self.assertEqual(video_title, 'Dilma e Amorim \
 denunciam milícias à mídia internacional')
@@ -54,7 +47,6 @@ denunciam milícias à mídia internacional')
         self.assertLess(video_view, 700)
         self.assertEqual(video_url,
                          'https://www.youtube.com/watch?v=zr6J20IR9J0')
->>>>>>> 79dde9d4ca6afee4c6df185c8f9b531537804175
 
 
 if __name__ == '__main__':
