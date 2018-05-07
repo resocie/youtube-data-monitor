@@ -42,16 +42,12 @@ with open('data/actors.json') as data_file:
 
             if videos_views:
                 # saves videos on channel_videos folder
-<<<<<<< HEAD
                 directory = 'data/' + yt.start_time
                 channel_videos_folder = directory + '/channel_videos'
                 if not os.path.exists(channel_videos_folder):
                     os.makedirs(channel_videos_folder)
                 output = FileOutput(channel_videos_folder + '/' + title +
                                     '.csv')
-                output.export_to_CSV(videos_views, ['title', 'views'])
-=======
-                output = FileOutput('data/channel_videos/' + title + '.csv')
                 output.export_to_CSV(videos_views, ['title',
                                                     'views',
                                                     'likes',
@@ -59,4 +55,3 @@ with open('data/actors.json') as data_file:
                                                     'comments',
                                                     'favorites',
                                                     'url'])
->>>>>>> 79dde9d4ca6afee4c6df185c8f9b531537804175
