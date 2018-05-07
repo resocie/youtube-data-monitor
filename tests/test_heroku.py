@@ -12,28 +12,20 @@ class TestHeroku(unittest.TestCase):
         #   Se for sucesso irá retornar 200
         self.assertEqual(result.status_code, 200)
 
-    def test_home_data(self):
-        # Envia uma requisição HTTP GET para a aplicação
-        result = requests.get('https://youtube-data-monitor.herokuapp.com/')
+        def test_list_actors(self):
+            # Envia uma requisição HTTP GET para a aplicação
+            result = requests.get(
+                'https://youtube-data-monitor.herokuapp.com/actors')
 
-        # Verifica o dado da resposta do caminho da página inicial
-        self.assertEqual(result.content.decode("utf-8"), "Hello World.")
+            # Verifica o código de estado da resposta da requisição
+            self.assertEqual(result.status_code, 200)
 
-    def test_get_actor_name_example(self):
-        # Envia uma requisição HTTP GET para a aplicação
-        result = requests.get(
-                    'https://youtube-data-monitor.herokuapp.com/actor/example')
+            with open('data/actors.json') as data_file:
+                list_actors_original = json.load(data_file)
 
-        self.assertEqual(result.content.decode("utf-8"),
-                         "actor name : example")
+            r = json.loads(result.content.decode('utf8'))
 
-    def test_get_actor_name_json_example(self):
-        # Envia uma requisição HTTP GET para a aplicação
-        result = requests.get(
-              'https://youtube-data-monitor.herokuapp.com/actorjson/example')
-        r = json.loads(result.content.decode('utf8'))
-
-        self.assertEqual(r, {'actor_name': 'example'})
+            self.assertEqual(r, list_actors_original)
 
 
 if __name__ == '__main__':
