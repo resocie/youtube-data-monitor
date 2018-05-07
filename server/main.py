@@ -26,16 +26,13 @@ def list_actors():
 def list_actor_channel_info(date, actor):
     data_folders = [x[1] for x in os.walk('data/')][0]
 
-    raise_date_error = True
+    raise_date_error, raise_actor_error = True, True
 
-    try:
-        for folder in data_folders:
-            check_folder = folder.split('_')[0]
-            if date == check_folder:
-                date_file = 'data/'+folder+'/youtube.csv'
-                raise_date_error = False
-    except:
-        pass
+    for folder in data_folders:
+        check_folder = folder.split('_')[0]
+        if date == check_folder:
+            date_file = 'data/'+folder+'/youtube.csv'
+            raise_date_error = False
 
     if raise_date_error:
         raise InvalidUsage("Date was mistyped or our database didn't colleted"
@@ -45,11 +42,16 @@ def list_actor_channel_info(date, actor):
     try:
         actor = actor.replace('_', ' ')
         actor_info = FileOutput(date_file).get_row(column='actor', value=actor)
-        actor_info['actor'] = actor
-    except:
+        if actor_info:
+            actor_info['actor'] = actor
+            raise_actor_error = False
+    except ValueError:
+        raise_actor_error = True
+
+    if raise_actor_error:
         raise InvalidUsage("Actor name mistyped or this actor name don't "
-                       "exist in our database. Try list all the actors in "
-                       "https://youtube-data-monitor.herokuapp.com/actors/.",
+                           "exist in our database. Try list all the actors in "
+                           "youtube-data-monitor.herokuapp.com/actors.",
                            status_code=460)
 
     return jsonify(actor_info)
