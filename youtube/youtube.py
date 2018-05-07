@@ -2,6 +2,7 @@ from core import FileOutput
 import requests
 import json
 import os
+import shutil
 from datetime import datetime
 
 start_time = datetime.now().strftime("%d-%m-%Y_%H:%M:%S")
@@ -34,8 +35,12 @@ class YoutubeAPI:
     def get_row(self, column, value):
         return FileOutput(self._filename).get_row(column, value)
 
-    def generate_folder(self):
-        if not os.path.exists(self._foldername):
+    def generate_folder(self, clean=False):
+        if clean and os.path.isdir(self._foldername):
+            shutil.rmtree(self._foldername)
+        elif os.path.isdir(self._foldername):
+            return True
+        else:
             os.makedirs(self._foldername)
 
     # returns True if csv is created with success
