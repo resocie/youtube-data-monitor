@@ -7,7 +7,7 @@ def insert_actors_info():
     """ Check if actor has username.
         If so saves id and username on youtube.csv.
     Returns:
-        bool: the youtube object if successful, False otherwise.
+        YoutubeAPI object if successful, None otherwise.
     """
     yt_api = YoutubeAPI()
     yt_api.generate_folder()
@@ -36,7 +36,7 @@ def insert_actors_info():
                                     replace('\n', ''))
             return yt_api
 
-    return False
+    return None
 
 
 def scrap_basic_actors_info():
