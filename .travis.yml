@@ -13,5 +13,5 @@ deploy:
   provider: heroku
   api_key: $HEROKU_KEY
   app: youtube-data-monitor
-    on:
-      all_branches: true
+  on:
+    branch: dev-server
