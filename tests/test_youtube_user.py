@@ -56,6 +56,12 @@ class TestYoutubeAPI(unittest.TestCase):
         view_count = self._user.get_channel_total_view_count(result)
         self.assertGreater(view_count, '120')
 
+    def test_get_channel_total_comment_count(self):
+        channel_id = 'UCsCI7wlAwbzTPK55yVaX2Ig'
+        result = self._user.get_channel_info(channel_id)
+        comment_count = self._user.get_channel_total_comment_count(result)
+        self.assertGreater(comment_count, '1')
+
 
 if __name__ == '__main__':
     unittest.main()
