@@ -87,7 +87,7 @@ class FileOutput:
             reader = csv.DictReader(csvfile)
 
             for row in reader:
-                if row[column] == value:
+                if row[column].lower() == value.lower():
                     row.pop(column)
 
                     return row
