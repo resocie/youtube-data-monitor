@@ -50,7 +50,7 @@ def list_actor_channel_info(date, actor):
                            status_code=450)
 
     try:
-        actor = actor.replace('_', ' ').lower()
+        actor = actor.replace('_', ' ')
         actor_info = FileOutput(date_file).get_row(column='actor', value=actor)
         if actor_info:
             actor_info['actor'] = actor

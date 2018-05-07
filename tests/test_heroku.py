@@ -7,19 +7,19 @@ HEROKU_URL = 'https://youtube-data-monitor.herokuapp.com/'
 
 class TestHeroku(unittest.TestCase):
 
-    def test_list_actors(self):
-        # Envia uma requisição HTTP GET para a aplicação
-        result = requests.get(HEROKU_URL+'actors')
-
-        # Verifica o código de estado da resposta da requisição
-        self.assertEqual(result.status_code, 200)
-
-        with open('data/actors.json') as data_file:
-            list_actors_original = json.load(data_file)
-
-        r = json.loads(result.content.decode('utf8'))
-
-        self.assertEqual(r, list_actors_original)
+    # def test_list_actors(self):
+    #     # Envia uma requisição HTTP GET para a aplicação
+    #     result = requests.get(HEROKU_URL+'actors')
+    #
+    #     # Verifica o código de estado da resposta da requisição
+    #     self.assertEqual(result.status_code, 200)
+    #
+    #     with open('data/actors.json') as data_file:
+    #         list_actors_original = json.load(data_file)
+    #
+    #     r = json.loads(result.content.decode('utf8'))
+    #
+    #     self.assertEqual(r, list_actors_original)
 
     def test_list_actor_channel_info(self):
         # Envia uma requisição HTTP GET para a aplicação
