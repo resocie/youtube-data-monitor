@@ -102,17 +102,24 @@ class TestCodeFormat(unittest.TestCase):
         self.assertEqual(result.total_errors, 0,
                          "Found code style errors (and warnings).")
 
-    def test_conformance_website_main(self):
+    def test_conformance_server_main(self):
         """Test that we conform to PEP-8."""
         style = pycodestyle.StyleGuide(quiet=True)
-        result = style.check_files(['website/main.py'])
+        result = style.check_files(['server/main.py'])
         self.assertEqual(result.total_errors, 0,
                          "Found code style errors (and warnings).")
 
-    def test_conformance_website(self):
+    def test_conformance_server_api_exceptions(self):
         """Test that we conform to PEP-8."""
         style = pycodestyle.StyleGuide(quiet=True)
-        result = style.check_files(['website'])
+        result = style.check_files(['server/api_exceptions.py'])
+        self.assertEqual(result.total_errors, 0,
+                         "Found code style errors (and warnings).")
+
+    def test_conformance_server(self):
+        """Test that we conform to PEP-8."""
+        style = pycodestyle.StyleGuide(quiet=True)
+        result = style.check_files(['server'])
         self.assertEqual(result.total_errors, 0,
                          "Found code style errors (and warnings).")
 
