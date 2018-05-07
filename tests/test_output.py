@@ -1,29 +1,33 @@
-from core.output import FileOutput
+from core import FileOutput
 import unittest
 import os
 
-class TestOutput(unittest.TestCase):
-    def test_invalid_data(self):
-        data = ''
-        filename = 'file.csv'
-        self.assertEqual(FileOutput(filename).export_CSV(data).error_msg,
-                        'ERROR: O tipo do dado está incorreto')
 
-    def test_invalid_path(self):
-        data = [{}]
-        filename = 'wrong_folder/file.csv'
-        self.assertEqual(FileOutput(filename).export_CSV(data).error_msg,
-                         'ERROR: Nome do arquivo ou caminho incorreto')
+class TestOutput(unittest.TestCase):
+    def test_raise_value_error_with_invalid_data(self):
+        with self.assertRaises(ValueError) as context:
+            FileOutput('file.csv').export_to_CSV('')
+
+        self.assertTrue('O tipo do dado está incorreto.' in
+                        str(context.exception))
+
+    def test_raise_value_error_with_invalid_path(self):
+        with self.assertRaises(ValueError) as context:
+            FileOutput('wrong_folder/file.csv').export_to_CSV([{}])
+
+        self.assertTrue('Nome do arquivo ou caminho incorreto.' in
+                        str(context.exception))
 
     def test_save_file_without_headers(self):
         data = [
-            {'key1': 'value1.1', 'key2': 'value2.1'},
-            {'key1': 'value2.1', 'key2': 'value2.2'},
-            {'key1': 'value3.1', 'key2': 'value3.2'},
-            {'key1': 'value3.1', 'key2': 'value3.2'}
+            {'First': 'f1', 'Second': 's1'},
+            {'First': 'f2', 'Second': 's2'},
+            {'First': 'f3', 'Second': 's3'},
+            {'First': 'f4', 'Second': 's4'}
         ]
         filename = 'tests/test_file_output.csv'
-        result = FileOutput(filename).export_CSV(data).status
+        result = FileOutput(filename).export_to_CSV(data)
+
         self.assertTrue(result)
         self.remove_file(filename, result)
 
@@ -31,27 +35,33 @@ class TestOutput(unittest.TestCase):
         headers = ['First', 'Second', 'Third']
         data = [
             {'First': 'f1', 'Second': 's1', 'Third': ''},
-            {'First': 'f2', 'Second': 's2', 'Third' : 't1'}
+            {'First': 'f2', 'Second': 's2', 'Third': 't1'}
         ]
         filename = 'tests/test_file_output.csv'
-        result = FileOutput(filename).export_CSV(data, headers).status
+        result = FileOutput(filename).export_to_CSV(data, headers)
+
         self.assertTrue(result)
         self.remove_file(filename, result)
 
-    def test_save_file_with_invalid_header_key_on_data(self):
+    def test_raise_value_error_saving_file_with_invalid_data_header(self):
         headers = ['First', 'Second']
         data = [
             {'First': 'f1', 'S': 's1'},
             {'First': 'f2', 'S': 's2'}
         ]
         filename = 'tests/test_file_output.csv'
-        self.assertEqual(FileOutput(filename).export_CSV(data, headers).error_msg,
-                        'ERROR: O tipo do dado está incorreto')
+        # tests to see if the data header is invalid
+        with self.assertRaises(ValueError) as context:
+            FileOutput(filename).export_to_CSV(data, headers)
+
+        self.assertTrue('O tipo do dado está incorreto.' in
+                        str(context.exception))
 
     def remove_file(self, filename, result):
         if result:
-            # remove file after tests
+            # remove file after test
             os.remove(filename)
+
 
 if __name__ == '__main__':
     unittest.main()
