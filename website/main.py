@@ -1,22 +1,16 @@
 from flask import Flask, jsonify
+import json
 import os
 
 app = Flask(__name__)
 
 
-@app.route('/')
-def hello():
-    return 'Hello World.'
+@app.route('/actors', methods=['GET'])
+def list_actors():
+    with open('data/actors.json') as data_file:
+        list_actors_original = json.load(data_file)
 
-
-@app.route('/actor/<actor_name>', methods=['GET'])
-def actor_name(actor_name):
-    return 'actor name : %s' % actor_name
-
-
-@app.route('/actorjson/<actor_name>', methods=['GET'])
-def actor_name_json(actor_name):
-    return jsonify({'actor_name': actor_name})
+    return jsonify(list_actors_original)
 
 
 if __name__ == '__main__':

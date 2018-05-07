@@ -10,32 +10,19 @@ class TestFlask(unittest.TestCase):
         # Propaga as exceções para o cliente de teste
         self.app.testing = True
 
-    def test_home_status_code(self):
+    def test_list_actors(self):
         # Envia uma requisição HTTP GET para a aplicação
-        result = self.app.get('/')
+        result = self.app.get('/actors')
 
         # Verifica o código de estado da resposta da requisição
-        #   Se for sucesso irá retornar 200
         self.assertEqual(result.status_code, 200)
 
-    def test_home_data(self):
-        # Envia uma requisição HTTP GET para a aplicação
-        result = self.app.get('/')
+        with open('data/actors.json') as data_file:
+            list_actors_original = json.load(data_file)
 
-        self.assertEqual(result.data.decode("utf-8"), "Hello World.")
-
-    def test_get_actor_name_example(self):
-        # Envia uma requisição HTTP GET para a aplicação
-        result = self.app.get('/actor/example')
-
-        self.assertEqual(result.data.decode("utf-8"), "actor name : example")
-
-    def test_get_actor_name_json_example(self):
-        # Envia uma requisição HTTP GET para a aplicação
-        result = self.app.get('/actorjson/example')
         r = json.loads(result.data.decode('utf8'))
 
-        self.assertEqual(r, {'actor_name': 'example'})
+        self.assertEqual(r, list_actors_original)
 
 
 if __name__ == '__main__':
