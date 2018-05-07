@@ -1,6 +1,7 @@
 from server.main import app
 import unittest
 import json
+import os
 
 
 class TestFlask(unittest.TestCase):
@@ -23,6 +24,19 @@ class TestFlask(unittest.TestCase):
         r = json.loads(result.data.decode('utf8'))
 
         self.assertEqual(r, list_actors_original)
+
+    def test_list_dates(self):
+        # Envia uma requisição HTTP GET para a aplicação
+        result = self.app.get('/dates')
+
+        # Verifica o código de estado da resposta da requisição
+        self.assertEqual(result.status_code, 200)
+
+        data_folders = [x[1] for x in os.walk('data/')][0]
+
+        r = json.loads(result.data.decode('utf8'))
+
+        self.assertEqual(r['dates'], data_folders)
 
     def test_list_actor_channel_info(self):
         # Envia uma requisição HTTP GET para a aplicação

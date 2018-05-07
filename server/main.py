@@ -22,6 +22,13 @@ def list_actors():
     return jsonify(list_actors_original)
 
 
+@app.route('/dates', methods=['GET'])
+def list_dates():
+    data_folders = [x[1] for x in os.walk('data/')][0]
+
+    return jsonify({'dates': data_folders})
+
+
 @app.route('/<date>/canal/<actor>', methods=['GET'])
 def list_actor_channel_info(date, actor):
     data_folders = [x[1] for x in os.walk('data/')][0]
@@ -36,8 +43,11 @@ def list_actor_channel_info(date, actor):
 
     if raise_date_error:
         raise InvalidUsage("Date was mistyped or our database didn't collected"
-                           " data in this date. Try a date in this format "
-                           "day-month-year, e.g. 07-05-2018.", status_code=450)
+                           " data in this date. Try a date in this format"
+                           " day-month-year, e.g. 07-05-2018 or try list the"
+                           " dates that our system collected data at"
+                           " youtube-data-monitor.herokuapp.com/dates.",
+                           status_code=450)
 
     try:
         actor = actor.replace('_', ' ').lower()
@@ -49,9 +59,9 @@ def list_actor_channel_info(date, actor):
         raise_actor_error = True
 
     if raise_actor_error:
-        raise InvalidUsage("Actor name was mistyped or this actor name don't "
-                           "exist in our database. Try list all the actors in "
-                           "youtube-data-monitor.herokuapp.com/actors.",
+        raise InvalidUsage("Actor name was mistyped or this actor name don't"
+                           " exist in our database. Try list all the actors at"
+                           " youtube-data-monitor.herokuapp.com/actors.",
                            status_code=460)
 
     return jsonify(actor_info)
