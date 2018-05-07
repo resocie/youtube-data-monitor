@@ -14,4 +14,4 @@ deploy:
   api_key: $HEROKU_KEY
   app: youtube-data-monitor
   on:
-    branch: dev-server
+    branch: master
