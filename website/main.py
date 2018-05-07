@@ -12,6 +12,12 @@ def list_actors():
 
     return jsonify(list_actors_original)
 
+@app.route('/infos', methods=['GET'])
+def list_infos():
+    with open('data/youtube.csv') as data_file:
+        list_infos_original = json.load(data_file)
+
+    return jsonify(list_infos_original)
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
