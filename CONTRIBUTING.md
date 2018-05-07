@@ -5,6 +5,7 @@
 * [python 3.6](https://www.python.org/)
 * [pip](https://pypi.python.org/pypi/pip)
 * [virtualenv](https://virtualenv.pypa.io/en/stable/userguide/)
+* [Flask](http://flask.pocoo.org/)
 
 ## Preparar o ambiente
 
@@ -162,4 +163,15 @@ sistema de 24 horas. Com o comando abaixo, o programa será executado todos os
 dias à meia-noite.
 ```
 $ 0 0 * * * cd $HOME/youtube/youtube-data-monitor && . venv/bin/activate && python -m youtube.update
+```
+
+## Executar servidor local
+
+Para rodar o servidor local basta configurar a variável de ambiente do Flask:
+```
+$  FLASK_APP=server/main.py
+```
+E então executar o servidor com:
+```
+$ flask run
 ```
