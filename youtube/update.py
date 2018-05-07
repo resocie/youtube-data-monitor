@@ -1,25 +1,22 @@
 from core.actors_info import scrap_basic_actors_info, insert_actors_info
-from youtube.youtube import YoutubeAPI
+import youtube.youtube as yt
 from core.output import FileOutput
 from youtube.videos import Videos
+import time
+import os
 import json
 
-# get data from grupos_politicos and insert data into youtube.csv
-actors_info = scrap_basic_actors_info()
-insert_actors_info(actors_info)
-
+# scrap_basic_actors_info()
+youtube_user = insert_actors_info()
 video = Videos()
-youtube_user = YoutubeAPI()
 
 with open('data/actors.json') as data_file:
     actors = json.load(data_file)
     actors = actors['actors']
 
-    for actor in actors:
-        # get ID from youtube.csv
+    for actor in actors:            # get ID from youtube.csv
         channel = youtube_user.get_row(column='actor', value=actor)
         channel_id = channel['channel_id']
-
         if channel_id:
             # get all info from channel
             response = youtube_user.get_channel_info(channel_id)
@@ -27,7 +24,6 @@ with open('data/actors.json') as data_file:
             subscribers = youtube_user.get_channel_subscribers(response)
             video_count = youtube_user.get_channel_video_count(response)
             view_count = youtube_user.get_channel_total_view_count(response)
-
             youtube_user.insert_value(column='subscribers',
                                       value=subscribers,
                                       search_cell='channel_id',
@@ -41,9 +37,20 @@ with open('data/actors.json') as data_file:
                                       search_cell='channel_id',
                                       search_value=channel_id)
 
-            videos_views = video.get_all_video_views_user_id(response, 50)
+            videos_views = video.get_all_video_views_user_id(response, 5)
 
             if videos_views:
                 # saves videos on channel_videos folder
-                output = FileOutput('data/channel_videos/' + title + '.csv')
-                output.export_to_CSV(videos_views, ['title', 'views'])
+                directory = 'data/' + yt.start_time
+                channel_videos_folder = directory + '/channel_videos'
+                if not os.path.exists(channel_videos_folder):
+                    os.makedirs(channel_videos_folder)
+                output = FileOutput(channel_videos_folder + '/' + title +
+                                    '.csv')
+                output.export_to_CSV(videos_views, ['title',
+                                                    'views',
+                                                    'likes',
+                                                    'dislikes',
+                                                    'comments',
+                                                    'favorites',
+                                                    'url'])
