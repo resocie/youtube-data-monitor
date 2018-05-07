@@ -24,7 +24,7 @@ with open('data/actors.json') as data_file:
             subscribers = youtube_user.get_channel_subscribers(response)
             video_count = youtube_user.get_channel_video_count(response)
             view_count = youtube_user.get_channel_total_view_count(response)
-
+            print(title)
             youtube_user.insert_value(column='subscribers',
                                       value=subscribers,
                                       search_cell='channel_id',
@@ -42,6 +42,7 @@ with open('data/actors.json') as data_file:
 
             if videos_views:
                 # saves videos on channel_videos folder
+<<<<<<< HEAD
                 directory = 'data/' + yt.start_time
                 channel_videos_folder = directory + '/channel_videos'
                 if not os.path.exists(channel_videos_folder):
@@ -49,3 +50,13 @@ with open('data/actors.json') as data_file:
                 output = FileOutput(channel_videos_folder + '/' + title +
                                     '.csv')
                 output.export_to_CSV(videos_views, ['title', 'views'])
+=======
+                output = FileOutput('data/channel_videos/' + title + '.csv')
+                output.export_to_CSV(videos_views, ['title',
+                                                    'views',
+                                                    'likes',
+                                                    'dislikes',
+                                                    'comments',
+                                                    'favorites',
+                                                    'url'])
+>>>>>>> 79dde9d4ca6afee4c6df185c8f9b531537804175
