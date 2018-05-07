@@ -16,7 +16,7 @@ class TestHeroku(unittest.TestCase):
         result = requests.get('https://youtube-data-monitor.herokuapp.com/')
 
         # Verifica o dado da resposta do caminho da página inicial
-        self.assertEqual(result.data.decode("utf-8") , "Hello World.")
+        self.assertEqual(result.content.decode("utf-8") , "Hello World.")
 
 if __name__ == '__main__':
     unittest.main()
