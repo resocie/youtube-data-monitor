@@ -18,11 +18,11 @@ class TestYoutubeCSV(unittest.TestCase):
         self.assertTrue(os.path.isfile(self._filename))
 
     def test_generate_youtube_folder(self):
-        csv = YoutubeAPI().generate_folder()
+        YoutubeAPI().generate_folder()
         self.assertTrue(os.path.exists(self._foldername))
 
     def test_check_data_of_an_actor(self):
-        insert_actors_info()
+        yt_api = insert_actors_info()
         result = YoutubeAPI().get_row(column='actor', value='Bancada Ativista')
         self.assertEqual(result, {'username': '', 'channel_id': ''})
 
@@ -38,6 +38,7 @@ class TestYoutubeCSV(unittest.TestCase):
                                   'channel_id': 'UCX2Aanu4fGewmhP4rf5GQ3Q'
                                   })
         self.clean_csv(yt_api)
+        self.clean_folder(yt_api)
 
     def test_clean_csv(self):
         yt_api = YoutubeAPI()
@@ -64,6 +65,9 @@ class TestYoutubeCSV(unittest.TestCase):
 
     def clean_csv(self, yt_api):
         yt_api.generate_csv(clean=True)
+
+    def clean_folder(self, yt_api):
+        yt_api.generate_folder(clean=True)
 
 
 if __name__ == '__main__':
