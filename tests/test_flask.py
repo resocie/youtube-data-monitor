@@ -76,6 +76,19 @@ class TestFlask(unittest.TestCase):
         # Verifica o código de estado da resposta da requisição
         self.assertEqual(result.status_code, 460)
 
+    def test_list_actor_videos_info(self):
+        # Envia uma requisição HTTP GET para a aplicação
+        result = self.app.get('/07-05-2018/canal/instituto_lula/videos')
+
+        # Verifica o código de estado da resposta da requisição
+        self.assertEqual(result.status_code, 200)
+        video_data_keys = ['title', 'views', 'likes', 'dislikes',
+                           'comments', 'favorites', 'url'].sort()
+
+        r = json.loads(result.data.decode('utf8'))
+
+        self.assertEqual(list(r['videos'][0].keys()).sort(), video_data_keys)
+
 
 if __name__ == '__main__':
     unittest.main()
