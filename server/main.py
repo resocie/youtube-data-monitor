@@ -29,17 +29,65 @@ def list_dates():
     return jsonify({'dates': data_folders})
 
 
+@app.route('/<date>/canal/<actor>/videos', methods=['GET'])
+def list_actor_videos_info(date, actor):
+    data_folders = [x[1] for x in os.walk('data/')][0]
+
+    raise_date_error, raise_actor_error = True, True
+    list_actors_video_info = {'videos': []}
+
+    if date == 'latest':
+        folder = data_folders[-1]
+        date_file = 'data/'+folder+'/channel_videos/'
+        raise_date_error = False
+    else:
+        for folder in data_folders:
+            check_folder = folder.split('_')[0]
+            if date == check_folder:
+                date_file = 'data/'+folder+'/channel_videos/'
+                raise_date_error = False
+
+    if raise_date_error:
+        raise InvalidUsage("Date was mistyped or our database didn't collected"
+                           " data in this date. Try a date in this format"
+                           " day-month-year, e.g. 07-05-2018 or try list the"
+                           " dates that our system collected data at"
+                           " youtube-data-monitor.herokuapp.com/dates.",
+                           status_code=450)
+
+    actor = actor.replace('_', ' ')
+    data_folders = list(os.walk(date_file))[0][2]
+    for folder in data_folders:
+        if folder.replace('.csv', '').lower() == actor.lower():
+            actor_videos_info = FileOutput(date_file+folder).get_all_data()
+            list_actors_video_info['videos'] = actor_videos_info
+            raise_actor_error = False
+
+    if raise_actor_error:
+        raise InvalidUsage("Actor name was mistyped or this actor name don't"
+                           " exist in our database. Try list all the actors at"
+                           " youtube-data-monitor.herokuapp.com/actors.",
+                           status_code=460)
+
+    return jsonify(list_actors_video_info)
+
+
 @app.route('/<date>/canal/<actor>', methods=['GET'])
 def list_actor_channel_info(date, actor):
     data_folders = [x[1] for x in os.walk('data/')][0]
 
     raise_date_error, raise_actor_error = True, True
 
-    for folder in data_folders:
-        check_folder = folder.split('_')[0]
-        if date == check_folder:
-            date_file = 'data/'+folder+'/youtube.csv'
-            raise_date_error = False
+    if date == 'latest':
+        folder = data_folders[-1]
+        date_file = 'data/'+folder+'/youtube.csv'
+        raise_date_error = False
+    else:
+        for folder in data_folders:
+            check_folder = folder.split('_')[0]
+            if date == check_folder:
+                date_file = 'data/'+folder+'/youtube.csv'
+                raise_date_error = False
 
     if raise_date_error:
         raise InvalidUsage("Date was mistyped or our database didn't collected"
