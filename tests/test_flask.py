@@ -50,6 +50,18 @@ class TestFlask(unittest.TestCase):
 
         self.assertEqual(r['channel_id'], channel_id)
 
+    def test_list_actor_channel_info_latest(self):
+        # Envia uma requisição HTTP GET para a aplicação
+        result = self.app.get('/latest/canal/Frente_Brasil_Popular')
+
+        # Verifica o código de estado da resposta da requisição
+        self.assertEqual(result.status_code, 200)
+
+        channel_id = "UCX2Aanu4fGewmhP4rf5GQ3Q"
+        r = json.loads(result.data.decode('utf8'))
+
+        self.assertEqual(r['channel_id'], channel_id)
+
     def test_list_actor_channel_info_with_actor_name_lower(self):
         # Envia uma requisição HTTP GET para a aplicação
         result = self.app.get('/07-05-2018/canal/frente_brasil_popular')
@@ -79,6 +91,19 @@ class TestFlask(unittest.TestCase):
     def test_list_actor_videos_info(self):
         # Envia uma requisição HTTP GET para a aplicação
         result = self.app.get('/07-05-2018/canal/instituto_lula/videos')
+
+        # Verifica o código de estado da resposta da requisição
+        self.assertEqual(result.status_code, 200)
+        video_data_keys = ['title', 'views', 'likes', 'dislikes',
+                           'comments', 'favorites', 'url'].sort()
+
+        r = json.loads(result.data.decode('utf8'))
+
+        self.assertEqual(list(r['videos'][0].keys()).sort(), video_data_keys)
+
+    def test_list_actor_videos_info_latest(self):
+        # Envia uma requisição HTTP GET para a aplicação
+        result = self.app.get('/latest/canal/instituto_lula/videos')
 
         # Verifica o código de estado da resposta da requisição
         self.assertEqual(result.status_code, 200)
