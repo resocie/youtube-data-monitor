@@ -37,6 +37,7 @@ def list_actor_videos_info(date, actor):
     list_actors_video_info = {'videos': []}
 
     if date == 'latest':
+        data_folders.sort()
         folder = data_folders[-1]
         date_file = 'data/'+folder+'/channel_videos/'
         raise_date_error = False
@@ -79,6 +80,7 @@ def list_actor_channel_info(date, actor):
     raise_date_error, raise_actor_error = True, True
 
     if date == 'latest':
+        data_folders.sort()
         folder = data_folders[-1]
         date_file = 'data/'+folder+'/youtube.csv'
         raise_date_error = False
