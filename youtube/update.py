@@ -24,6 +24,9 @@ with open('data/actors.json') as data_file:
             subscribers = youtube_user.get_channel_subscribers(response)
             video_count = youtube_user.get_channel_video_count(response)
             view_count = youtube_user.get_channel_total_view_count(response)
+            comment_count = youtube_user.get_channel_total_comment_count(
+             response)
+
             youtube_user.insert_value(column='subscribers',
                                       value=subscribers,
                                       search_cell='channel_id',
@@ -34,6 +37,10 @@ with open('data/actors.json') as data_file:
                                       search_value=channel_id)
             youtube_user.insert_value(column='view_count',
                                       value=view_count,
+                                      search_cell='channel_id',
+                                      search_value=channel_id)
+            youtube_user.insert_value(column='comment_count',
+                                      value=comment_count,
                                       search_cell='channel_id',
                                       search_value=channel_id)
 

@@ -96,3 +96,9 @@ class YoutubeAPI:
             raise ValueError(' Canal não existe ou não possui ' +
                              'estatísticas sobre o canal.')
         return response['items'][0]['statistics']['viewCount']
+
+    def get_channel_total_comment_count(self, response):
+        if not response['items'] or not response['items'][0]['statistics']:
+            raise ValueError(' Canal não existe ou não possui ' +
+                             'estatísticas sobre o canal.')
+        return response['items'][0]['statistics']['commentCount']
