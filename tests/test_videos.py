@@ -30,7 +30,7 @@ class TestVideos(unittest.TestCase):
                                                           max_results)
         video_ids = self._video.get_all_video_ids(result_activities)
         assert_list = ['L14U9aasDek', 'WyggT8Q-MIM', 'EXLN3qXkNpY']
-        self.assertEqual(video_ids[0:3], assert_list)
+        self.assertEqual(video_ids[-3:], assert_list)
 
     def test_all_videos_count_user_id(self):
         user_id = 'UCs6avCwreiI6QoFR83Ul2UQ'
@@ -43,10 +43,19 @@ class TestVideos(unittest.TestCase):
 denunciam milícias à mídia internacional')
         video_view = int(video_views[-1]['views'])
         video_url = str(video_views[-1]['url'])
-        self.assertGreater(video_view, 524)
+        video_likes = str(video_views[-1]['likes'])
+        video_dislikes = str(video_views[-1]['dislikes'])
+        video_comments = str(video_views[-1]['comments'])
+        video_favorites = int(video_views[-1]['favorites'])
+        self.assertGreater(video_view, 543)
         self.assertLess(video_view, 700)
         self.assertEqual(video_url,
                          'https://www.youtube.com/watch?v=zr6J20IR9J0')
+
+        self.assertEqual(video_likes, 'disabled')
+        self.assertEqual(video_dislikes, 'disabled')
+        self.assertEqual(video_comments, 'disabled')
+        self.assertGreaterEqual(video_favorites, 0)
 
 
 if __name__ == '__main__':
