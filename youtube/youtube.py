@@ -102,3 +102,9 @@ class YoutubeAPI:
             raise ValueError(' Canal não existe ou não possui ' +
                              'estatísticas sobre o canal.')
         return response['items'][0]['statistics']['commentCount']
+
+    def get_channel_creation_date(self, response):
+        if not response['items'] or not response['items'][0]['snippet']:
+            raise ValueError(' Canal não existe ou não possui ' +
+                             'estatísticas sobre o canal.')
+        return response['items'][0]['snippet']['publishedAt']
