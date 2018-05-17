@@ -76,6 +76,15 @@ class TestYoutubeAPI(unittest.TestCase):
                          'a-/AJLlDp31H7mrfq5Pu2Kn2WxX3PLrpHZlSVlSe9bZt' +
                          'Q=s88-mo-c-c0xffffffff-rj-k-no')
 
+    def test_get_channel_description(self):
+        channel_id = 'UCs6avCwreiI6QoFR83Ul2UQ'
+        result = self._user.get_channel_info(channel_id)
+        channel_description = self._user.get_channel_description(result)
+        self.assertEqual(channel_description, 'O Instituto Lula foi criado' +
+                         ' para ampliar a cooperação' +
+                         ' entre Brasil, África e América Latina e dar' +
+                         ' continuidade ao trabalho político de Lula.')
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -114,3 +114,9 @@ class YoutubeAPI:
             raise ValueError(' Canal não existe ou não possui ' +
                              'estatísticas sobre o canal.')
         return response['items'][0]['snippet']['thumbnails']['default']['url']
+
+    def get_channel_description(self, response):
+        if not response['items'] or not response['items'][0]['snippet']:
+            raise ValueError(' Canal não existe ou não possui ' +
+                             'estatísticas sobre o canal.')
+        return response['items'][0]['snippet']['description']
