@@ -68,6 +68,14 @@ class TestYoutubeAPI(unittest.TestCase):
         channel_date = self._user.get_channel_creation_date(result)
         self.assertEqual(channel_date, '2010-01-26T19:44:02.000Z')
 
+    def test_get_channel_thumbnail(self):
+        channel_id = 'UC9uefWa6TXIPDRWGZYMcTuA'
+        result = self._user.get_channel_info(channel_id)
+        channel_thumbnails = self._user.get_channel_thumbnail(result)
+        self.assertEqual(channel_thumbnails, 'https://yt3.ggpht.com/' +
+                         'a-/AJLlDp31H7mrfq5Pu2Kn2WxX3PLrpHZlSVlSe9bZt' +
+                         'Q=s88-mo-c-c0xffffffff-rj-k-no')
+
 
 if __name__ == '__main__':
     unittest.main()
