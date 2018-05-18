@@ -60,4 +60,5 @@ with open('data/actors.json') as data_file:
                                                     'dislikes',
                                                     'comments',
                                                     'favorites',
-                                                    'url'])
+                                                    'url',
+                                                    'publishedAt'])
