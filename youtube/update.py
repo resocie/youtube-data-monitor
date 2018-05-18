@@ -64,4 +64,5 @@ with open('data/actors.json') as data_file:
                                                     'publishedAt',
                                                     'description',
                                                     'tags',
-                                                    'embeddable'])
+                                                    'embeddable',
+                                                    'duration'])

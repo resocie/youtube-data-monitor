@@ -20,7 +20,7 @@ class Videos:
                             'maxResults': '',
                             'publishedAfter': '2018-01-01T00:00:01.45-03:00',
                             'key': self.user._youtube_key}
-        self._videos = {'part': 'snippet,statistics,status',
+        self._videos = {'part': 'snippet,statistics,status,contentDetails',
                         'id': '',
                         'maxResults': '',
                         'key': self.user._youtube_key}
@@ -91,6 +91,11 @@ class Videos:
                  views['items'][0]['status']['embeddable']
             else:
                 video_embeddable = 'disabled'
+            if 'duration' in views['items'][0]['contentDetails']:
+                video_duration = \
+                 views['items'][0]['contentDetails']['duration']
+            else:
+                video_duration = 'disabled'
             video_titles = views['items'][0]['snippet']['title']
             video_url = VIDEOS_BASE_URL + views['items'][0]['id']
             videos_dic.append({'title': video_titles,
@@ -103,7 +108,8 @@ class Videos:
                                'publishedAt': video_published_date,
                                'description': video_description,
                                'tags': video_tags,
-                               'embeddable': video_embeddable
+                               'embeddable': video_embeddable,
+                               'duration': video_duration
                                })
 
         return videos_dic
