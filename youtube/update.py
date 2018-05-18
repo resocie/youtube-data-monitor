@@ -61,4 +61,5 @@ with open('data/actors.json') as data_file:
                                                     'comments',
                                                     'favorites',
                                                     'url',
-                                                    'publishedAt'])
+                                                    'publishedAt',
+                                                    'description'])

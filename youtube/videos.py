@@ -76,6 +76,11 @@ class Videos:
                  views['items'][0]['snippet']['publishedAt']
             else:
                 video_published_date = 'disabled'
+            if 'description' in views['items'][0]['snippet']:
+                video_description = \
+                 views['items'][0]['snippet']['description']
+            else:
+                video_description = 'disabled'
             video_titles = views['items'][0]['snippet']['title']
             video_url = VIDEOS_BASE_URL + views['items'][0]['id']
             videos_dic.append({'title': video_titles,
@@ -85,7 +90,8 @@ class Videos:
                                'comments': video_comments,
                                'favorites': video_favorites,
                                'url': video_url,
-                               'publishedAt': video_published_date
+                               'publishedAt': video_published_date,
+                               'description': video_description
                                })
 
         return videos_dic
