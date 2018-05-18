@@ -132,3 +132,11 @@ class YoutubeAPI:
                                                                        'ords']
         except KeyError:
             pass
+
+    def get_channel_banner(self, response):
+        if not response['items'] or not response['items'][0]['branding' +
+                                                             'Settings']:
+            raise ValueError(' Canal não existe ou não possui ' +
+                             'estatísticas sobre o canal.')
+        return response['items'][0]['brandingSettings']['image']['banner' +
+                                                                 'ImageUrl']

@@ -89,7 +89,16 @@ class TestYoutubeAPI(unittest.TestCase):
         channel_id = 'UC9uefWa6TXIPDRWGZYMcTuA'
         result = self._user.get_channel_info(channel_id)
         channel_keywords = self._user.get_channel_keywords(result)
-        self.assertEqual(channel_keywords, "nova politica")
+        self.assertEqual(channel_keywords, '"nova politica"')
+
+    def test_get_channel_banner(self):
+        channel_id = 'UC9uefWa6TXIPDRWGZYMcTuA'
+        result = self._user.get_channel_info(channel_id)
+        channel_banner = self._user.get_channel_banner(result)
+        self.assertEqual(channel_banner, 'https://yt3.ggpht.com/_' +
+                         'TMNHFdl76PF7AePJJu6CK384TYDUHxWG2EkqSsS' +
+                         '5VBjdC6ZYekK1-H15Lcbna4Kyv2HLsiDexI=w1060' +
+                         '-fcrop64=1,00005a57ffffa5a8-nd-c0xffffffff-rj-k-no')
 
 
 if __name__ == '__main__':
