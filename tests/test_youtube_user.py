@@ -100,6 +100,13 @@ class TestYoutubeAPI(unittest.TestCase):
                          '5VBjdC6ZYekK1-H15Lcbna4Kyv2HLsiDexI=w1060' +
                          '-fcrop64=1,00005a57ffffa5a8-nd-c0xffffffff-rj-k-no')
 
+    def test_is_channel_above_one_hundred_thousand(self):
+        channel_id = 'UCvv3PVl4BnOnozFLjXwYQJQ'
+        result = self._user.get_channel_info(channel_id)
+        subscribers = int(self._user.get_channel_subscribers(result))
+        self.assertFalse(self._user.is_channel_above_one_hundred_thousand
+                         (subscribers))
+
 
 if __name__ == '__main__':
     unittest.main()
