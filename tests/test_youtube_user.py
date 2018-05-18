@@ -85,6 +85,12 @@ class TestYoutubeAPI(unittest.TestCase):
                          ' entre Brasil, África e América Latina e dar' +
                          ' continuidade ao trabalho político de Lula.')
 
+    def test_get_channel_keywords(self):
+        channel_id = 'UC9uefWa6TXIPDRWGZYMcTuA'
+        result = self._user.get_channel_info(channel_id)
+        channel_keywords = self._user.get_channel_keywords(result)
+        self.assertEqual(channel_keywords, "nova politica")
+
 
 if __name__ == '__main__':
     unittest.main()

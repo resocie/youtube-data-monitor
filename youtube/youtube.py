@@ -19,7 +19,8 @@ class YoutubeAPI:
         if not self._youtube_key:
             raise ValueError('YOUTUBE_KEY not provided.')
 
-        payload = {'part': 'snippet,contentDetails,statistics,id',
+        payload = {'part': 'snippet,contentDetails,statistics,id,' +
+                   'brandingSettings',
                    'key': self._youtube_key}
         self._payload_id = {**payload, **{'id': ''}}
         self._payload_username = {**payload, **{'forUsername': ''}}
@@ -120,3 +121,14 @@ class YoutubeAPI:
             raise ValueError(' Canal não existe ou não possui ' +
                              'estatísticas sobre o canal.')
         return response['items'][0]['snippet']['description']
+
+    def get_channel_keywords(self, response):
+        if not response['items'] or not response['items'][0]['branding' +
+                                                             'Settings']:
+            raise ValueError(' Canal não existe ou não possui ' +
+                             'estatísticas sobre o canal.')
+        try:
+            return response['items'][0]['brandingSettings']['channel']['keyw' +
+                                                                       'ords']
+        except KeyError:
+            pass
