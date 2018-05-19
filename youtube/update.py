@@ -29,6 +29,7 @@ with open('data/actors.json') as data_file:
             creation_date = youtube_user.get_channel_creation_date(
              response)
             channel_thumbnail = youtube_user.get_channel_thumbnail(response)
+            description = youtube_user.get_channel_description(response)
 
             youtube_user.insert_value(column='subscribers',
                                       value=subscribers,
@@ -50,8 +51,12 @@ with open('data/actors.json') as data_file:
                                       value=creation_date.split("T")[0],
                                       search_cell='channel_id',
                                       search_value=channel_id)
-            youtube_user.insert_value(column='channel_thumbnail_url',
+            youtube_user.insert_value(column='thumbnail_url',
                                       value=channel_thumbnail,
+                                      search_cell='channel_id',
+                                      search_value=channel_id)
+            youtube_user.insert_value(column='description',
+                                      value=description,
                                       search_cell='channel_id',
                                       search_value=channel_id)
 
