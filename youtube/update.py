@@ -31,6 +31,7 @@ with open('data/actors.json') as data_file:
             channel_thumbnail = youtube_user.get_channel_thumbnail(response)
             description = youtube_user.get_channel_description(response)
             keywords = youtube_user.get_channel_keywords(response)
+            banner_thumbnail = youtube_user.get_channel_banner(response)
 
             youtube_user.insert_value(column='subscribers',
                                       value=subscribers,
@@ -62,6 +63,10 @@ with open('data/actors.json') as data_file:
                                       search_value=channel_id)
             youtube_user.insert_value(column='keywords',
                                       value=keywords,
+                                      search_cell='channel_id',
+                                      search_value=channel_id)
+            youtube_user.insert_value(column='banner_url',
+                                      value=banner_thumbnail,
                                       search_cell='channel_id',
                                       search_value=channel_id)
 
