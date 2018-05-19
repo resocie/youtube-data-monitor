@@ -60,7 +60,8 @@ class TestYoutubeAPI(unittest.TestCase):
         channel_id = 'UCsCI7wlAwbzTPK55yVaX2Ig'
         result = self._user.get_channel_info(channel_id)
         comment_count = self._user.get_channel_total_comment_count(result)
-        self.assertGreater(comment_count, '1')
+        self.assertGreaterEqual(comment_count, '0')
+        self.assertLessEqual(comment_count, '5')
 
     def test_get_channel_creation_date(self):
         channel_id = 'UC9uefWa6TXIPDRWGZYMcTuA'
