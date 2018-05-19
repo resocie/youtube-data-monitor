@@ -26,6 +26,12 @@ with open('data/actors.json') as data_file:
             view_count = youtube_user.get_channel_total_view_count(response)
             comment_count = youtube_user.get_channel_total_comment_count(
              response)
+            creation_date = youtube_user.get_channel_creation_date(
+             response)
+            channel_thumbnail = youtube_user.get_channel_thumbnail(response)
+            description = youtube_user.get_channel_description(response)
+            keywords = youtube_user.get_channel_keywords(response)
+            banner_thumbnail = youtube_user.get_channel_banner(response)
 
             youtube_user.insert_value(column='subscribers',
                                       value=subscribers,
@@ -41,6 +47,26 @@ with open('data/actors.json') as data_file:
                                       search_value=channel_id)
             youtube_user.insert_value(column='comment_count',
                                       value=comment_count,
+                                      search_cell='channel_id',
+                                      search_value=channel_id)
+            youtube_user.insert_value(column='creation_date',
+                                      value=creation_date.split("T")[0],
+                                      search_cell='channel_id',
+                                      search_value=channel_id)
+            youtube_user.insert_value(column='thumbnail_url',
+                                      value=channel_thumbnail,
+                                      search_cell='channel_id',
+                                      search_value=channel_id)
+            youtube_user.insert_value(column='description',
+                                      value=description,
+                                      search_cell='channel_id',
+                                      search_value=channel_id)
+            youtube_user.insert_value(column='keywords',
+                                      value=keywords,
+                                      search_cell='channel_id',
+                                      search_value=channel_id)
+            youtube_user.insert_value(column='banner_url',
+                                      value=banner_thumbnail,
                                       search_cell='channel_id',
                                       search_value=channel_id)
 

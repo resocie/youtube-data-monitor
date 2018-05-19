@@ -60,7 +60,53 @@ class TestYoutubeAPI(unittest.TestCase):
         channel_id = 'UCsCI7wlAwbzTPK55yVaX2Ig'
         result = self._user.get_channel_info(channel_id)
         comment_count = self._user.get_channel_total_comment_count(result)
-        self.assertGreater(comment_count, '1')
+        self.assertGreaterEqual(comment_count, '0')
+        self.assertLessEqual(comment_count, '5')
+
+    def test_get_channel_creation_date(self):
+        channel_id = 'UC9uefWa6TXIPDRWGZYMcTuA'
+        result = self._user.get_channel_info(channel_id)
+        channel_date = self._user.get_channel_creation_date(result)
+        self.assertEqual(channel_date, '2010-01-26T19:44:02.000Z')
+
+    def test_get_channel_thumbnail(self):
+        channel_id = 'UC9uefWa6TXIPDRWGZYMcTuA'
+        result = self._user.get_channel_info(channel_id)
+        channel_thumbnails = self._user.get_channel_thumbnail(result)
+        self.assertEqual(channel_thumbnails, 'https://yt3.ggpht.com/' +
+                         'a-/AJLlDp31H7mrfq5Pu2Kn2WxX3PLrpHZlSVlSe9bZt' +
+                         'Q=s88-mo-c-c0xffffffff-rj-k-no')
+
+    def test_get_channel_description(self):
+        channel_id = 'UCs6avCwreiI6QoFR83Ul2UQ'
+        result = self._user.get_channel_info(channel_id)
+        channel_description = self._user.get_channel_description(result)
+        self.assertEqual(channel_description, 'O Instituto Lula foi criado' +
+                         ' para ampliar a cooperação' +
+                         ' entre Brasil, África e América Latina e dar' +
+                         ' continuidade ao trabalho político de Lula.')
+
+    def test_get_channel_keywords(self):
+        channel_id = 'UC9uefWa6TXIPDRWGZYMcTuA'
+        result = self._user.get_channel_info(channel_id)
+        channel_keywords = self._user.get_channel_keywords(result)
+        self.assertEqual(channel_keywords, '"nova politica"')
+
+    def test_get_channel_banner(self):
+        channel_id = 'UC9uefWa6TXIPDRWGZYMcTuA'
+        result = self._user.get_channel_info(channel_id)
+        channel_banner = self._user.get_channel_banner(result)
+        self.assertEqual(channel_banner, 'https://yt3.ggpht.com/_' +
+                         'TMNHFdl76PF7AePJJu6CK384TYDUHxWG2EkqSsS' +
+                         '5VBjdC6ZYekK1-H15Lcbna4Kyv2HLsiDexI=w1060' +
+                         '-fcrop64=1,00005a57ffffa5a8-nd-c0xffffffff-rj-k-no')
+
+    def test_is_channel_above_one_hundred_thousand(self):
+        channel_id = 'UCvv3PVl4BnOnozFLjXwYQJQ'
+        result = self._user.get_channel_info(channel_id)
+        subscribers = int(self._user.get_channel_subscribers(result))
+        self.assertFalse(self._user.is_channel_above_one_hundred_thousand
+                         (subscribers))
 
 
 if __name__ == '__main__':
