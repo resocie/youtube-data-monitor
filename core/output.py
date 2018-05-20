@@ -68,7 +68,6 @@ class FileOutput:
             raise ValueError('Nenhum dado encontrado na planilha %s'
                              % self._filename)
 
-
     def insert_multiple_values(self, column, search_cell, search_value):
         """Insert a value in a specific cell in a specific csv file.
 

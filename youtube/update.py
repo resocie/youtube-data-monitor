@@ -97,10 +97,10 @@ with open('data/actors.json') as data_file:
             else:
                 no_video_actors.append({'actors': actor})
         else:
-            headers = ['username','channel_id','subscribers','video_count',
-                       'view_count','comment_count','creation_date',
-                       'thumbnail_url','description','keywords',
-                       'banner_url','above_one_hundred_thousand']
+            headers = ['username', 'channel_id', 'subscribers', 'video_count',
+                       'view_count', 'comment_count', 'creation_date',
+                       'thumbnail_url', 'description', 'keywords',
+                       'banner_url', 'above_one_hundred_thousand']
             youtube_user.insert_multiple_values(column=headers,
                                                 search_cell='channel_id',
                                                 search_value=channel_id)
