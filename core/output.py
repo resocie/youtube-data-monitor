@@ -72,8 +72,7 @@ class FileOutput:
         """Insert a value in a specific cell in a specific csv file.
 
         Args:
-            column (str): Cell name where the value will be insert.
-            value (str): Value that will be insert.
+            column ``list``: List of strings with the headers
             search_cell (str): Cell name to search for the search_value.
             search_value (str): Value that indicates which row is to add the
                                 value.
