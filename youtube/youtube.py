@@ -19,7 +19,8 @@ class YoutubeAPI:
         if not self._youtube_key:
             raise ValueError('YOUTUBE_KEY not provided.')
 
-        payload = {'part': 'snippet,contentDetails,statistics,id',
+        payload = {'part': 'snippet,contentDetails,statistics,id,' +
+                   'brandingSettings',
                    'key': self._youtube_key}
         self._payload_id = {**payload, **{'id': ''}}
         self._payload_username = {**payload, **{'forUsername': ''}}
@@ -31,6 +32,11 @@ class YoutubeAPI:
         return FileOutput(self._filename).insert_value(column, value,
                                                        search_cell,
                                                        search_value)
+
+    def insert_multiple_values(self, column, search_cell, search_value):
+        return FileOutput(self._filename).insert_multiple_values(column,
+                                                                 search_cell,
+                                                                 search_value)
 
     def get_row(self, column, value):
         return FileOutput(self._filename).get_row(column, value)
@@ -102,3 +108,43 @@ class YoutubeAPI:
             raise ValueError(' Canal não existe ou não possui ' +
                              'estatísticas sobre o canal.')
         return response['items'][0]['statistics']['commentCount']
+
+    def get_channel_creation_date(self, response):
+        if not response['items'] or not response['items'][0]['snippet']:
+            raise ValueError(' Canal não existe ou não possui ' +
+                             'estatísticas sobre o canal.')
+        return response['items'][0]['snippet']['publishedAt']
+
+    def get_channel_thumbnail(self, response):
+        if not response['items'] or not response['items'][0]['snippet']:
+            raise ValueError(' Canal não existe ou não possui ' +
+                             'estatísticas sobre o canal.')
+        return response['items'][0]['snippet']['thumbnails']['default']['url']
+
+    def get_channel_description(self, response):
+        if not response['items'] or not response['items'][0]['snippet']:
+            raise ValueError(' Canal não existe ou não possui ' +
+                             'estatísticas sobre o canal.')
+        return response['items'][0]['snippet']['description']
+
+    def get_channel_keywords(self, response):
+        if not response['items'] or not response['items'][0]['branding' +
+                                                             'Settings']:
+            raise ValueError(' Canal não existe ou não possui ' +
+                             'estatísticas sobre o canal.')
+        try:
+            return response['items'][0]['brandingSettings']['channel']['keyw' +
+                                                                       'ords']
+        except KeyError:
+            pass
+
+    def get_channel_banner(self, response):
+        if not response['items'] or not response['items'][0]['branding' +
+                                                             'Settings']:
+            raise ValueError(' Canal não existe ou não possui ' +
+                             'estatísticas sobre o canal.')
+        return response['items'][0]['brandingSettings']['image']['banner' +
+                                                                 'ImageUrl']
+
+    def check_above_one_hundred_thousand(self, subscribers):
+        return int(subscribers) >= 100000
