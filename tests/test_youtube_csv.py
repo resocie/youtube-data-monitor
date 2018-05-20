@@ -40,6 +40,20 @@ class TestYoutubeCSV(unittest.TestCase):
         self.clean_csv(yt_api)
         self.clean_folder(yt_api)
 
+    def test_insert_multiple_values_of_an_actor(self):
+        yt_api = YoutubeAPI()
+        insert_actors_info()
+        result = yt_api.insert_multiple_values(column=['channel_id'],
+                                               search_cell='actor',
+                                               search_value='Frente Brasil' +
+                                               ' Popular')
+        result = yt_api.get_row(column='actor', value='Frente Brasil Popular')
+        self.assertEqual(result, {'username': '',
+                                  'channel_id': 'null'
+                                  })
+        self.clean_csv(yt_api)
+        self.clean_folder(yt_api)
+
     def test_clean_csv(self):
         yt_api = YoutubeAPI()
         self.assertTrue(yt_api.generate_csv(clean=True))
