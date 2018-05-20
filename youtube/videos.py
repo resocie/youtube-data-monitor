@@ -7,6 +7,7 @@ ACTIVITIES_URL = 'https://www.googleapis.com/youtube/v3/activities'
 VIDEOS_URL = 'https://www.googleapis.com/youtube/v3/videos'
 VIDEOS_BASE_URL = 'https://www.youtube.com/watch?v='
 SEARCH_URL = 'https://www.googleapis.com/youtube/v3/search'
+CATEGORY_URL = 'https://www.googleapis.com/youtube/v3/videoCategories'
 
 
 class Videos:
@@ -30,6 +31,14 @@ class Videos:
                         'type': '',
                         'relatedToVideoId': '',
                         'key': self.user._youtube_key}
+        self._category = {'part': 'id,snippet',
+                          'hl': 'pt_BR',
+                          'id': '',
+                          'key': self.user._youtube_key}
+
+    def get_category_info(self, id):
+        self._category['id'] = id
+        return requests.get(CATEGORY_URL, params=self._category).json()
 
     def get_search_info(self, max_results, related_to_video_id, type):
         self._search['maxResults'] = max_results
@@ -121,6 +130,12 @@ class Videos:
                                          video['id']['videoId'] + ','
             else:
                 related_to_video = 'disabled'
+            if 'categoryId' in views['items'][0]['snippet']:
+                category_id = views['items'][0]['snippet']['categoryId']
+                category_info = self.get_category_info(category_id)
+                video_category = category_info['items'][0]['snippet']['title']
+            else:
+                video_category = 'disabled'
             video_titles = views['items'][0]['snippet']['title']
             video_url = VIDEOS_BASE_URL + views['items'][0]['id']
             videos_dic.append({'title': video_titles,
@@ -136,7 +151,8 @@ class Videos:
                                'embeddable': video_embeddable,
                                'duration': video_duration,
                                'thumbnail': video_thumbnail,
-                               'related_to_video': related_to_video
+                               'related_to_video': related_to_video,
+                               'video_category': video_category
                                })
 
         return videos_dic

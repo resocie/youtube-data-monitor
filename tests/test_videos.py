@@ -15,6 +15,12 @@ class TestVideos(unittest.TestCase):
         result = self._video.get_activity_info(channel_id, max_results)
         self.assertTrue(result['items'])
 
+    def test_category_info(self):
+        id = '28'
+        result = self._video.get_category_info(id)
+        self.assertEqual(result['items'][0]['snippet']['title'],
+                         'Ciência e tecnologia')
+
     def test_has_search(self):
         related_to_video_id = 'Xx7bjU7gabM'
         max_results = '5'
