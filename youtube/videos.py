@@ -6,6 +6,7 @@ import os
 ACTIVITIES_URL = 'https://www.googleapis.com/youtube/v3/activities'
 VIDEOS_URL = 'https://www.googleapis.com/youtube/v3/videos'
 VIDEOS_BASE_URL = 'https://www.youtube.com/watch?v='
+SEARCH_URL = 'https://www.googleapis.com/youtube/v3/search'
 
 
 class Videos:
@@ -24,6 +25,17 @@ class Videos:
                         'id': '',
                         'maxResults': '',
                         'key': self.user._youtube_key}
+        self._search = {'part': 'id,snippet',
+                        'maxResults': '',
+                        'type': '',
+                        'relatedToVideoId': '',
+                        'key': self.user._youtube_key}
+
+    def get_search_info(self, max_results, related_to_video_id, type):
+        self._search['maxResults'] = max_results
+        self._search['relatedToVideoId'] = related_to_video_id
+        self._search['type'] = type
+        return requests.get(SEARCH_URL, params=self._search).json()
 
     def get_activity_info(self, channel_id, max_results):
         self._activities['maxResults'] = max_results
@@ -51,6 +63,7 @@ class Videos:
 
         for item in response:
             views = self.get_videos_info(item, max_results)
+            search = self.get_search_info(max_results, item, 'video')
             video_views = views['items'][0]['statistics']['viewCount']
             if 'likeCount' in views['items'][0]['statistics']:
                 video_likes = views['items'][0]['statistics']['likeCount']
@@ -101,6 +114,13 @@ class Videos:
                  views['items'][0]['snippet']['thumbnails']['high']['url']
             else:
                 video_thumbnail = 'disabled'
+            if search['items']:
+                related_to_video = ''
+                for video in search['items']:
+                    related_to_video += VIDEOS_BASE_URL + \
+                                         video['id']['videoId'] + ','
+            else:
+                related_to_video = 'disabled'
             video_titles = views['items'][0]['snippet']['title']
             video_url = VIDEOS_BASE_URL + views['items'][0]['id']
             videos_dic.append({'title': video_titles,
@@ -115,7 +135,8 @@ class Videos:
                                'tags': video_tags,
                                'embeddable': video_embeddable,
                                'duration': video_duration,
-                               'thumbnail': video_thumbnail
+                               'thumbnail': video_thumbnail,
+                               'related_to_video': related_to_video
                                })
 
         return videos_dic

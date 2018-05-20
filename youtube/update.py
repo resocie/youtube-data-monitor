@@ -66,5 +66,6 @@ with open('data/actors.json') as data_file:
                                                     'tags',
                                                     'embeddable',
                                                     'duration',
-                                                    'thumbnail'
+                                                    'thumbnail',
+                                                    'related_to_video'
                                                     ])
