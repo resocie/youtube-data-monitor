@@ -96,6 +96,11 @@ class Videos:
                  views['items'][0]['contentDetails']['duration']
             else:
                 video_duration = 'disabled'
+            if 'thumbnails' in views['items'][0]['snippet']:
+                video_thumbnail = \
+                 views['items'][0]['snippet']['thumbnails']['high']['url']
+            else:
+                video_thumbnail = 'disabled'
             video_titles = views['items'][0]['snippet']['title']
             video_url = VIDEOS_BASE_URL + views['items'][0]['id']
             videos_dic.append({'title': video_titles,
@@ -109,7 +114,8 @@ class Videos:
                                'description': video_description,
                                'tags': video_tags,
                                'embeddable': video_embeddable,
-                               'duration': video_duration
+                               'duration': video_duration,
+                               'thumbnail': video_thumbnail
                                })
 
         return videos_dic
