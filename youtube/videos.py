@@ -6,6 +6,8 @@ import os
 ACTIVITIES_URL = 'https://www.googleapis.com/youtube/v3/activities'
 VIDEOS_URL = 'https://www.googleapis.com/youtube/v3/videos'
 VIDEOS_BASE_URL = 'https://www.youtube.com/watch?v='
+SEARCH_URL = 'https://www.googleapis.com/youtube/v3/search'
+CATEGORY_URL = 'https://www.googleapis.com/youtube/v3/videoCategories'
 
 
 class Videos:
@@ -20,10 +22,29 @@ class Videos:
                             'maxResults': '',
                             'publishedAfter': '2018-01-01T00:00:01.45-03:00',
                             'key': self.user._youtube_key}
-        self._videos = {'part': 'snippet,statistics',
+        self._videos = {'part': 'snippet,statistics,status,contentDetails',
                         'id': '',
                         'maxResults': '',
                         'key': self.user._youtube_key}
+        self._search = {'part': 'id,snippet',
+                        'maxResults': '',
+                        'type': '',
+                        'relatedToVideoId': '',
+                        'key': self.user._youtube_key}
+        self._category = {'part': 'id,snippet',
+                          'hl': 'pt_BR',
+                          'id': '',
+                          'key': self.user._youtube_key}
+
+    def get_category_info(self, id):
+        self._category['id'] = id
+        return requests.get(CATEGORY_URL, params=self._category).json()
+
+    def get_search_info(self, max_results, related_to_video_id, type):
+        self._search['maxResults'] = max_results
+        self._search['relatedToVideoId'] = related_to_video_id
+        self._search['type'] = type
+        return requests.get(SEARCH_URL, params=self._search).json()
 
     def get_activity_info(self, channel_id, max_results):
         self._activities['maxResults'] = max_results
@@ -51,6 +72,7 @@ class Videos:
 
         for item in response:
             views = self.get_videos_info(item, max_results)
+            search = self.get_search_info(max_results, item, 'video')
             video_views = views['items'][0]['statistics']['viewCount']
             if 'likeCount' in views['items'][0]['statistics']:
                 video_likes = views['items'][0]['statistics']['likeCount']
@@ -71,6 +93,49 @@ class Videos:
                  views['items'][0]['statistics']['favoriteCount']
             else:
                 video_favorites = 'disabled'
+            if 'publishedAt' in views['items'][0]['snippet']:
+                video_published_date = \
+                 views['items'][0]['snippet']['publishedAt']
+            else:
+                video_published_date = 'disabled'
+            if 'description' in views['items'][0]['snippet']:
+                video_description = \
+                 views['items'][0]['snippet']['description']
+            else:
+                video_description = 'disabled'
+            if 'tags' in views['items'][0]['snippet']:
+                video_tags = \
+                 views['items'][0]['snippet']['tags']
+            else:
+                video_tags = 'disabled'
+            if 'embeddable' in views['items'][0]['status']:
+                video_embeddable = \
+                 views['items'][0]['status']['embeddable']
+            else:
+                video_embeddable = 'disabled'
+            if 'duration' in views['items'][0]['contentDetails']:
+                video_duration = \
+                 views['items'][0]['contentDetails']['duration']
+            else:
+                video_duration = 'disabled'
+            if 'thumbnails' in views['items'][0]['snippet']:
+                video_thumbnail = \
+                 views['items'][0]['snippet']['thumbnails']['high']['url']
+            else:
+                video_thumbnail = 'disabled'
+            if search['items']:
+                related_to_video = ''
+                for video in search['items']:
+                    related_to_video += VIDEOS_BASE_URL + \
+                                         video['id']['videoId'] + ','
+            else:
+                related_to_video = 'disabled'
+            if 'categoryId' in views['items'][0]['snippet']:
+                category_id = views['items'][0]['snippet']['categoryId']
+                category_info = self.get_category_info(category_id)
+                video_category = category_info['items'][0]['snippet']['title']
+            else:
+                video_category = 'disabled'
             video_titles = views['items'][0]['snippet']['title']
             video_url = VIDEOS_BASE_URL + views['items'][0]['id']
             videos_dic.append({'title': video_titles,
@@ -79,7 +144,15 @@ class Videos:
                                'dislikes': video_dislikes,
                                'comments': video_comments,
                                'favorites': video_favorites,
-                               'url': video_url
+                               'url': video_url,
+                               'publishedAt': video_published_date,
+                               'description': video_description,
+                               'tags': video_tags,
+                               'embeddable': video_embeddable,
+                               'duration': video_duration,
+                               'thumbnail': video_thumbnail,
+                               'related_to_video': related_to_video,
+                               'video_category': video_category
                                })
 
         return videos_dic

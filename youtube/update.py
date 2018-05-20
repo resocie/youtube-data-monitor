@@ -93,7 +93,16 @@ with open('data/actors.json') as data_file:
                                                     'dislikes',
                                                     'comments',
                                                     'favorites',
-                                                    'url'])
+                                                    'url',
+                                                    'publishedAt',
+                                                    'description',
+                                                    'tags',
+                                                    'embeddable',
+                                                    'duration',
+                                                    'thumbnail',
+                                                    'related_to_video',
+                                                    'video_category'
+                                                    ])
             else:
                 no_video_actors.append({'actors': actor})
         else:
