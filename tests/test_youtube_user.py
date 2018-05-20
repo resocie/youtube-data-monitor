@@ -105,7 +105,7 @@ class TestYoutubeAPI(unittest.TestCase):
         channel_id = 'UCvv3PVl4BnOnozFLjXwYQJQ'
         result = self._user.get_channel_info(channel_id)
         subscribers = int(self._user.get_channel_subscribers(result))
-        self.assertFalse(self._user.is_channel_above_one_hundred_thousand
+        self.assertFalse(self._user.check_above_one_hundred_thousand
                          (subscribers))
 
 
