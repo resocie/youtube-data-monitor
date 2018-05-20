@@ -33,6 +33,10 @@ class YoutubeAPI:
                                                        search_cell,
                                                        search_value)
 
+    def insert_multiple_values(self, column, search_cell, search_value):
+        return FileOutput(self._filename).insert_multiple_values(column,
+                                                       search_cell,
+                                                       search_value)
     def get_row(self, column, value):
         return FileOutput(self._filename).get_row(column, value)
 

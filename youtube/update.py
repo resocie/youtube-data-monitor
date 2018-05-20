@@ -18,7 +18,7 @@ with open('data/actors.json') as data_file:
     for actor in actors:            # get ID from youtube.csv
         channel = youtube_user.get_row(column='actor', value=actor)
         channel_id = channel['channel_id']
-        if channel_id:
+        if channel_id != 'null' and channel_id:
             directory = 'data/' + yt.start_time
             # get all info from channel
             response = youtube_user.get_channel_info(channel_id)
@@ -96,6 +96,13 @@ with open('data/actors.json') as data_file:
                                                     'url'])
             else:
                 no_video_actors.append({'actors': actor})
-
+        else:
+            headers = ['username','channel_id','subscribers','video_count',
+                       'view_count','comment_count','creation_date',
+                       'thumbnail_url','description','keywords',
+                       'banner_url','above_one_hundred_thousand']
+            youtube_user.insert_multiple_values(column=headers,
+                                                search_cell='channel_id',
+                                                search_value=channel_id)
     output = FileOutput(directory + '/no_video_actors.csv')
     output.export_to_CSV(no_video_actors)

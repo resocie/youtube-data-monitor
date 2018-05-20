@@ -68,6 +68,49 @@ class FileOutput:
             raise ValueError('Nenhum dado encontrado na planilha %s'
                              % self._filename)
 
+
+    def insert_multiple_values(self, column, search_cell, search_value):
+        """Insert a value in a specific cell in a specific csv file.
+
+        Args:
+            column (str): Cell name where the value will be insert.
+            value (str): Value that will be insert.
+            search_cell (str): Cell name to search for the search_value.
+            search_value (str): Value that indicates which row is to add the
+                                value.
+
+        Returns:
+            bool: True if successful, False otherwise.
+
+        Raises:
+            ValueError: If there're no data inside of the csv file or
+                        if a problem occurs in exporting the new CSV.
+
+        """
+
+        data = self.get_all_data()
+
+        if data:
+            found = False
+            for row in data:
+                for header in column:
+                    if row[search_cell] == search_value:
+                        row[header] = 'null'
+                        found = True
+
+            if not found:
+                return False
+
+            headers = data[0].keys()
+
+            try:
+                return self.export_to_CSV(data, headers)
+            except ValueError as err:
+                raise err
+        else:
+            raise ValueError('Nenhum dado encontrado na planilha %s'
+                             % self._filename)
+
     def get_row(self, column, value):
         """Get a row in a specific csv file.
 
