@@ -141,5 +141,5 @@ class YoutubeAPI:
         return response['items'][0]['brandingSettings']['image']['banner' +
                                                                  'ImageUrl']
 
-    def is_channel_above_one_hundred_thousand(self, response):
-        return response >= 100000
+    def check_above_one_hundred_thousand(self, subscribers):
+        return int(subscribers) >= 100000
