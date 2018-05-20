@@ -13,11 +13,13 @@ video = Videos()
 with open('data/actors.json') as data_file:
     actors = json.load(data_file)
     actors = actors['actors']
+    no_video_actors = []
 
     for actor in actors:            # get ID from youtube.csv
         channel = youtube_user.get_row(column='actor', value=actor)
         channel_id = channel['channel_id']
         if channel_id:
+            directory = 'data/' + yt.start_time
             # get all info from channel
             response = youtube_user.get_channel_info(channel_id)
             title = youtube_user.get_channel_title(response)
@@ -80,7 +82,6 @@ with open('data/actors.json') as data_file:
 
             if videos_views:
                 # saves videos on channel_videos folder
-                directory = 'data/' + yt.start_time
                 channel_videos_folder = directory + '/channel_videos'
                 if not os.path.exists(channel_videos_folder):
                     os.makedirs(channel_videos_folder)
@@ -93,3 +94,8 @@ with open('data/actors.json') as data_file:
                                                     'comments',
                                                     'favorites',
                                                     'url'])
+            else:
+                no_video_actors.append({'actors': actor})
+
+    output = FileOutput(directory + '/no_video_actors.csv')
+    output.export_to_CSV(no_video_actors)
