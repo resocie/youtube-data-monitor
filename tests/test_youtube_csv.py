@@ -1,4 +1,4 @@
-import youtube.youtube as yt
+from youtube.youtube import YoutubeAPI
 from core.actors_info import YoutubeAPI, scrap_basic_actors_info, \
                             insert_actors_info
 import unittest
@@ -10,8 +10,9 @@ import time
 class TestYoutubeCSV(unittest.TestCase):
 
     def setUp(self):
-        self._filename = 'data/' + yt.start_time + '/youtube.csv'
-        self._foldername = 'data/' + yt.start_time
+        YoutubeAPI.start_time = 'date_test'
+        self._filename = 'data/' + YoutubeAPI.start_time + '/youtube.csv'
+        self._foldername = 'data/' + YoutubeAPI.start_time
 
     def test_generate_youtube_csv(self):
         csv = YoutubeAPI().generate_csv()
