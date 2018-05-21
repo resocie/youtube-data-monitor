@@ -52,8 +52,6 @@ class TestYoutubeCSV(unittest.TestCase):
         self.assertEqual(result, {'username': '',
                                   'channel_id': 'null'
                                   })
-        self.clean_csv(yt_api)
-        self.clean_folder(yt_api)
 
     def test_clean_csv(self):
         yt_api = YoutubeAPI()
