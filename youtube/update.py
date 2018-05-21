@@ -1,5 +1,5 @@
 from core.actors_info import scrap_basic_actors_info, insert_actors_info
-import youtube.youtube as yt
+from youtube.youtube import YoutubeAPI
 from core.output import FileOutput
 from youtube.videos import Videos
 import time
@@ -19,7 +19,7 @@ with open('data/actors.json') as data_file:
         channel = youtube_user.get_row(column='actor', value=actor)
         channel_id = channel['channel_id']
         if channel_id != 'null' and channel_id:
-            directory = 'data/' + yt.start_time
+            directory = 'data/' + YoutubeAPI.start_time
             # get all info from channel
             response = youtube_user.get_channel_info(channel_id)
             title = youtube_user.get_channel_title(response)

@@ -5,7 +5,6 @@ import os
 import shutil
 from datetime import datetime
 
-start_time = datetime.now().strftime("%d-%m-%Y")
 CHANNELS_URL = 'https://www.googleapis.com/youtube/v3/channels'
 
 
@@ -14,6 +13,8 @@ class YoutubeAPI:
 
         Get channels information.
     """
+    start_time = datetime.now().strftime("%d-%m-%Y")
+
     def __init__(self):
         self._youtube_key = os.environ['YOUTUBE_KEY']
         if not self._youtube_key:
@@ -24,8 +25,8 @@ class YoutubeAPI:
                    'key': self._youtube_key}
         self._payload_id = {**payload, **{'id': ''}}
         self._payload_username = {**payload, **{'forUsername': ''}}
-        self._foldername = 'data/' + start_time
-        self._filename = 'data/' + start_time + '/youtube.csv'
+        self._foldername = 'data/' + YoutubeAPI.start_time
+        self._filename = 'data/' + YoutubeAPI.start_time + '/youtube.csv'
         self._csv_headers = ['actor', 'username', 'channel_id']
 
     def insert_value(self, column, value, search_cell, search_value):
