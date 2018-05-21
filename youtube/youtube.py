@@ -5,7 +5,7 @@ import os
 import shutil
 from datetime import datetime
 
-start_time = datetime.now().strftime("%d-%m-%Y_%H:%M:%S")
+start_time = datetime.now().strftime("%d-%m-%Y")
 CHANNELS_URL = 'https://www.googleapis.com/youtube/v3/channels'
 
 
