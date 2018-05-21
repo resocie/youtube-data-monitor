@@ -103,14 +103,17 @@ def list_actor_channel_info(date, actor):
         actor = actor.replace('_', ' ')
         actor_info = FileOutput(date_file).get_row(column='actor', value=actor)
         if actor_info:
-            actor_info['actor'] = actor
-            raise_actor_error = False
+            if actor_info['channel_id'] and actor_info['channel_id'] != 'null':
+                actor_info['actor'] = actor
+                raise_actor_error = False
     except ValueError:
         raise_actor_error = True
 
     if raise_actor_error:
         raise InvalidUsage("Actor name was mistyped or this actor name don't"
-                           " exist in our database. Try list all the actors at"
+                           " exist in our database or"
+                           " there is no data to provide for this actor."
+                           " Try list all the actors at"
                            " youtube-data-monitor.herokuapp.com/actors.",
                            status_code=460)
 
