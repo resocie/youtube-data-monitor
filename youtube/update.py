@@ -2,6 +2,8 @@ from core.actors_info import scrap_basic_actors_info, insert_actors_info
 from youtube.youtube import YoutubeAPI
 from core.output import FileOutput
 from youtube.videos import Videos
+from server.models import Actor, db
+from server.main import app
 import time
 import os
 import json
@@ -9,6 +11,8 @@ import json
 # scrap_basic_actors_info()
 youtube_user = insert_actors_info()
 video = Videos()
+app.app_context().push()
+db.create_all()  # create the tables and database
 
 with open('data/actors.json') as data_file:
     actors = json.load(data_file)
@@ -78,6 +82,22 @@ with open('data/actors.json') as data_file:
                                       search_cell='channel_id',
                                       search_value=channel_id)
 
+            actor = Actor(channel_id=channel_id,
+                          title=title,
+                          subscribers=subscribers,
+                          video_count=video_count,
+                          view_count=view_count,
+                          comment_count=comment_count,
+                          collected_date=creation_date.split("T")[0],
+                          thumbnail_url=channel_thumbnail,
+                          description=description,
+                          keywords=keywords,
+                          banner_url=banner_thumbnail,
+                          above_one_hundred_thousand=hundred_thousand)
+
+            db.session.add(actor)
+            db.session.commit()
+            print(actor)
             videos_views = video.get_all_video_views_user_id(response, 5)
 
             if videos_views:

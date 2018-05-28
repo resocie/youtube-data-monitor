@@ -4,7 +4,7 @@ db = SQLAlchemy()
 
 
 class Actor(db.Model):
-    actor_name = db.Column(db.Text)
+    # actor_name = db.Column(db.Text)
     subscribers = db.Column(db.Integer)
     video_count = db.Column(db.Integer)
     title = db.Column(db.Text)
@@ -18,12 +18,12 @@ class Actor(db.Model):
     banner_url = db.Column(db.Text)
     above_one_hundred_thousand = db.Column(db.Boolean)
 
-    def __init__(self, actor_name, subscribers, video_count, title,
+    def __init__(self, subscribers, video_count, title,
                  channel_id, view_count, collected_date,
                  comment_count, thumbnail_url, description,
                  keywords, banner_url, above_one_hundred_thousand):
 
-        self.actor_name = actor_name
+        # self.actor_name = actor_name
         self.subscribers = subscribers
         self.video_count = video_count
         self.title = title
