@@ -37,7 +37,7 @@ class TestVideos(unittest.TestCase):
 
     def test_all_video_ids(self):
         user_id = 'UC9uefWa6TXIPDRWGZYMcTuA'
-        max_results = '5'
+        max_results = '7'
         result = self._user.get_channel_info(user_id)
         channel_id = self._user.get_channel_id(result)
         result_activities = self._video.get_activity_info(channel_id,
