@@ -14,14 +14,15 @@ video = Videos()
 app.app_context().push()
 db.create_all()  # create the tables and database
 
-with open('data/actors.json') as data_file:
+with open('data/channels_basic_info.json') as data_file:
     actors = json.load(data_file)
-    actors = actors['actors']
+    actors_dict = actors['channels']
     no_video_actors = []
 
-    for actor in actors:            # get ID from youtube.csv
-        channel = youtube_user.get_row(column='actor', value=actor)
-        channel_id = channel['channel_id']
+    for actor in actors_dict:            # get ID from youtube.csv
+        channel_id = actor['id']
+        channel_username = actor['username']
+        channel_actor = actor['actor']
         if channel_id != 'null' and channel_id:
             directory = 'data/' + YoutubeAPI.start_time
             # get all info from channel
@@ -82,22 +83,24 @@ with open('data/actors.json') as data_file:
                                       search_cell='channel_id',
                                       search_value=channel_id)
 
-            actor = Actor(channel_id=channel_id,
-                          title=title,
-                          subscribers=subscribers,
-                          video_count=video_count,
-                          view_count=view_count,
-                          comment_count=comment_count,
-                          collected_date=creation_date.split("T")[0],
-                          thumbnail_url=channel_thumbnail,
-                          description=description,
-                          keywords=keywords,
-                          banner_url=banner_thumbnail,
-                          above_one_hundred_thousand=hundred_thousand)
+            actor_db = Actor(actor_name=channel_actor,
+                             actor_username=channel_username,
+                             channel_id=channel_id,
+                             title=title,
+                             subscribers=subscribers,
+                             video_count=video_count,
+                             view_count=view_count,
+                             comment_count=comment_count,
+                             collected_date=creation_date.split("T")[0],
+                             thumbnail_url=channel_thumbnail,
+                             description=description,
+                             keywords=keywords,
+                             banner_url=banner_thumbnail,
+                             above_one_hundred_thousand=hundred_thousand)
 
-            db.session.add(actor)
+            db.session.add(actor_db)
             db.session.commit()
-            print(actor)
+            print(actor_db)
             videos_views = video.get_all_video_views_user_id(response, 5)
 
             if videos_views:
