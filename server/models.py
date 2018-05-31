@@ -11,6 +11,7 @@ class Actor(db.Model):
     title = db.Column(db.Text)
     channel_id = db.Column(db.String(30), primary_key=True)
     view_count = db.Column(db.Integer)
+    created_date = db.Column(db.String(10))
     collected_date = db.Column(db.String(10), primary_key=True)
     comment_count = db.Column(db.Integer)
     thumbnail_url = db.Column(db.Text)
@@ -21,7 +22,7 @@ class Actor(db.Model):
 
     def __init__(self, actor_name, actor_username,
                  subscribers, video_count, title,
-                 channel_id, view_count, collected_date,
+                 channel_id, view_count, created_date, collected_date,
                  comment_count, thumbnail_url, description,
                  keywords, banner_url, above_one_hundred_thousand):
         self.actor_username = actor_username
@@ -31,6 +32,7 @@ class Actor(db.Model):
         self.title = title
         self.channel_id = channel_id
         self.view_count = view_count
+        self.created_date = created_date
         self.collected_date = collected_date
         self.comment_count = comment_count
         self.thumbnail_url = thumbnail_url
