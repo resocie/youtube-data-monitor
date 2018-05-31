@@ -2,6 +2,7 @@ from core.output import FileOutput
 from server.api_exceptions import InvalidUsage
 from server.models import db
 from flask import Flask, jsonify
+from server.models import Actor
 import json
 import os
 
@@ -29,9 +30,10 @@ def list_actors():
 
 @app.route('/dates', methods=['GET'])
 def list_dates():
-    data_folders = [x[1] for x in os.walk('data/')][0]
+    dates = db.session.query(Actor.collected_date).distinct()
+    all_dates = [item[0] for item in dates]
 
-    return jsonify({'dates': data_folders})
+    return jsonify({'dates': all_dates})
 
 
 @app.route('/<date>/canal/<actor>/videos', methods=['GET'])
@@ -80,20 +82,18 @@ def list_actor_videos_info(date, actor):
 
 @app.route('/<date>/canal/<actor>', methods=['GET'])
 def list_actor_channel_info(date, actor):
-    data_folders = [x[1] for x in os.walk('data/')][0]
 
     raise_date_error, raise_actor_error = True, True
+    dates = db.session.query(Actor.collected_date).distinct()
+    all_dates = [item[0] for item in dates]
 
     if date == 'latest':
-        data_folders.sort()
-        folder = data_folders[-1]
-        date_file = 'data/'+folder+'/youtube.csv'
+        all_dates.sort()
+        given_date = all_dates[-1]
         raise_date_error = False
     else:
-        for folder in data_folders:
-            check_folder = folder.split('_')[0]
-            if date == check_folder:
-                date_file = 'data/'+folder+'/youtube.csv'
+        for item in all_dates:
+            if date == item:
                 raise_date_error = False
 
     if raise_date_error:
@@ -104,15 +104,10 @@ def list_actor_channel_info(date, actor):
                            " youtube-data-monitor.herokuapp.com/dates.",
                            status_code=450)
 
-    try:
-        actor = actor.replace('_', ' ')
-        actor_info = FileOutput(date_file).get_row(column='actor', value=actor)
-        if actor_info:
-            if actor_info['channel_id'] and actor_info['channel_id'] != 'null':
-                actor_info['actor'] = actor
-                raise_actor_error = False
-    except ValueError:
-        raise_actor_error = True
+    actor = actor.replace('_', ' ')
+    actor_info = db.session.query(Actor).filter_by(actor_name=actor).first()
+    if actor_info is not None:
+        raise_actor_error = False
 
     if raise_actor_error:
         raise InvalidUsage("Actor name was mistyped or this actor name don't"
@@ -122,8 +117,8 @@ def list_actor_channel_info(date, actor):
                            " youtube-data-monitor.herokuapp.com/actors.",
                            status_code=460)
 
-    return jsonify(actor_info)
-
+    del actor_info.__dict__['_sa_instance_state']
+    return jsonify(actor_info.__dict__)
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
