@@ -120,6 +120,7 @@ def list_actor_channel_info(date, actor):
     del actor_info.__dict__['_sa_instance_state']
     return jsonify(actor_info.__dict__)
 
+
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port, debug=True)

@@ -19,6 +19,7 @@ class Actor(db.Model):
     keywords = db.Column(db.Text)
     banner_url = db.Column(db.Text)
     above_one_hundred_thousand = db.Column(db.Boolean)
+    # videos = db.relationship('Videos', backref='actor')
 
     def __init__(self, actor_name, actor_username,
                  subscribers, video_count, title,
@@ -42,4 +43,53 @@ class Actor(db.Model):
         self.above_one_hundred_thousand = above_one_hundred_thousand
 
     def __repr__(self):
-        return 'id-{}'.format(self.title)
+        return '{}'.format(self.title)
+
+
+class Videos(db.Model):
+    title = db.Column(db.Text)
+    views = db.Column(db.Text)
+    dislikes = db.Column(db.Text)
+    comments = db.Column(db.Text)
+    favorites = db.Column(db.Text)
+    url = db.Column(db.Text)
+    publishedAt = db.Column(db.Text)
+    description = db.Column(db.Text)
+    tags = db.Column(db.Text)
+    embeddable = db.Column(db.Text)
+    duration = db.Column(db.Text)
+    thumbnail = db.Column(db.Text)
+    related_to_video = db.Column(db.Text)
+    category = db.Column(db.Text)
+    collected_date = db.relationship(db.Text,
+                                     db.ForeignKey('actor.collected_date'),
+                                     primary_key=True)
+    channel_id = db.Column(db.String(30),
+                           db.ForeignKey('actor.channel_id'),
+                           primary_key=True)
+    video_id = db.Column(db.Text, primary_key=True)
+
+    def __init__(title, views, dislikes, comments, favorites, url, publishedAt,
+                 description, tags, embeddable, duration, thumbnail,
+                 related_to_video, category, collected_date, channel_id,
+                 video_id):
+            self.title = title
+            self.views = views
+            self.dislikes = dislikes
+            self.comments = comments
+            self.favorites = favorites
+            self.url = url
+            self.publishedAt = publishedAt
+            self.description = description
+            self.tags = tags
+            self.embeddable = embeddable
+            self.duration = duration
+            self.thumbnail = thumbnail
+            self.related_to_video = related_to_video
+            self.category = category
+            self.collected_date = collected_date
+            self.channel_id = channel_id
+            self.video_id = video_id
+
+    def __repr__(self):
+        return '{}'.format(self.title)

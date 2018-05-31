@@ -127,6 +127,28 @@ with open('data/channels_basic_info.json') as data_file:
                                                     'related_to_video',
                                                     'video_category'
                                                     ])
+                video_db = Videos(title=videos_views['title'],
+                                  views=videos_views['views'],
+                                  dislikes=videos_views['dislikes'],
+                                  comments=videos_views['comments'],
+                                  favorites=videos_views['favorites'],
+                                  url=videos_views['url'],
+                                  publishedAt=videos_views['publishedAt'],
+                                  description=videos_views['description'],
+                                  tags=videos_views['tags'],
+                                  embeddable=videos_views['embeddable'],
+                                  duration=videos_views['duration'],
+                                  thumbnail=videos_views['thumbnail'],
+                                  related_to_video=videos_views['related_' +
+                                                                'to_video'],
+                                  category=videos_views['video_category'],
+                                  collected_date=YoutubeAPI.start_time,
+                                  channel_id=channel_id,
+                                  video_id=videos_views['id'])
+
+                db.session.add(video_db)
+                db.session.commit()
+                print(video_db)
             else:
                 no_video_actors.append({'actors': actor})
         else:
