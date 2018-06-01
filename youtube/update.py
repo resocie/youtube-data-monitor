@@ -78,7 +78,7 @@ with open('data/actors.json') as data_file:
                                       search_cell='channel_id',
                                       search_value=channel_id)
 
-            videos_views = video.get_all_video_views_user_id(response, 5)
+            videos_views = video.get_all_video_views_user_id(response, 50)
 
             if videos_views:
                 # saves videos on channel_videos folder

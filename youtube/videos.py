@@ -22,6 +22,13 @@ class Videos:
                             'maxResults': '',
                             'publishedAfter': '2018-01-01T00:00:01.45-03:00',
                             'key': self.user._youtube_key}
+        self._activities_extent = {'part': 'snippet,contentDetails',
+                                   'channelId': '',
+                                   'maxResults': '',
+                                   'publishedAfter':
+                                   '2018-01-01T00:00:01.45-03:00',
+                                   'publishedBefore': '',
+                                   'key': self.user._youtube_key}
         self._videos = {'part': 'snippet,statistics,status,contentDetails',
                         'id': '',
                         'maxResults': '',
@@ -49,7 +56,25 @@ class Videos:
     def get_activity_info(self, channel_id, max_results):
         self._activities['maxResults'] = max_results
         self._activities['channelId'] = channel_id
-        return requests.get(ACTIVITIES_URL, params=self._activities).json()
+        self._activities_extent['maxResults'] = max_results
+        self._activities_extent['channelId'] = channel_id
+        request = requests.get(ACTIVITIES_URL, params=self._activities).json()
+
+        if('items' in request):
+            length = len(request['items'])
+            while(length >= 50):
+                last_date = request['items'][-1]['snippet']['publishedAt']
+                self._activities_extent['publishedBefore'] = last_date
+                request_extent = requests.get(ACTIVITIES_URL,
+                                              params=self._activities_extent)
+                request_extent = request_extent.json()
+                if('items' in request_extent):
+                    length = len(request_extent['items'])
+                    request['items'].extend(request_extent['items'])
+                else:
+                    length = 0
+            self._activities_extent['publishedBefore'] = ''
+        return request
 
     def get_videos_info(self, video_id, max_results):
         self._videos['maxResults'] = max_results
