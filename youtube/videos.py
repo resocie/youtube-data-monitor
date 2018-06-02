@@ -73,6 +73,7 @@ class Videos:
         for item in response:
             views = self.get_videos_info(item, max_results)
             search = self.get_search_info(max_results, item, 'video')
+            id = views['items'][0]['id']
             video_views = views['items'][0]['statistics']['viewCount']
             if 'likeCount' in views['items'][0]['statistics']:
                 video_likes = views['items'][0]['statistics']['likeCount']
@@ -138,7 +139,8 @@ class Videos:
                 video_category = 'disabled'
             video_titles = views['items'][0]['snippet']['title']
             video_url = VIDEOS_BASE_URL + views['items'][0]['id']
-            videos_dic.append({'title': video_titles,
+            videos_dic.append({'id': id,
+                               'title': video_titles,
                                'views': video_views,
                                'likes': video_likes,
                                'dislikes': video_dislikes,
@@ -162,5 +164,4 @@ class Videos:
         result_activities = self.get_activity_info(channel_id, max_results)
         videos_id = self.get_all_video_ids(result_activities)
         video_views = self.get_all_video_items(videos_id, max_results)
-
         return video_views

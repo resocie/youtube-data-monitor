@@ -3,6 +3,7 @@ from youtube.youtube import YoutubeAPI
 from core.output import FileOutput
 from youtube.videos import Videos
 from server.models import Actor, db
+from server.models import Videos as VideosDB
 from server.main import app
 import time
 import os
@@ -111,7 +112,8 @@ with open('data/channels_basic_info.json') as data_file:
                     os.makedirs(channel_videos_folder)
                 output = FileOutput(channel_videos_folder + '/' + title +
                                     '.csv')
-                output.export_to_CSV(videos_views, ['title',
+                output.export_to_CSV(videos_views, ['id',
+                                                    'title',
                                                     'views',
                                                     'likes',
                                                     'dislikes',
@@ -127,30 +129,30 @@ with open('data/channels_basic_info.json') as data_file:
                                                     'related_to_video',
                                                     'video_category'
                                                     ])
-                video_db = Videos(title=videos_views['title'],
-                                  views=videos_views['views'],
-                                  dislikes=videos_views['dislikes'],
-                                  comments=videos_views['comments'],
-                                  favorites=videos_views['favorites'],
-                                  url=videos_views['url'],
-                                  publishedAt=videos_views['publishedAt'],
-                                  description=videos_views['description'],
-                                  tags=videos_views['tags'],
-                                  embeddable=videos_views['embeddable'],
-                                  duration=videos_views['duration'],
-                                  thumbnail=videos_views['thumbnail'],
-                                  related_to_video=videos_views['related_' +
-                                                                'to_video'],
-                                  category=videos_views['video_category'],
-                                  collected_date=YoutubeAPI.start_time,
-                                  channel_id=channel_id,
-                                  video_id=videos_views['id'])
+                for item in videos_views:
+                    video_db = VideosDB(views=item['views'],
+                                        title=item['title'],
+                                        dislikes=item['dislikes'],
+                                        comments=item['comments'],
+                                        favorites=item['favorites'],
+                                        url=item['url'],
+                                        publishedAt=item['publishedAt'],
+                                        description=item['description'],
+                                        tags=item['tags'],
+                                        embeddable=item['embeddable'],
+                                        duration=item['duration'],
+                                        thumbnail=item['thumbnail'],
+                                        related_to_video=item
+                                        ['related_to_video'],
+                                        category=item['video_category'],
+                                        collected_date=YoutubeAPI.start_time,
+                                        channel_id=channel_id,
+                                        video_id=item['id'])
 
-                db.session.add(video_db)
-                db.session.commit()
-                print(video_db)
+                    db.session.add(video_db)
+                    db.session.commit()
             else:
-                no_video_actors.append({'actors': actor})
+                no_video_actors.append({'actors': actor['actor']})
         else:
             headers = ['username', 'channel_id', 'subscribers', 'video_count',
                        'view_count', 'comment_count', 'creation_date',
