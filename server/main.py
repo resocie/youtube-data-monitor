@@ -40,13 +40,12 @@ def list_dates():
 def list_actor_videos_info(date, actor):
 
     raise_date_error, raise_actor_error = True, True
-    # list_actors_video_info = {'videos': []}
     dates = db.session.query(Actor.collected_date).distinct()
     all_dates = [item[0] for item in dates]
 
     if date == 'latest':
         all_dates.sort()
-        given_date = all_dates[-1]
+        date = all_dates[-1]
         raise_date_error = False
     else:
         for item in all_dates:
@@ -62,11 +61,13 @@ def list_actor_videos_info(date, actor):
                            status_code=450)
 
     actor = actor.replace('_', ' ')
+    actor = actor.title()
     info = db.session.query(Actor).filter_by(actor_name=actor).first()
     if info is not None:
         raise_actor_error = False
         videos = db.session.query(Videos).\
-            filter_by(collected_date=date, channel_id=info.channel_id).all()
+            filter_by(collected_date=date,
+                      channel_id=info.channel_id).all()
         all_videos = []
         for item in videos:
             del item.__dict__['_sa_instance_state']
@@ -92,7 +93,7 @@ def list_actor_channel_info(date, actor):
 
     if date == 'latest':
         all_dates.sort()
-        given_date = all_dates[-1]
+        date = all_dates[-1]
         raise_date_error = False
     else:
         for item in all_dates:
@@ -108,7 +109,9 @@ def list_actor_channel_info(date, actor):
                            status_code=450)
 
     actor = actor.replace('_', ' ')
-    actor_info = db.session.query(Actor).filter_by(actor_name=actor).first()
+    actor = actor.title()
+    actor_info = db.session.query(Actor).filter_by(actor_name=actor,
+                                                   collected_date=date).first()
     if actor_info is not None:
         raise_actor_error = False
 
