@@ -40,7 +40,7 @@ class TestFlask(unittest.TestCase):
 
     def test_list_actor_channel_info(self):
         # Envia uma requisição HTTP GET para a aplicação
-        result = self.app.get('/07-05-2018/canal/Frente_Brasil_Popular')
+        result = self.app.get('/02-06-2018/canal/Frente_Brasil_Popular')
 
         # Verifica o código de estado da resposta da requisição
         self.assertEqual(result.status_code, 200)
@@ -64,7 +64,7 @@ class TestFlask(unittest.TestCase):
 
     def test_list_actor_channel_info_with_actor_name_lower(self):
         # Envia uma requisição HTTP GET para a aplicação
-        result = self.app.get('/07-05-2018/canal/frente_brasil_popular')
+        result = self.app.get('/02-06-2018/canal/frente_brasil_popular')
 
         # Verifica o código de estado da resposta da requisição
         self.assertEqual(result.status_code, 200)
@@ -83,14 +83,14 @@ class TestFlask(unittest.TestCase):
 
     def test_list_actor_channel_info_with_wrong_actor_name(self):
         # Envia uma requisição HTTP GET para a aplicação
-        result = self.app.get('/07-05-2018/canal/Frente')
+        result = self.app.get('/02-06-2018/canal/Frente')
 
         # Verifica o código de estado da resposta da requisição
         self.assertEqual(result.status_code, 460)
 
     def test_list_actor_videos_info(self):
         # Envia uma requisição HTTP GET para a aplicação
-        result = self.app.get('/07-05-2018/canal/instituto_lula/videos')
+        result = self.app.get('/02-06-2018/canal/lula/videos')
 
         # Verifica o código de estado da resposta da requisição
         self.assertEqual(result.status_code, 200)
@@ -103,12 +103,16 @@ class TestFlask(unittest.TestCase):
 
     def test_list_actor_videos_info_latest(self):
         # Envia uma requisição HTTP GET para a aplicação
-        result = self.app.get('/latest/canal/instituto_lula/videos')
+        result = self.app.get('/latest/canal/lula/videos')
 
         # Verifica o código de estado da resposta da requisição
         self.assertEqual(result.status_code, 200)
         video_data_keys = ['title', 'views', 'likes', 'dislikes',
-                           'comments', 'favorites', 'url'].sort()
+                           'comments', 'url', 'category', 'channel_id',
+                           'collected_date', 'description', 'duration',
+                           'embeddable', 'favorites',
+                           'publishedAt', 'related_to_video',
+                           'tags', 'thumbnail', 'video_id'].sort()
 
         r = json.loads(result.data.decode('utf8'))
 
