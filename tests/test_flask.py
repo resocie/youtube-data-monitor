@@ -1,4 +1,5 @@
 from server.main import app
+from server.models import Actor, db
 import unittest
 import json
 import os
@@ -32,11 +33,12 @@ class TestFlask(unittest.TestCase):
         # Verifica o código de estado da resposta da requisição
         self.assertEqual(result.status_code, 200)
 
-        data_folders = [x[1] for x in os.walk('data/')][0]
+        dates = db.session.query(Actor.collected_date).distinct()
+        all_dates = [item[0] for item in dates]
 
         r = json.loads(result.data.decode('utf8'))
 
-        self.assertEqual(r['dates'], data_folders)
+        self.assertEqual(r['dates'], all_dates)
 
     def test_list_actor_channel_info(self):
         # Envia uma requisição HTTP GET para a aplicação
