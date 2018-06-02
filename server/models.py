@@ -54,6 +54,7 @@ class Actor(db.Model):
 class Videos(db.Model):
     __tablename__ = 'videos'
     title = db.Column(db.Text)
+    likes = db.Column(db.Text)
     views = db.Column(db.Text)
     dislikes = db.Column(db.Text)
     comments = db.Column(db.Text)
@@ -75,12 +76,13 @@ class Videos(db.Model):
                                               [Actor.collected_date,
                                                Actor.channel_id]), {})
 
-    def __init__(self, title, views, dislikes,
+    def __init__(self, title, views, dislikes, likes,
                  comments, favorites, url, publishedAt,
                  description, tags, embeddable, duration, thumbnail,
                  related_to_video, category, collected_date, channel_id,
                  video_id):
             self.title = title
+            self.likes = likes
             self.views = views
             self.dislikes = dislikes
             self.comments = comments

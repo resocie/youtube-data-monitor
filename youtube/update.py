@@ -132,6 +132,7 @@ with open('data/channels_basic_info.json') as data_file:
                 for item in videos_views:
                     video_db = VideosDB(views=item['views'],
                                         title=item['title'],
+                                        likes=item['likes'],
                                         dislikes=item['dislikes'],
                                         comments=item['comments'],
                                         favorites=item['favorites'],
