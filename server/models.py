@@ -1,9 +1,14 @@
 from flask_sqlalchemy import SQLAlchemy
-
-db = SQLAlchemy()
+from flask import Flask
+app = Flask(__name__)
+bank_connection = 'postgresql://postgres:trisha@localhost/youtube_database'
+app.config['SQLALCHEMY_DATABASE_URI'] = bank_connection
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+db = SQLAlchemy(app)
 
 
 class Actor(db.Model):
+    __tablename__ = 'actor'
     actor_username = db.Column(db.Text)
     actor_name = db.Column(db.Text)
     subscribers = db.Column(db.Integer)
@@ -19,7 +24,7 @@ class Actor(db.Model):
     keywords = db.Column(db.Text)
     banner_url = db.Column(db.Text)
     above_one_hundred_thousand = db.Column(db.Boolean)
-    # videos = db.relationship('Videos', backref='actor')
+    channel_videos = db.relationship('Videos', backref='actor', lazy=True)
 
     def __init__(self, actor_name, actor_username,
                  subscribers, video_count, title,
@@ -47,6 +52,7 @@ class Actor(db.Model):
 
 
 class Videos(db.Model):
+    __tablename__ = 'videos'
     title = db.Column(db.Text)
     views = db.Column(db.Text)
     dislikes = db.Column(db.Text)
@@ -61,15 +67,16 @@ class Videos(db.Model):
     thumbnail = db.Column(db.Text)
     related_to_video = db.Column(db.Text)
     category = db.Column(db.Text)
-    collected_date = db.relationship(db.Text,
-                                     db.ForeignKey('actor.collected_date'),
-                                     primary_key=True)
-    channel_id = db.Column(db.String(30),
-                           db.ForeignKey('actor.channel_id'),
-                           primary_key=True)
     video_id = db.Column(db.Text, primary_key=True)
+    collected_date = db.Column(db.String(10), primary_key=True)
+    channel_id = db.Column(db.String(30), primary_key=True)
+    __table_args__ = (db.ForeignKeyConstraint(
+                                              [collected_date, channel_id],
+                                              [Actor.collected_date,
+                                               Actor.channel_id]), {})
 
-    def __init__(title, views, dislikes, comments, favorites, url, publishedAt,
+    def __init__(self, title, views, dislikes,
+                 comments, favorites, url, publishedAt,
                  description, tags, embeddable, duration, thumbnail,
                  related_to_video, category, collected_date, channel_id,
                  video_id):
