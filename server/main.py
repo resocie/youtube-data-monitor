@@ -3,6 +3,7 @@ from server.api_exceptions import InvalidUsage
 from server.models import db
 from flask import Flask, jsonify
 from server.models import Actor, Videos
+from datetime import datetime
 import json
 import os
 
@@ -44,7 +45,7 @@ def list_actor_videos_info(date, actor):
     all_dates = [item[0] for item in dates]
 
     if date == 'latest':
-        all_dates.sort()
+        all_dates.sort(key=lambda x: datetime.strptime(x, '%d-%m-%Y'))
         date = all_dates[-1]
         raise_date_error = False
     else:
@@ -92,7 +93,7 @@ def list_actor_channel_info(date, actor):
     all_dates = [item[0] for item in dates]
 
     if date == 'latest':
-        all_dates.sort()
+        all_dates.sort(key=lambda x: datetime.strptime(x, '%d-%m-%Y'))
         date = all_dates[-1]
         raise_date_error = False
     else:
