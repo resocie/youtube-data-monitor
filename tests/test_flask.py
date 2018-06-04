@@ -128,9 +128,20 @@ class TestFlask(unittest.TestCase):
             actors.append(item.__dict__)
 
         for item in actors:
-            print(item['actor_name'], item['collected_date'])
             result = self.app.get(item['collected_date']+'/canal/' +
                                   item['actor_name'])
+            self.assertEqual(result.status_code, 200)
+
+    def test_all_videos(self):
+        # Envia uma requisição HTTP GET para a aplicação
+        all_actors = db.session.query(Actor).all()
+        actors = []
+        for item in all_actors:
+            actors.append(item.__dict__)
+
+        for item in actors:
+            result = self.app.get(item['collected_date']+'/canal/' +
+                                  item['actor_name']+'/videos')
             self.assertEqual(result.status_code, 200)
 
 
