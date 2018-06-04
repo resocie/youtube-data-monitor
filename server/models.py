@@ -59,7 +59,7 @@ class Videos(db.Model):
     dislikes = db.Column(db.Text)
     comments = db.Column(db.Text)
     favorites = db.Column(db.Text)
-    url = db.Column(db.Text)
+    url = db.Column(db.Text, primary_key=True)
     publishedAt = db.Column(db.Text)
     description = db.Column(db.Text)
     tags = db.Column(db.Text)
@@ -68,7 +68,7 @@ class Videos(db.Model):
     thumbnail = db.Column(db.Text)
     related_to_video = db.Column(db.Text)
     category = db.Column(db.Text)
-    video_id = db.Column(db.Text, primary_key=True)
+    video_id = db.Column(db.Text)
     collected_date = db.Column(db.String(10), primary_key=True)
     channel_id = db.Column(db.String(30), primary_key=True)
     __table_args__ = (db.ForeignKeyConstraint(
