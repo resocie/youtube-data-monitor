@@ -3,7 +3,7 @@ python:
   - "3.5"
 # command to install dependencies
 env:
-    -DEBUG=True DATABASE_URL="postgres:trisha@localhost/youtube_database"
+    -DEBUG=True DATABASE_URL="postgresql://postgres:trisha@localhost/youtube_database"
 before_script:
   - psql -c 'create database youtube_database;' -U postgres
 install:
