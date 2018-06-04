@@ -62,8 +62,15 @@ def list_actor_videos_info(date, actor):
                            status_code=450)
 
     actor = actor.replace('_', ' ')
-    actor = actor.title()
-    info = db.session.query(Actor).filter_by(actor_name=actor).first()
+
+    all_actors = db.session.query(Actor).filter_by(collected_date=date).all()
+    if all_actors is not None:
+        for item in all_actors:
+            if actor.lower() == item.__dict__['actor_name'].lower():
+                info = item
+                raise_actor_error = False
+                break
+
     if info is not None:
         raise_actor_error = False
         videos = db.session.query(Videos).\
@@ -110,11 +117,13 @@ def list_actor_channel_info(date, actor):
                            status_code=450)
 
     actor = actor.replace('_', ' ')
-    actor = actor.title()
-    actor_info = db.session.query(Actor).filter_by(actor_name=actor,
-                                                   collected_date=date).first()
-    if actor_info is not None:
-        raise_actor_error = False
+    all_actors = db.session.query(Actor).filter_by(collected_date=date).all()
+    if all_actors is not None:
+        for item in all_actors:
+            if actor.lower() == item.__dict__['actor_name'].lower():
+                actor_info = item
+                raise_actor_error = False
+                break
 
     if raise_actor_error:
         raise InvalidUsage("Actor name was mistyped or this actor name don't"
