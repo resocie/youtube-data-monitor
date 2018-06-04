@@ -120,6 +120,19 @@ class TestFlask(unittest.TestCase):
 
         self.assertEqual(list(r['videos'][0].keys()).sort(), video_data_keys)
 
+    def test_all_actors(self):
+        # Envia uma requisição HTTP GET para a aplicação
+        all_actors = db.session.query(Actor).all()
+        actors = []
+        for item in all_actors:
+            actors.append(item.__dict__)
+
+        for item in actors:
+            print(item['actor_name'], item['collected_date'])
+            result = self.app.get(item['collected_date']+'/canal/' +
+                                  item['actor_name'])
+            self.assertEqual(result.status_code, 200)
+
 
 if __name__ == '__main__':
     unittest.main()
