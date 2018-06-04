@@ -51,6 +51,10 @@ with open('data/channels_basic_info.json') as data_file:
                                       value=video_count,
                                       search_cell='channel_id',
                                       search_value=channel_id)
+            youtube_user.insert_value(column='title',
+                                      value=title,
+                                      search_cell='channel_id',
+                                      search_value=channel_id)
             youtube_user.insert_value(column='view_count',
                                       value=view_count,
                                       search_cell='channel_id',
