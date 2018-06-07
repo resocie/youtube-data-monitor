@@ -81,6 +81,38 @@ with open('data/actors.json') as data_file:
             videos_views = video.get_all_video_views_user_id(response, 5)
 
             if videos_views:
+                channel_videos_related = directory + '/channel_videos_related'
+                if not os.path.exists(channel_videos_related):
+                    os.makedirs(channel_videos_related)
+                for video_item in videos_views:
+                    if 'related_to_video' in video_item:
+                        related_videos = video_item['related_to_video']
+                        del video_item['related_to_video']
+                    else:
+                        related_videos = 'disabled'
+                    if related_videos != 'disabled':
+                        output = FileOutput(channel_videos_related +
+                                            '/' +
+                                            video_item['title'].replace('/',
+                                                                        ' ') +
+                                            '.csv')
+                        output.export_to_CSV(related_videos, ['original_title',
+                                                              'original_id',
+                                                              'title',
+                                                              'views',
+                                                              'likes',
+                                                              'dislikes',
+                                                              'comments',
+                                                              'favorites',
+                                                              'url',
+                                                              'publishedAt',
+                                                              'description',
+                                                              'tags',
+                                                              'embeddable',
+                                                              'duration',
+                                                              'thumbnail',
+                                                              'video_category'
+                                                              ])
                 # saves videos on channel_videos folder
                 channel_videos_folder = directory + '/channel_videos'
                 if not os.path.exists(channel_videos_folder):
@@ -100,7 +132,6 @@ with open('data/actors.json') as data_file:
                                                     'embeddable',
                                                     'duration',
                                                     'thumbnail',
-                                                    'related_to_video',
                                                     'video_category'
                                                     ])
             else:
