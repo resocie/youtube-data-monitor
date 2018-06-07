@@ -43,8 +43,8 @@ class TestVideos(unittest.TestCase):
         result_activities = self._video.get_activity_info(channel_id,
                                                           max_results)
         video_ids = self._video.get_all_video_ids(result_activities)
-        assert_list = ['L14U9aasDek', 'WyggT8Q-MIM', 'EXLN3qXkNpY']
-        self.assertEqual(video_ids[-3:], assert_list)
+        assert_list = ['L14U9aasDek']
+        self.assertEqual(video_ids[-1:], assert_list)
 
     def test_all_videos_count_user_id(self):
         user_id = 'UCs6avCwreiI6QoFR83Ul2UQ'

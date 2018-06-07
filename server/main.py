@@ -32,7 +32,6 @@ def list_dates():
 @app.route('/<date>/canal/<actor>/videos', methods=['GET'])
 def list_actor_videos_info(date, actor):
     data_folders = [x[1] for x in os.walk('data/')][0]
-
     raise_date_error, raise_actor_error = True, True
     list_actors_video_info = {'videos': []}
 
@@ -55,7 +54,6 @@ def list_actor_videos_info(date, actor):
                            " dates that our system collected data at"
                            " youtube-data-monitor.herokuapp.com/dates.",
                            status_code=450)
-
     actor = actor.replace('_', ' ')
     data_folders = list(os.walk(date_file))[0][2]
     for folder in data_folders:
