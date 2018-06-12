@@ -92,12 +92,12 @@ class Videos:
 
         return video_ids
 
-    def get_all_video_items(self, response, max_results):
+    def get_all_video_items(self, response, max_results, get_related_videos):
         videos_dic = []
-
         for item in response:
             views = self.get_videos_info(item, max_results)
-            search = self.get_search_info(max_results, item, 'video')
+            if get_related_videos:
+                search = self.get_search_info(max_results, item, 'video')
             video_views = views['items'][0]['statistics']['viewCount']
             if 'likeCount' in views['items'][0]['statistics']:
                 video_likes = views['items'][0]['statistics']['likeCount']
@@ -148,13 +148,6 @@ class Videos:
                  views['items'][0]['snippet']['thumbnails']['high']['url']
             else:
                 video_thumbnail = 'disabled'
-            if search['items']:
-                related_to_video = ''
-                for video in search['items']:
-                    related_to_video += VIDEOS_BASE_URL + \
-                                         video['id']['videoId'] + ','
-            else:
-                related_to_video = 'disabled'
             if 'categoryId' in views['items'][0]['snippet']:
                 category_id = views['items'][0]['snippet']['categoryId']
                 category_info = self.get_category_info(category_id)
@@ -163,6 +156,16 @@ class Videos:
                 video_category = 'disabled'
             video_titles = views['items'][0]['snippet']['title']
             video_url = VIDEOS_BASE_URL + views['items'][0]['id']
+            if get_related_videos:
+                if search['items']:
+                    related_to_video = []
+                    for video in search['items']:
+                        related_to_video.append(self.get_all_video_items(
+                         [video['id']['videoId']], 1, False)[0])
+                        related_to_video[-1]['original_title'] = video_titles
+                        related_to_video[-1]['original_id'] = item
+                else:
+                    related_to_video = 'disabled'
             videos_dic.append({'title': video_titles,
                                'views': video_views,
                                'likes': video_likes,
@@ -176,16 +179,16 @@ class Videos:
                                'embeddable': video_embeddable,
                                'duration': video_duration,
                                'thumbnail': video_thumbnail,
-                               'related_to_video': related_to_video,
                                'video_category': video_category
                                })
-
+            if get_related_videos:
+                videos_dic[-1]['related_to_video'] = related_to_video
         return videos_dic
 
     def get_all_video_views_user_id(self, response, max_results):
         channel_id = self.user.get_channel_id(response)
         result_activities = self.get_activity_info(channel_id, max_results)
         videos_id = self.get_all_video_ids(result_activities)
-        video_views = self.get_all_video_items(videos_id, max_results)
+        video_views = self.get_all_video_items(videos_id, max_results, True)
 
         return video_views
