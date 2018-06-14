@@ -1,12 +1,21 @@
 from server.main import app
-from server.models import Actor, db
+from server.models import Actor, Videos, db
 import unittest
 import json
 import os
 
+bank_connection = "sqlite:///:memory:"
+
 
 class TestFlask(unittest.TestCase):
+
+    def create_app(self):
+        app.config['SQLALCHEMY_DATABASE_URI'] = bank_connection
+        return app
+
     def setUp(self):
+        app.app_context().push()
+        db.create_all()
         # Cria um cliente de teste
         self.app = app.test_client()
         # Propaga as exceções para o cliente de teste
@@ -121,7 +130,6 @@ class TestFlask(unittest.TestCase):
         self.assertEqual(list(r['videos'][0].keys()).sort(), video_data_keys)
 
     def test_all_actors(self):
-        # Envia uma requisição HTTP GET para a aplicação
         all_actors = db.session.query(Actor).all()
         actors = []
         for item in all_actors:
@@ -133,7 +141,6 @@ class TestFlask(unittest.TestCase):
             self.assertEqual(result.status_code, 200)
 
     def test_all_videos(self):
-        # Envia uma requisição HTTP GET para a aplicação
         all_actors = db.session.query(Actor).all()
         actors = []
         for item in all_actors:
@@ -143,6 +150,10 @@ class TestFlask(unittest.TestCase):
             result = self.app.get(item['collected_date']+'/canal/' +
                                   item['actor_name']+'/videos')
             self.assertEqual(result.status_code, 200)
+
+    def tearDown(self):
+        db.session.remove()
+        db.drop_all()
 
 
 if __name__ == '__main__':

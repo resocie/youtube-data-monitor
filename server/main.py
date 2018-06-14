@@ -8,8 +8,7 @@ import json
 import os
 
 app = Flask(__name__)
-bank_connection = 'postgresql://postgres:trisha@localhost/youtube_database'
-app.config['SQLALCHEMY_DATABASE_URI'] = bank_connection
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.init_app(app)
 
