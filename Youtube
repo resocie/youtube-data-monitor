@@ -14,7 +14,7 @@ install() {
 	echo export YOUTUBE_KEY=$varkey >> venv/bin/activate
 
 	#Adiciona o deactivate do enviroment no activate
-	sed -i '39s/.*/    fi\n\n    unset YOUTUBE_KEY/' venv/bin/activate
+	sed -i '37s/.*/    fi\n\n    unset YOUTUBE_KEY/' venv/bin/activate
 
 }
 
