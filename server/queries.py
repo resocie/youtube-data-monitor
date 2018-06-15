@@ -18,7 +18,9 @@ class DBYouTube:
         return {'dates': all_dates}
 
     def get_info_actor(date, actor):
-        actor = db.session.query(Actor).filter(Actor.collected_date==date, func.lower(Actor.actor_name)==func.lower(actor)).first()
+        actor = db.session.query(Actor).filter(Actor.collected_date == date,
+                                               func.lower(Actor.actor_name) ==
+                                               func.lower(actor)).first()
         if actor is not None:
             del actor.__dict__['_sa_instance_state']
             return actor.__dict__

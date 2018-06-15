@@ -25,7 +25,8 @@ class TestFlask(unittest.TestCase):
                          view_count=4307555,
                          comment_count=0,
                          created_date='2010-01-26',
-                         collected_date=datetime.strptime('2018-06-14','%Y-%m-%d').date(),
+                         collected_date=datetime.strptime('2018-06-14',
+                                                          '%Y-%m-%d').date(),
                          thumbnail_url='https://yt3.ggpht.com/-dKJCCcRJLUM/' +
                          'AAAAAAAAAAI/AAAAAAAAAAA/dPAqpLhWma4/s88-c-k' +
                          '-no-mo-rj-c0xffffff/photo.jpg',
