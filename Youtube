@@ -9,7 +9,9 @@ install() {
 	pip install -r requirements.txt
 
 	#perguntar qual a key da api
-	echo Qual a sua KEY da API do YOUTUBE?
+	clear
+	printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' -
+	echo 'Digite a sua KEY da API do YouTube'
 	read varkey
 	echo export YOUTUBE_KEY=$varkey >> venv/bin/activate
 
