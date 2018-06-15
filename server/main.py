@@ -1,10 +1,13 @@
 from core.output import FileOutput
 from server.api_exceptions import InvalidUsage
-from server.models import db
+from server.models import db, Actor, Videos
+from server.queries import DBYouTube
 from flask import Flask, jsonify
-from server.models import Actor, Videos
-from datetime import datetime
+from sqlalchemy import desc
+from sqlalchemy.sql import func
+import datetime
 import json
+import time
 import os
 
 app = Flask(__name__)
@@ -30,27 +33,15 @@ def list_actors():
 
 @app.route('/dates', methods=['GET'])
 def list_dates():
-    dates = db.session.query(Actor.collected_date).distinct()
-    all_dates = [item[0] for item in dates]
 
-    return jsonify({'dates': all_dates})
+    return jsonify(DBYouTube.get_dates())
 
 
 @app.route('/<date>/canal/<actor>/videos', methods=['GET'])
 def list_actor_videos_info(date, actor):
 
     raise_date_error, raise_actor_error = True, True
-    dates = db.session.query(Actor.collected_date).distinct()
-    all_dates = [item[0] for item in dates]
-
-    if date == 'latest':
-        all_dates.sort(key=lambda x: datetime.strptime(x, '%d-%m-%Y'))
-        date = all_dates[-1]
-        raise_date_error = False
-    else:
-        for item in all_dates:
-            if date == item:
-                raise_date_error = False
+    raise_date_error = date_latest(date)
 
     if raise_date_error:
         raise InvalidUsage("Date was mistyped or our database didn't collected"
@@ -62,24 +53,8 @@ def list_actor_videos_info(date, actor):
 
     actor = actor.replace('_', ' ')
 
-    all_actors = db.session.query(Actor).filter_by(collected_date=date).all()
-    if all_actors is not None:
-        for item in all_actors:
-            if actor.lower() == item.__dict__['actor_name'].lower():
-                info = item
-                raise_actor_error = False
-                break
-
-    if info is not None:
-        raise_actor_error = False
-        videos = db.session.query(Videos).\
-            filter_by(collected_date=date,
-                      channel_id=info.channel_id).all()
-        all_videos = []
-        for item in videos:
-            del item.__dict__['_sa_instance_state']
-            all_videos.append(item.__dict__)
-
+    result_actor = DBYouTube.get_info_actor(date, actor)
+    raise_actor_error = result_actor is None
     if raise_actor_error:
         raise InvalidUsage("Actor name was mistyped or this actor name don't"
                            " exist in our database or"
@@ -88,6 +63,7 @@ def list_actor_videos_info(date, actor):
                            " youtube-data-monitor.herokuapp.com/actors.",
                            status_code=460)
 
+    all_videos = DBYouTube.get_actor_videos(date, result_actor['channel_id'])
     return jsonify({'videos': all_videos})
 
 
@@ -95,17 +71,7 @@ def list_actor_videos_info(date, actor):
 def list_actor_channel_info(date, actor):
 
     raise_date_error, raise_actor_error = True, True
-    dates = db.session.query(Actor.collected_date).distinct()
-    all_dates = [item[0] for item in dates]
-
-    if date == 'latest':
-        all_dates.sort(key=lambda x: datetime.strptime(x, '%d-%m-%Y'))
-        date = all_dates[-1]
-        raise_date_error = False
-    else:
-        for item in all_dates:
-            if date == item:
-                raise_date_error = False
+    raise_date_error = date_latest(date)
 
     if raise_date_error:
         raise InvalidUsage("Date was mistyped or our database didn't collected"
@@ -116,13 +82,8 @@ def list_actor_channel_info(date, actor):
                            status_code=450)
 
     actor = actor.replace('_', ' ')
-    all_actors = db.session.query(Actor).filter_by(collected_date=date).all()
-    if all_actors is not None:
-        for item in all_actors:
-            if actor.lower() == item.__dict__['actor_name'].lower():
-                actor_info = item
-                raise_actor_error = False
-                break
+    result_actor = DBYouTube.get_info_actor(date, actor)
+    raise_actor_error = result_actor is None
 
     if raise_actor_error:
         raise InvalidUsage("Actor name was mistyped or this actor name don't"
@@ -132,8 +93,21 @@ def list_actor_channel_info(date, actor):
                            " youtube-data-monitor.herokuapp.com/actors.",
                            status_code=460)
 
-    del actor_info.__dict__['_sa_instance_state']
-    return jsonify(actor_info.__dict__)
+    return jsonify(result_actor)
+
+
+def date_latest(date):
+    all_dates = DBYouTube.get_dates()['dates']
+    raise_date_error = True
+    if date == 'latest':
+        date = all_dates[-1]
+        raise_date_error = False
+    else:
+        for item in all_dates:
+            if date == item:
+                raise_date_error = False
+
+    return raise_date_error
 
 
 if __name__ == '__main__':
