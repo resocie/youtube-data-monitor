@@ -151,9 +151,9 @@ class TestFlask(unittest.TestCase):
                                   item['actor_name']+'/videos')
             self.assertEqual(result.status_code, 200)
 
-    def tearDown(self):
-        db.session.remove()
-        db.drop_all()
+    # def tearDown(self):
+    #     db.session.remove()
+    #     db.drop_all()
 
 
 if __name__ == '__main__':
