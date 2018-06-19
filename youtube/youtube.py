@@ -57,9 +57,9 @@ class YoutubeAPI:
         elif os.path.isfile(self._filename):
             return True
 
-        with open('data/actors.json') as data_file:
+        with open('config/actors.json') as data_file:
             actors = json.load(data_file)
-            actors = actors['actors']
+            actors = actors['channels']
             input_data = [{'actor': name,
                            'username': '',
                            'channel_id': ''} for name in actors]

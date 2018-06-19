@@ -8,10 +8,10 @@ import json
 class DBYouTube:
 
     def get_all_actors_name():
-        with open('data/actors.json') as data_file:
-            list_actors_original = json.load(data_file)
-
-        return list_actors_original
+        with open('config/actors.json') as data_file:
+            actors_json = json.load(data_file)
+            actors_name = [name['actor'] for name in actors_json['channels']]
+        return actors_name
 
     def get_dates():
         dates = db.session.query(Actor.collected_date).\

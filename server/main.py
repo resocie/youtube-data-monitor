@@ -2,6 +2,7 @@ from server.api_exceptions import InvalidUsage
 from server.queries import DBYouTube
 from flask import Flask, jsonify
 import os
+import json
 from server import app, db
 
 
@@ -29,28 +30,22 @@ def list_dates():
 def list_actor_videos_info(date, actor):
 
     raise_date_error, raise_actor_error = True, True
-    db_date = date_latest(date)
+    db_date = check_date(date)
     raise_date_error = db_date is None
 
     if raise_date_error:
-        raise InvalidUsage("Date was mistyped or our database didn't collected"
-                           " data in this date. Try a date in this format"
-                           " day-month-year, e.g. 07-05-2018 or try list the"
-                           " dates that our system collected data at"
-                           " youtube-data-monitor.herokuapp.com/dates.",
-                           status_code=450)
+        status_code = 450
+        raise InvalidUsage(get_error_message(status_code),
+                           status_code=status_code)
 
     actor = actor.replace('_', ' ')
 
     result_actor = DBYouTube.get_info_actor(db_date, actor)
     raise_actor_error = result_actor is None
     if raise_actor_error:
-        raise InvalidUsage("Actor name was mistyped or this actor name don't"
-                           " exist in our database or"
-                           " there is no data to provide for this actor."
-                           " Try list all the actors at"
-                           " youtube-data-monitor.herokuapp.com/actors.",
-                           status_code=460)
+        status_code = 460
+        raise InvalidUsage(get_error_message(status_code),
+                           status_code=status_code)
 
     all_videos = DBYouTube.get_actor_videos(db_date,
                                             result_actor['channel_id'])
@@ -61,33 +56,27 @@ def list_actor_videos_info(date, actor):
 def list_actor_channel_info(date, actor):
 
     raise_date_error, raise_actor_error = True, True
-    db_date = date_latest(date)
+    db_date = check_date(date)
     raise_date_error = db_date is None
 
     if raise_date_error:
-        raise InvalidUsage("Date was mistyped or our database didn't collected"
-                           " data in this date. Try a date in this format"
-                           " day-month-year, e.g. 07-05-2018 or try list the"
-                           " dates that our system collected data at"
-                           " youtube-data-monitor.herokuapp.com/dates.",
-                           status_code=450)
+        status_code = 450
+        raise InvalidUsage(get_error_message(status_code),
+                           status_code=status_code)
 
     actor = actor.replace('_', ' ')
     result_actor = DBYouTube.get_info_actor(db_date, actor)
     raise_actor_error = result_actor is None
 
     if raise_actor_error:
-        raise InvalidUsage("Actor name was mistyped or this actor name don't"
-                           " exist in our database or"
-                           " there is no data to provide for this actor."
-                           " Try list all the actors at"
-                           " youtube-data-monitor.herokuapp.com/actors.",
-                           status_code=460)
+        status_code = 460
+        raise InvalidUsage(get_error_message(status_code),
+                           status_code=status_code)
 
     return jsonify(result_actor)
 
 
-def date_latest(date):
+def check_date(date):
     all_dates = DBYouTube.get_dates()['dates']
     raise_date_error = True
     if date == 'latest':
@@ -97,6 +86,15 @@ def date_latest(date):
             if date == item:
                 return date
     return None
+
+
+def get_error_message(status_code):
+    with open('config/error_messages.json') as data_file:
+        errors_json = json.load(data_file)
+        error_message = [error['message'] for error in errors_json['errors']
+                         if error['status_code'] == status_code]
+
+    return error_message[0]
 
 
 if __name__ == '__main__':

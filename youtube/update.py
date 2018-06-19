@@ -15,7 +15,7 @@ video = Videos()
 app.app_context().push()
 db.create_all()  # create the tables and database
 
-with open('data/channels_basic_info.json') as data_file:
+with open('config/actors.json') as data_file:
     actors = json.load(data_file)
     actors_dict = actors['channels']
     no_video_actors = []
