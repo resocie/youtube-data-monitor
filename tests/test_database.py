@@ -38,8 +38,37 @@ class TestFlask(unittest.TestCase):
                          'cbna4Kyv2HLsiDexI=w1060-fcrop64=1,00005a57ffff' +
                          'a5a8-nd-c0xffffffff-rj-k-no',
                          above_one_hundred_thousand=False)
+
+        video_db = Videos(title='Reunião Comissão de ' +
+                          'Relações Exteriores e Defesa ' +
+                          'Nacional.07.06.2018',
+                          likes='2',
+                          views='8',
+                          dislikes='0',
+                          comments='disabled',
+                          favorites='0',
+                          url='https://www.youtube.com/watch?v=hFc_scYRpQY',
+                          publishedAt='2018-06-13T17:37:01.000Z',
+                          description='',
+                          tags='disabled',
+                          embeddable='True',
+                          duration='PT3H49M49S',
+                          thumbnail='https://i.ytimg.com/vi/hFc_scYRpQY/' +
+                          'hqdefault.jpg',
+                          related_to_video='https://www.youtube.com/' +
+                          'watch?v=3YCmZxmCDR4,https://www.youtube.com/' +
+                          'watch?v=lB61h_BPGZo,https://www.youtube.com/' +
+                          'watch?v=II3hZ85UhZo,https://www.youtube.com/' +
+                          'watch?v=OtozTo9ois8,https://www.youtube.com/' +
+                          'watch?v=Dc5OiNgePAo',
+                          category='Notícias e política',
+                          video_id='hFc_scYRpQY',
+                          collected_date=datetime.strptime('2018-06-14',
+                                                           '%Y-%m-%d').date(),
+                          channel_id='UC9uefWa6TXIPDRWGZYMcTuA')
         # Cria um cliente de teste
         db.session.add(actor_db)
+        db.session.add(video_db)
         db.session.commit()
         self.app = app.test_client()
         # Propaga as exceções para o cliente de teste
@@ -49,9 +78,42 @@ class TestFlask(unittest.TestCase):
         dates = DBYouTube.get_dates()
         self.assertEqual(dates['dates'], ['14-06-2018'])
 
-    def test_db_get_info_actor(self):
+    def test_db_get_dates_error(self):
+        dates = DBYouTube.get_dates()
+        self.assertNotEqual(dates['dates'], ['14-07-2019'])
+
+    def test_db_get_info_actor_name(self):
         actor = DBYouTube.get_info_actor('14-06-2018', 'Marina Silva')
         self.assertEqual(actor['actor_name'], 'Marina Silva')
+
+    def test_db_get_info_actor_name(self):
+        actor = DBYouTube.get_info_actor('14-06-2018', 'Marina Silva')
+        self.assertEqual(actor['subscribers'], 13515)
+
+    def test_db_get_info_actor_none(self):
+        actor = DBYouTube.get_info_actor('14-06-2018', 'Bolsonaro')
+        self.assertEqual(actor, None)
+
+    def test_db_get_actor_videos(self):
+        videos = DBYouTube.get_actor_videos('14-06-2018', 'UC9uefWa6TXIPD' +
+                                            'RWGZYMcTuA')
+        self.assertEqual(videos[0]['title'], 'Reunião Comissão de Relações ' +
+                         'Exteriores e Defesa Nacional.07.06.2018')
+
+    def test_db_get_actor_videos_empty(self):
+        videos = DBYouTube.get_actor_videos('15-06-2018', 'UC8uefWa6TXIPD' +
+                                            'RWGZYMcTuA')
+        self.assertEqual(videos, [])
+
+    def test_db_get_actor_videos(self):
+        videos = DBYouTube.get_actor_videos('14-06-2018', 'UC9uefWa6TXIPD' +
+                                            'RWGZYMcTuA')
+        self.assertEqual(videos[0]['views'], '8')
+
+    def test_db_get_actor_videos(self):
+        videos = DBYouTube.get_actor_videos('14-06-2018', 'UC9uefWa6TXIPD' +
+                                            'RWGZYMcTuA')
+        self.assertEqual(videos[0]['likes'], '2')
 
     def tearDown(self):
         db.session.remove()
