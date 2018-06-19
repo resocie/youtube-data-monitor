@@ -1,9 +1,9 @@
-from server.main import app
-from server.models import Actor, Videos, db
+from server.models import Actor, Videos
 from server.queries import DBYouTube
 from flask import Flask
 import unittest
 from datetime import datetime
+from server import app, db
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
@@ -50,7 +50,7 @@ class TestFlask(unittest.TestCase):
         self.assertEqual(dates['dates'], ['14-06-2018'])
 
     def test_db_get_info_actor(self):
-        actor = DBYouTube.get_info_actor('2018-06-14', 'Marina Silva')
+        actor = DBYouTube.get_info_actor('14-06-2018', 'Marina Silva')
         self.assertEqual(actor['actor_name'], 'Marina Silva')
 
     def tearDown(self):

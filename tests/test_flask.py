@@ -1,21 +1,62 @@
-from server.main import app
-from server.models import Actor, Videos, db
+from server.main import *
+from server.models import Actor, Videos
+from flask import Flask
 import unittest
 import json
-import os
+from datetime import datetime
+from server import db
+from server.main import app
 
-bank_connection = "sqlite:///:memory:"
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///:memory:"
+db.init_app(app)
 
 
 class TestFlask(unittest.TestCase):
 
-    def create_app(self):
-        app.config['SQLALCHEMY_DATABASE_URI'] = bank_connection
-        return app
-
     def setUp(self):
         app.app_context().push()
         db.create_all()
+        collected_date_value = datetime.strptime('2018-06-14',
+                                                 '%Y-%m-%d').date()
+        actor_db = Actor(actor_name='Marina Silva',
+                         actor_username='msilvaonline',
+                         channel_id='channel_id_value',
+                         title='Marina Silva',
+                         subscribers=13515,
+                         video_count=876,
+                         view_count=4307555,
+                         comment_count=0,
+                         created_date='2010-01-26',
+                         keywords='keywords_value',
+                         collected_date=collected_date_value,
+                         thumbnail_url='thumbnail_url_value',
+                         description='description_value',
+                         banner_url='banner_url_value',
+                         above_one_hundred_thousand=False)
+
+        video_db = Videos(views='1',
+                          title='Video Marina Silva',
+                          likes='1',
+                          dislikes='1',
+                          comments='1',
+                          favorites='1',
+                          url='url Marina Silva',
+                          publishedAt='data publicação',
+                          description='descrição',
+                          tags='tags',
+                          embeddable='embeddable',
+                          duration='duration',
+                          thumbnail='thumbnail',
+                          related_to_video='related_to_video',
+                          category='category',
+                          collected_date=collected_date_value,
+                          channel_id='channel_id_value',
+                          video_id='1')
+
+        db.session.add(video_db)
+        db.session.add(actor_db)
+        db.session.commit()
         # Cria um cliente de teste
         self.app = app.test_client()
         # Propaga as exceções para o cliente de teste
@@ -23,17 +64,11 @@ class TestFlask(unittest.TestCase):
 
     def test_list_actors(self):
         # Envia uma requisição HTTP GET para a aplicação
+
         result = self.app.get('/actors')
 
         # Verifica o código de estado da resposta da requisição
         self.assertEqual(result.status_code, 200)
-
-        with open('data/actors.json') as data_file:
-            list_actors_original = json.load(data_file)
-
-        r = json.loads(result.data.decode('utf8'))
-
-        self.assertEqual(r, list_actors_original)
 
     def test_list_dates(self):
         # Envia uma requisição HTTP GET para a aplicação
@@ -42,66 +77,58 @@ class TestFlask(unittest.TestCase):
         # Verifica o código de estado da resposta da requisição
         self.assertEqual(result.status_code, 200)
 
-        dates = db.session.query(Actor.collected_date).distinct()
-        all_dates = [item[0] for item in dates]
-
-        r = json.loads(result.data.decode('utf8'))
-
-        self.assertEqual(r['dates'], all_dates)
-
     def test_list_actor_channel_info(self):
         # Envia uma requisição HTTP GET para a aplicação
-        result = self.app.get('/02-06-2018/canal/Frente_Brasil_Popular')
-
+        result = self.app.get('/14-06-2018/canal/Marina_Silva')
         # Verifica o código de estado da resposta da requisição
         self.assertEqual(result.status_code, 200)
 
-        channel_id = "UCX2Aanu4fGewmhP4rf5GQ3Q"
+        channel_id = "channel_id_value"
         r = json.loads(result.data.decode('utf8'))
 
         self.assertEqual(r['channel_id'], channel_id)
 
     def test_list_actor_channel_info_latest(self):
         # Envia uma requisição HTTP GET para a aplicação
-        result = self.app.get('/latest/canal/Frente_Brasil_Popular')
+        result = self.app.get('/latest/canal/Marina_Silva')
 
         # Verifica o código de estado da resposta da requisição
         self.assertEqual(result.status_code, 200)
 
-        channel_id = "UCX2Aanu4fGewmhP4rf5GQ3Q"
+        channel_id = "channel_id_value"
         r = json.loads(result.data.decode('utf8'))
 
         self.assertEqual(r['channel_id'], channel_id)
 
     def test_list_actor_channel_info_with_actor_name_lower(self):
         # Envia uma requisição HTTP GET para a aplicação
-        result = self.app.get('/02-06-2018/canal/frente_brasil_popular')
+        result = self.app.get('/14-06-2018/canal/marina_silva')
 
         # Verifica o código de estado da resposta da requisição
         self.assertEqual(result.status_code, 200)
 
-        channel_id = "UCX2Aanu4fGewmhP4rf5GQ3Q"
+        channel_id = "channel_id_value"
         r = json.loads(result.data.decode('utf8'))
 
         self.assertEqual(r['channel_id'], channel_id)
 
     def test_list_actor_channel_info_with_wrong_data(self):
         # Envia uma requisição HTTP GET para a aplicação
-        result = self.app.get('/07-05/canal/Frente_Brasil_Popular')
+        result = self.app.get('/14-06/canal/marina_silva')
 
         # Verifica o código de estado da resposta da requisição
         self.assertEqual(result.status_code, 450)
 
     def test_list_actor_channel_info_with_wrong_actor_name(self):
         # Envia uma requisição HTTP GET para a aplicação
-        result = self.app.get('/02-06-2018/canal/Frente')
+        result = self.app.get('/14-06-2018/canal/marina')
 
         # Verifica o código de estado da resposta da requisição
         self.assertEqual(result.status_code, 460)
 
     def test_list_actor_videos_info(self):
         # Envia uma requisição HTTP GET para a aplicação
-        result = self.app.get('/02-06-2018/canal/lula/videos')
+        result = self.app.get('/14-06-2018/canal/marina_silva/videos')
 
         # Verifica o código de estado da resposta da requisição
         self.assertEqual(result.status_code, 200)
@@ -114,7 +141,7 @@ class TestFlask(unittest.TestCase):
 
     def test_list_actor_videos_info_latest(self):
         # Envia uma requisição HTTP GET para a aplicação
-        result = self.app.get('/latest/canal/lula/videos')
+        result = self.app.get('/latest/canal/marina_silva/videos')
 
         # Verifica o código de estado da resposta da requisição
         self.assertEqual(result.status_code, 200)
@@ -129,31 +156,9 @@ class TestFlask(unittest.TestCase):
 
         self.assertEqual(list(r['videos'][0].keys()).sort(), video_data_keys)
 
-    def test_all_actors(self):
-        all_actors = db.session.query(Actor).all()
-        actors = []
-        for item in all_actors:
-            actors.append(item.__dict__)
-
-        for item in actors:
-            result = self.app.get(item['collected_date']+'/canal/' +
-                                  item['actor_name'])
-            self.assertEqual(result.status_code, 200)
-
-    def test_all_videos(self):
-        all_actors = db.session.query(Actor).all()
-        actors = []
-        for item in all_actors:
-            actors.append(item.__dict__)
-
-        for item in actors:
-            result = self.app.get(item['collected_date']+'/canal/' +
-                                  item['actor_name']+'/videos')
-            self.assertEqual(result.status_code, 200)
-
-    # def tearDown(self):
-    #     db.session.remove()
-    #     db.drop_all()
+    def tearDown(self):
+        db.session.remove()
+        db.drop_all()
 
 
 if __name__ == '__main__':
