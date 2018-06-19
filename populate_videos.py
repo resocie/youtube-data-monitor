@@ -15,7 +15,6 @@ for folder in data_folders:
         with open('data/'+folder+'/channel_videos/'+file, 'r') as video_file:
             video_reader = csv.DictReader(video_file)
             for row in video_reader:
-                print(folder, file, row['title'])
                 actor_info = db.session.query(Actor).filter_by(collected_date='04-06-2018', title=str(file).replace('.csv', '')).first()
                 if actor_info.__dict__['channel_id'] != '' and actor_info.__dict__['channel_id'] != 'null':
                     try:
