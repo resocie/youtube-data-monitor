@@ -2,10 +2,6 @@ language: python
 python:
   - "3.5"
 # command to install dependencies
-env:
-    -DEBUG=True DATABASE_URL="postgresql://postgres:trisha@localhost/youtube_database"
-before_script:
-  - psql -c 'create database youtube_database;' -U postgres
 install:
   - pip install -r requirements.txt
   - pip install pycodestyle
