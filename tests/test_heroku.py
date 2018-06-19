@@ -14,12 +14,13 @@ class TestHeroku(unittest.TestCase):
         # Verifica o código de estado da resposta da requisição
         self.assertEqual(result.status_code, 200)
 
-        with open('data/actors.json') as data_file:
-            list_actors_original = json.load(data_file)
+        with open('config/actors.json') as data_file:
+            actors_json = json.load(data_file)
+            actors_name = [name['actor'] for name in actors_json['channels']]
 
         r = json.loads(result.content.decode('utf8'))
 
-        self.assertEqual(r, list_actors_original)
+        self.assertEqual(r, {'actors': actors_name})
 
     def test_list_actor_channel_info(self):
         # Envia uma requisição HTTP GET para a aplicação

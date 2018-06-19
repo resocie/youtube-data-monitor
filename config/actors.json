@@ -71,6 +71,11 @@
             "username": ""
         },
         {
+            "actor": "MPL - Movimento Passe Livre",
+            "id": "",
+            "username": ""
+        },
+        {
             "actor": "MLB - Movimento de Luta nos Bairros, Vilas e Favelas",
             "id": "",
             "username": ""
@@ -136,7 +141,7 @@
             "username": ""
         },
         {
-            "actor": "UBES - União Brasileira Estudantes Secundaristas",
+            "actor": "UBES - União Brasileira  Estudantes Secundaristas",
             "id": "UCQ7QEpwjFy293Ir3I7Is_Cw",
             "username": "UBESCOMUNICA"
         },
@@ -224,6 +229,11 @@
             "actor": "Movimento Contra a Corrupção",
             "id": "UCvo3PC2zBfG1IsCWVJVn6pw",
             "username": "canalcontracorrupcao"
+        },
+        {
+            "actor": "Livres",
+            "id": "",
+            "username": ""
         },
         {
             "actor": "Nas Ruas",
