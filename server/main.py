@@ -1,19 +1,8 @@
-from core.output import FileOutput
 from server.api_exceptions import InvalidUsage
-from server.models import db, Actor, Videos
 from server.queries import DBYouTube
 from flask import Flask, jsonify
-from sqlalchemy import desc
-from sqlalchemy.sql import func
-import datetime
-import json
-import time
 import os
-
-app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-db.init_app(app)
+from server import app, db
 
 
 @app.errorhandler(InvalidUsage)
@@ -25,8 +14,7 @@ def handle_invalid_usage(error):
 
 @app.route('/actors', methods=['GET'])
 def list_actors():
-    with open('data/actors.json') as data_file:
-        list_actors_original = json.load(data_file)
+    list_actors_original = DBYouTube.get_all_actors_name()
 
     return jsonify(list_actors_original)
 
@@ -41,7 +29,8 @@ def list_dates():
 def list_actor_videos_info(date, actor):
 
     raise_date_error, raise_actor_error = True, True
-    raise_date_error = date_latest(date)
+    db_date = date_latest(date)
+    raise_date_error = db_date is None
 
     if raise_date_error:
         raise InvalidUsage("Date was mistyped or our database didn't collected"
@@ -53,7 +42,7 @@ def list_actor_videos_info(date, actor):
 
     actor = actor.replace('_', ' ')
 
-    result_actor = DBYouTube.get_info_actor(date, actor)
+    result_actor = DBYouTube.get_info_actor(db_date, actor)
     raise_actor_error = result_actor is None
     if raise_actor_error:
         raise InvalidUsage("Actor name was mistyped or this actor name don't"
@@ -63,7 +52,8 @@ def list_actor_videos_info(date, actor):
                            " youtube-data-monitor.herokuapp.com/actors.",
                            status_code=460)
 
-    all_videos = DBYouTube.get_actor_videos(date, result_actor['channel_id'])
+    all_videos = DBYouTube.get_actor_videos(db_date,
+                                            result_actor['channel_id'])
     return jsonify({'videos': all_videos})
 
 
@@ -71,7 +61,8 @@ def list_actor_videos_info(date, actor):
 def list_actor_channel_info(date, actor):
 
     raise_date_error, raise_actor_error = True, True
-    raise_date_error = date_latest(date)
+    db_date = date_latest(date)
+    raise_date_error = db_date is None
 
     if raise_date_error:
         raise InvalidUsage("Date was mistyped or our database didn't collected"
@@ -82,7 +73,7 @@ def list_actor_channel_info(date, actor):
                            status_code=450)
 
     actor = actor.replace('_', ' ')
-    result_actor = DBYouTube.get_info_actor(date, actor)
+    result_actor = DBYouTube.get_info_actor(db_date, actor)
     raise_actor_error = result_actor is None
 
     if raise_actor_error:
@@ -100,14 +91,12 @@ def date_latest(date):
     all_dates = DBYouTube.get_dates()['dates']
     raise_date_error = True
     if date == 'latest':
-        date = all_dates[-1]
-        raise_date_error = False
+        return all_dates[0]
     else:
         for item in all_dates:
             if date == item:
-                raise_date_error = False
-
-    return raise_date_error
+                return date
+    return None
 
 
 if __name__ == '__main__':

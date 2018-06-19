@@ -1,13 +1,17 @@
-from server.api_exceptions import InvalidUsage
-from server.models import db
 from server.models import Actor, Videos
 from datetime import datetime
 from sqlalchemy import func
+from server import db
 import json
-import os
 
 
 class DBYouTube:
+
+    def get_all_actors_name():
+        with open('data/actors.json') as data_file:
+            list_actors_original = json.load(data_file)
+
+        return list_actors_original
 
     def get_dates():
         dates = db.session.query(Actor.collected_date).\
@@ -18,7 +22,9 @@ class DBYouTube:
         return {'dates': all_dates}
 
     def get_info_actor(date, actor):
-        actor = db.session.query(Actor).filter(Actor.collected_date == date,
+        format_date = datetime.strptime(date, '%d-%m-%Y').date()
+        actor = db.session.query(Actor).filter(Actor.collected_date ==
+                                               format_date,
                                                func.lower(Actor.actor_name) ==
                                                func.lower(actor)).first()
         if actor is not None:
@@ -28,8 +34,9 @@ class DBYouTube:
             return None
 
     def get_actor_videos(date, channel_id):
+        format_date = datetime.strptime(date, '%d-%m-%Y').date()
         videos = db.session.query(Videos).\
-            filter_by(collected_date=date,
+            filter_by(collected_date=format_date,
                       channel_id=channel_id).all()
 
         all_videos = []

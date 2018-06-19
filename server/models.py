@@ -1,10 +1,4 @@
-from flask_sqlalchemy import SQLAlchemy
-from flask import Flask
-app = Flask(__name__)
-bank_connection = 'postgresql://postgres:trisha@localhost/youtube_database'
-app.config['SQLALCHEMY_DATABASE_URI'] = bank_connection
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-db = SQLAlchemy(app)
+from server import db
 
 
 class Actor(db.Model):
@@ -17,7 +11,7 @@ class Actor(db.Model):
     channel_id = db.Column(db.String(30), primary_key=True)
     view_count = db.Column(db.Integer)
     created_date = db.Column(db.String(10))
-    collected_date = db.Column(db.String(10), primary_key=True)
+    collected_date = db.Column(db.Date, primary_key=True)
     comment_count = db.Column(db.Integer)
     thumbnail_url = db.Column(db.Text)
     description = db.Column(db.Text)
@@ -69,7 +63,7 @@ class Videos(db.Model):
     related_to_video = db.Column(db.Text)
     category = db.Column(db.Text)
     video_id = db.Column(db.Text)
-    collected_date = db.Column(db.String(10), primary_key=True)
+    collected_date = db.Column(db.Date, primary_key=True)
     channel_id = db.Column(db.String(30), primary_key=True)
     __table_args__ = (db.ForeignKeyConstraint(
                                               [collected_date, channel_id],
