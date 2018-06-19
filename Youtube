@@ -4,9 +4,9 @@
 install() {
 
 	#Cria o ambiente
-	virtualenv -p python3 venv
+	virtualenv -p python3 venv &> /dev/null
 	source venv/bin/activate
-	pip install -r requirements.txt
+	pip install -r requirements.txt &> /dev/null
 
 	#perguntar qual a key da api
 	clear
@@ -14,9 +14,10 @@ install() {
 	echo 'Digite a sua KEY da API do YouTube'
 	read varkey
 	echo export YOUTUBE_KEY=$varkey >> venv/bin/activate
+	echo export 'DATABASE_URL=postgresql://postgres:trisha@localhost/youtube_database' >> venv/bin/activate
 
 	#Adiciona o deactivate do enviroment no activate
-	sed -i '37s/.*/    fi\n\n    unset YOUTUBE_KEY/' venv/bin/activate
+	sed -i '37s/.*/    fi\n\n    unset YOUTUBE_KEY\n    unset DATABASE_URL/' venv/bin/activate
 
 }
 
