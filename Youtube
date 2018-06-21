@@ -7,6 +7,17 @@ install() {
 	virtualenv -p python3 venv &> /dev/null
 	source venv/bin/activate
 	pip install -r requirements.txt &> /dev/null
+	
+	#Instala o pycodestyle
+	pip install pycodestyle &> /dev/null
+	pycodestyle youtube/youtube.py &> /dev/null
+	
+	#Instala o postgres
+	case "$OSTYPE" in
+  	darwin*)  brew install postgresql ;; 
+  	linux*)   sudo apt-get install postgresql ;;
+  	*)        echo "Sistema: $OSTYPE desconhecido, instale manualmente o PostGres" ;;
+	esac
 
 	#perguntar qual a key da api
 	clear
@@ -14,7 +25,13 @@ install() {
 	echo 'Digite a sua KEY da API do YouTube'
 	read varkey
 	echo export YOUTUBE_KEY=$varkey >> venv/bin/activate
-	echo export 'DATABASE_URL=postgresql://postgres:trisha@localhost/youtube_database' >> venv/bin/activate
+	clear
+	printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' -
+	echo 'Digite seu usuário do PostGres'
+	read varlogin
+	echo 'Digite sua senha do PostGres'
+	read -sp '' varpassword
+	echo export DATABASE_URL=postgresql://$varlogin:$varpassword@localhost/youtube_database >> venv/bin/activate
 
 	#Adiciona o deactivate do enviroment no activate
 	sed -i '37s/.*/    fi\n\n    unset YOUTUBE_KEY\n    unset DATABASE_URL/' venv/bin/activate
