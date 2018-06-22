@@ -39,12 +39,12 @@ class TestCodeFormat(unittest.TestCase):
         self.assertEqual(result.total_errors, 0,
                          "Found code style errors (and warnings).")
 
-    def test_conformance_tests_test_heroku(self):
-        """Test that we conform to PEP-8."""
-        style = pycodestyle.StyleGuide(quiet=True)
-        result = style.check_files(['tests/test_heroku.py'])
-        self.assertEqual(result.total_errors, 0,
-                         "Found code style errors (and warnings).")
+    # def test_conformance_tests_test_heroku(self):
+    #     """Test that we conform to PEP-8."""
+    #     style = pycodestyle.StyleGuide(quiet=True)
+    #     result = style.check_files(['tests/test_heroku.py'])
+    #     self.assertEqual(result.total_errors, 0,
+    #                      "Found code style errors (and warnings).")
 
     def test_conformance_tests_test_videos(self):
         """Test that we conform to PEP-8."""
