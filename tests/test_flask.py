@@ -79,7 +79,7 @@ class TestFlask(unittest.TestCase):
 
     def test_list_actor_channel_info(self):
         # Envia uma requisição HTTP GET para a aplicação
-        result = self.app.get('/14-06-2018/canal/Marina_Silva')
+        result = self.app.get('/2018-06-14/canal/Marina_Silva')
         # Verifica o código de estado da resposta da requisição
         self.assertEqual(result.status_code, 200)
 
@@ -102,7 +102,7 @@ class TestFlask(unittest.TestCase):
 
     def test_list_actor_channel_info_with_actor_name_lower(self):
         # Envia uma requisição HTTP GET para a aplicação
-        result = self.app.get('/14-06-2018/canal/marina_silva')
+        result = self.app.get('/2018-06-14/canal/marina_silva')
 
         # Verifica o código de estado da resposta da requisição
         self.assertEqual(result.status_code, 200)
@@ -121,14 +121,14 @@ class TestFlask(unittest.TestCase):
 
     def test_list_actor_channel_info_with_wrong_actor_name(self):
         # Envia uma requisição HTTP GET para a aplicação
-        result = self.app.get('/14-06-2018/canal/marina')
+        result = self.app.get('/2018-06-14/canal/marina')
 
         # Verifica o código de estado da resposta da requisição
         self.assertEqual(result.status_code, 460)
 
     def test_list_actor_videos_info(self):
         # Envia uma requisição HTTP GET para a aplicação
-        result = self.app.get('/14-06-2018/canal/marina_silva/videos')
+        result = self.app.get('/2018-06-14/canal/marina_silva/videos')
 
         # Verifica o código de estado da resposta da requisição
         self.assertEqual(result.status_code, 200)

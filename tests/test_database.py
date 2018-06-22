@@ -76,42 +76,42 @@ class TestFlask(unittest.TestCase):
 
     def test_db_get_dates(self):
         dates = DBYouTube.get_dates()
-        self.assertEqual(dates['dates'], ['14-06-2018'])
+        self.assertEqual(dates['dates'], ['2018-06-14'])
 
     def test_db_get_dates_error(self):
         dates = DBYouTube.get_dates()
-        self.assertNotEqual(dates['dates'], ['14-07-2019'])
+        self.assertNotEqual(dates['dates'], ['2019-07-14'])
 
     def test_db_get_info_actor_name(self):
-        actor = DBYouTube.get_info_actor('14-06-2018', 'Marina Silva')
+        actor = DBYouTube.get_info_actor('2018-06-14', 'Marina Silva')
         self.assertEqual(actor['actor_name'], 'Marina Silva')
 
     def test_db_get_info_actor_name(self):
-        actor = DBYouTube.get_info_actor('14-06-2018', 'Marina Silva')
+        actor = DBYouTube.get_info_actor('2018-06-14', 'Marina Silva')
         self.assertEqual(actor['subscribers'], 13515)
 
     def test_db_get_info_actor_none(self):
-        actor = DBYouTube.get_info_actor('14-06-2018', 'Bolsonaro')
+        actor = DBYouTube.get_info_actor('2018-06-14', 'Bolsonaro')
         self.assertEqual(actor, None)
 
     def test_db_get_actor_videos(self):
-        videos = DBYouTube.get_actor_videos('14-06-2018', 'UC9uefWa6TXIPD' +
+        videos = DBYouTube.get_actor_videos('2018-06-14', 'UC9uefWa6TXIPD' +
                                             'RWGZYMcTuA')
         self.assertEqual(videos[0]['title'], 'Reunião Comissão de Relações ' +
                          'Exteriores e Defesa Nacional.07.06.2018')
 
     def test_db_get_actor_videos_empty(self):
-        videos = DBYouTube.get_actor_videos('15-06-2018', 'UC8uefWa6TXIPD' +
+        videos = DBYouTube.get_actor_videos('2018-06-15', 'UC8uefWa6TXIPD' +
                                             'RWGZYMcTuA')
         self.assertEqual(videos, [])
 
     def test_db_get_actor_videos(self):
-        videos = DBYouTube.get_actor_videos('14-06-2018', 'UC9uefWa6TXIPD' +
+        videos = DBYouTube.get_actor_videos('2018-06-14', 'UC9uefWa6TXIPD' +
                                             'RWGZYMcTuA')
         self.assertEqual(videos[0]['views'], '8')
 
     def test_db_get_actor_videos(self):
-        videos = DBYouTube.get_actor_videos('14-06-2018', 'UC9uefWa6TXIPD' +
+        videos = DBYouTube.get_actor_videos('2018-06-14', 'UC9uefWa6TXIPD' +
                                             'RWGZYMcTuA')
         self.assertEqual(videos[0]['likes'], '2')
 
