@@ -13,7 +13,7 @@ class YoutubeAPI:
 
         Get channels information.
     """
-    start_time = datetime.now().strftime("%d-%m-%Y")
+    start_time = datetime.now().strftime("%Y-%m-%d")
 
     def __init__(self):
         self._youtube_key = os.environ['YOUTUBE_KEY']

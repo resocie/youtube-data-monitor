@@ -17,12 +17,12 @@ class DBYouTube:
         dates = db.session.query(Actor.collected_date).\
             order_by(Actor.collected_date.desc()).\
             distinct()
-        all_dates = [item[0].strftime('%d-%m-%Y') for item in dates]
+        all_dates = [item[0].strftime('%Y-%m-%d') for item in dates]
 
         return {'dates': all_dates}
 
     def get_info_actor(date, actor):
-        format_date = datetime.strptime(date, '%d-%m-%Y').date()
+        format_date = datetime.strptime(date, '%Y-%m-%d').date()
         actor = db.session.query(Actor).filter(Actor.collected_date ==
                                                format_date,
                                                func.lower(Actor.actor_name) ==
@@ -34,7 +34,7 @@ class DBYouTube:
             return None
 
     def get_actor_videos(date, channel_id):
-        format_date = datetime.strptime(date, '%d-%m-%Y').date()
+        format_date = datetime.strptime(date, '%Y-%m-%d').date()
         videos = db.session.query(Videos).\
             filter_by(collected_date=format_date,
                       channel_id=channel_id).all()
@@ -50,7 +50,7 @@ class DBYouTube:
             return None
 
     def is_not_video_in_db(video_id, date, channel_id):
-        format_date = datetime.strptime(date, '%d-%m-%Y').date()
+        format_date = datetime.strptime(date, '%Y-%m-%d').date()
         video = db.session.query(Videos).filter(Videos.collected_date ==
                                                 format_date,
                                                 Videos.channel_id ==
