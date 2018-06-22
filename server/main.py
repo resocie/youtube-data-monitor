@@ -17,7 +17,7 @@ def handle_invalid_usage(error):
 def list_actors():
     list_actors_original = DBYouTube.get_all_actors_name()
 
-    return jsonify(list_actors_original)
+    return jsonify({'actors': list_actors_original})
 
 
 @app.route('/dates', methods=['GET'])
