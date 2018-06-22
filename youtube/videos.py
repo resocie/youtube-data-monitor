@@ -98,7 +98,11 @@ class Videos:
             views = self.get_videos_info(item, max_results)
             if get_related_videos:
                 search = self.get_search_info(max_results, item, 'video')
-            video_views = views['items'][0]['statistics']['viewCount']
+            id = views['items'][0]['id']
+            if 'viewCount' in views['items'][0]['statistics']:
+                video_views = views['items'][0]['statistics']['viewCount']
+            else:
+                video_views = 'disabled'
             if 'likeCount' in views['items'][0]['statistics']:
                 video_likes = views['items'][0]['statistics']['likeCount']
             else:
@@ -166,7 +170,8 @@ class Videos:
                         related_to_video[-1]['original_id'] = item
                 else:
                     related_to_video = 'disabled'
-            videos_dic.append({'title': video_titles,
+            videos_dic.append({'id': id,
+                               'title': video_titles,
                                'views': video_views,
                                'likes': video_likes,
                                'dislikes': video_dislikes,
@@ -183,6 +188,7 @@ class Videos:
                                })
             if get_related_videos:
                 videos_dic[-1]['related_to_video'] = related_to_video
+
         return videos_dic
 
     def get_all_video_views_user_id(self, response, max_results):

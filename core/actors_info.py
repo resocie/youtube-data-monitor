@@ -14,7 +14,7 @@ def insert_actors_info():
     check = yt_api.generate_csv(clean=True)
 
     if check:
-        with open('data/channels_basic_info.json') as json_file:
+        with open('config/actors.json') as json_file:
             data = json.load(json_file)
             for item in data['channels']:
                 if 'username' in item:
