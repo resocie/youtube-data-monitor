@@ -1,0 +1,12 @@
+{
+    "errors": [
+        {
+            "status_code": 450,
+            "message": "Date was mistyped or our database didn't collected data in this date. Try a date in this format day-month-year, e.g. 07-05-2018 or try list the dates that our system collected data at youtube-data-monitor.herokuapp.com/dates."
+        },
+        {
+            "status_code": 460,
+            "message": "Actor name was mistyped or this actor name don't exist in our database or there is no data to provide for this actor.Try list all the actors at youtube-data-monitor.herokuapp.com/actors."
+        }
+    ]
+}
